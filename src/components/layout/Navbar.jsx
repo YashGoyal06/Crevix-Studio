@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
+import { useCart } from '../../context/cartStore';
 
 const navLinks = [
   { label: 'Home',      to: '/' },
   { label: 'Services',  to: '/services' },
   { label: 'Portfolio', to: '/portfolio' },
+  { label: 'Our Team',  to: '/team' },
   { label: 'Pricing',   to: '/pricing' },
   { label: 'Contact',   to: '/contact' },
 ];
@@ -21,6 +23,7 @@ const HamburgerIcon = ({ open }) => (
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const { items } = useCart();
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? 'hidden' : '';
@@ -45,7 +48,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-5 lg:gap-8">
             {navLinks.map((link) => (
               <Link
                 key={link.to}
@@ -59,13 +62,14 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* CTA — plain text */}
-          <div className="hidden md:block">
+          <div className="hidden md:flex items-center gap-5">
             <Link
-              to="/contact"
-              className="text-[15px] font-sans text-white/70 hover:text-white transition-opacity duration-150"
+              to="/cart"
+              className={`text-[15px] font-sans transition-colors duration-150 ${
+                location.pathname === '/cart' ? 'text-white' : 'text-white/55 hover:text-white'
+              }`}
             >
-              Start a Project →
+              Cart{items.length ? ` (${items.length})` : ''}
             </Link>
           </div>
 
@@ -102,8 +106,12 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          <Link to="/contact" onClick={() => setMobileOpen(false)}>
-            <span className="mt-4 text-[15px] font-sans text-white/70">Start a Project →</span>
+          <Link
+            to="/cart"
+            className="font-syne font-bold text-2xl text-white"
+            onClick={() => setMobileOpen(false)}
+          >
+            Cart{items.length ? ` (${items.length})` : ''}
           </Link>
         </div>
       </motion.div>

@@ -29,7 +29,7 @@ const InputField = ({ label, type = 'text', name, value, onChange, error, placeh
 );
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', type: '', budget: '', message: '' });
+  const [form, setForm] = useState({ name: '', email: '', type: '', preferredTime: '', message: '' });
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState('idle');
 
@@ -38,7 +38,7 @@ export default function Contact() {
     if (!form.name.trim())    e.name    = 'Full name is required.';
     if (!form.email.trim())   e.email   = 'Email address is required.';
     else if (!/\S+@\S+\.\S+/.test(form.email)) e.email = 'Please enter a valid email.';
-    if (!form.type)           e.type    = 'Please select a project type.';
+    if (!form.type)           e.type    = 'Please select a call reason.';
     if (!form.message.trim()) e.message = 'A message is required.';
     return e;
   };
@@ -64,12 +64,12 @@ export default function Contact() {
           {/* Left — Info */}
           <div>
             <RevealOnScroll>
-              <p className="mb-5 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:mb-6 md:text-[13px]">Get In Touch</p>
+              <p className="mb-5 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:mb-6 md:text-[13px]">Help & Query Call</p>
               <h1 className="mb-5 font-syne text-[36px] font-bold leading-[1.08] text-white md:mb-6 md:text-[44px]">
-                Let's Build Something Great.
+                Need Help Choosing The Right Option?
               </h1>
               <p className="mb-8 font-sans text-[15px] leading-[1.75] text-text-secondary md:mb-12">
-                We respond to all inquiries within 2 hours.
+                Book a quick query call for plan guidance, order help, custom requests, or general questions.
               </p>
             </RevealOnScroll>
 
@@ -105,26 +105,26 @@ export default function Contact() {
                     <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white text-lg mb-6">
                       ✓
                     </div>
-                    <h3 className="font-syne font-bold text-[22px] text-white mb-3">Message sent.</h3>
-                    <p className="font-sans text-[14px] text-text-secondary">We'll be in touch within 2 hours.</p>
+                    <h3 className="font-syne font-bold text-[22px] text-white mb-3">Request received.</h3>
+                    <p className="font-sans text-[14px] text-text-secondary">We'll reach out soon to help with your query.</p>
                   </motion.div>
                 ) : (
                   <motion.form key="form" onSubmit={handleSubmit} className="space-y-6">
                     <InputField label="Full Name" name="name" value={form.name} onChange={handleChange} error={errors.name} placeholder="Jane Smith" />
                     <InputField label="Email Address" type="email" name="email" value={form.email} onChange={handleChange} error={errors.email} placeholder="jane@company.com" />
-                    <InputField label="Project Type" name="type" value={form.type} onChange={handleChange} error={errors.type} as="select">
-                      <option value="" disabled style={{ background: '#0E0E0E' }}>Select a type…</option>
-                      {['Website', 'UI/UX Design', 'Branding', 'Strategy', 'Other'].map((o) => (
+                    <InputField label="Call Reason" name="type" value={form.type} onChange={handleChange} error={errors.type} as="select">
+                      <option value="" disabled style={{ background: '#0E0E0E' }}>Select a reason…</option>
+                      {['Plan Guidance', 'Order / Payment Help', 'Custom Requirement', 'Existing Website Query', 'General Help'].map((o) => (
                         <option key={o} value={o} style={{ background: '#0E0E0E' }}>{o}</option>
                       ))}
                     </InputField>
-                    <InputField label="Budget Range" name="budget" value={form.budget} onChange={handleChange} as="select">
-                      <option value="" style={{ background: '#0E0E0E' }}>Select budget range…</option>
-                      {['Under ₹10K', '₹10K–₹25K', '₹25K–₹50K', '₹50K+'].map((o) => (
+                    <InputField label="Preferred Call Time" name="preferredTime" value={form.preferredTime} onChange={handleChange} as="select">
+                      <option value="" style={{ background: '#0E0E0E' }}>Select preferred time…</option>
+                      {['Morning', 'Afternoon', 'Evening', 'Anytime'].map((o) => (
                         <option key={o} value={o} style={{ background: '#0E0E0E' }}>{o}</option>
                       ))}
                     </InputField>
-                    <InputField label="Your Message" name="message" value={form.message} onChange={handleChange} error={errors.message} placeholder="Tell us about your project…" as="textarea" rows={5} />
+                    <InputField label="Your Query" name="message" value={form.message} onChange={handleChange} error={errors.message} placeholder="Tell us what you need help with..." as="textarea" rows={5} />
 
                     <button
                       type="submit"
@@ -138,7 +138,7 @@ export default function Contact() {
                           </svg>
                           Sending…
                         </>
-                      ) : 'Send Message →'}
+                      ) : 'Request a Call →'}
                     </button>
                   </motion.form>
                 )}

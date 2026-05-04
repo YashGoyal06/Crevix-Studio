@@ -1,36 +1,11 @@
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { RevealOnScroll } from '../hooks/useScrollReveal';
 import Layout from '../components/layout/Layout';
+import { useCart } from '../context/cartStore';
+import { addOns, designServices, webPlans } from '../data/pricing';
 
-const webPlans = [
-  {
-    name: 'Starter',
-    price: '₹1,999',
-    period: '/mo',
-    features: ['1 Page', 'Responsive Design', 'Basic Design'],
-  },
-  {
-    name: 'Growth',
-    price: '₹3,999',
-    period: '/mo',
-    features: ['3–5 Pages', 'Custom UI', 'Advanced Animations', 'Contact Form', 'SEO Setup'],
-    featured: true,
-  },
-  {
-    name: 'Studio',
-    price: '₹6,999',
-    period: '/mo',
-    features: ['Full Website', 'Advanced UI/UX', 'Premium Animations', 'SEO Setup', 'Priority Support', 'Custom Integrations'],
-  },
-];
-
-const designServices = [
-  { name: 'Poster Design',     price: '₹199+',   unit: 'Per poster' },
-  { name: 'Logo Design',       price: '₹499+',   unit: 'Per logo mark' },
-  { name: 'Social Media Pack', price: '₹999/mo', unit: 'Monthly package' },
-];
-
-const PricingCard = ({ plan }) => (
+const PricingCard = ({ plan, onBuyNow, onAddToCart }) => (
   <div
     className={`relative flex flex-col rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1 sm:p-8 md:p-10 ${
       plan.featured ? '' : ''
@@ -59,7 +34,6 @@ const PricingCard = ({ plan }) => (
       <p className="font-syne font-bold text-[18px] text-white mb-3">{plan.name}</p>
       <div className="flex flex-wrap items-end gap-1">
         <span className="font-syne text-[38px] font-[800] leading-none text-white md:text-[44px]">{plan.price}</span>
-        <span className="font-sans text-text-secondary mb-1">{plan.period}</span>
       </div>
     </div>
 
@@ -72,26 +46,79 @@ const PricingCard = ({ plan }) => (
       ))}
     </ul>
 
-    <Link
-      to="/contact"
+    <button
+      type="button"
+      onClick={() => onBuyNow(plan)}
       className={`block w-full rounded-full py-3.5 text-center font-sans text-[15px] font-medium transition-opacity duration-150 hover:opacity-85 ${
         plan.featured
           ? 'bg-white text-[#080808]'
           : 'border border-white/[0.12] text-white hover:border-white/[0.2]'
       }`}
     >
-      Get Started →
-    </Link>
+      Buy Now →
+    </button>
+    <button
+      type="button"
+      onClick={() => onAddToCart(plan)}
+      className="mt-3 block w-full rounded-full border border-white/[0.1] py-3.5 text-center font-sans text-[15px] font-medium text-white/65 transition-colors duration-150 hover:border-white/[0.22] hover:text-white"
+    >
+      Add to Cart
+    </button>
+  </div>
+);
+
+const ServiceCard = ({ item, onAddToCart }) => (
+  <div className="rounded-[16px] p-6 text-center transition-all duration-200 hover:-translate-y-1 sm:p-8 md:p-10"
+    style={{ background: '#0E0E0E', border: '1px solid rgba(255,255,255,0.06)' }}>
+    <h3 className="font-syne font-bold text-[18px] text-white mb-3">{item.name}</h3>
+    <div className="font-syne font-[800] text-[28px] text-white mb-2 md:text-[32px]">{item.price}</div>
+    {item.unit && <p className="font-sans text-[13px] leading-[1.6] text-text-secondary">{item.unit}</p>}
+    <button
+      type="button"
+      onClick={() => onAddToCart(item)}
+      className="mt-6 w-full rounded-full border border-white/[0.1] py-3 text-center font-sans text-[14px] font-medium text-white/65 transition-colors duration-150 hover:border-white/[0.22] hover:text-white"
+    >
+      Add to Cart
+    </button>
   </div>
 );
 
 export default function Pricing() {
+  const navigate = useNavigate();
+  const { addItem } = useCart();
+  const [toast, setToast] = useState('');
+
+  const showAddedToast = (name) => {
+    setToast(`${name} added to cart`);
+  };
+
+  useEffect(() => {
+    if (!toast) return undefined;
+    const timer = window.setTimeout(() => setToast(''), 2200);
+    return () => window.clearTimeout(timer);
+  }, [toast]);
+
+  const handleBuyNow = (item) => {
+    navigate('/checkout', { state: { items: [item] } });
+  };
+
+  const handleAddToCart = (item) => {
+    addItem(item);
+    showAddedToast(item.name);
+  };
+
   return (
     <Layout>
+      {toast && (
+        <div className="fixed right-4 top-24 z-[120] rounded-full border border-white/[0.12] bg-[#111111]/95 px-5 py-3 font-sans text-[14px] text-white shadow-2xl backdrop-blur-md">
+          {toast}
+        </div>
+      )}
+
       <section className="mx-auto max-w-[1280px] px-4 pb-8 pt-20 text-center sm:px-6 md:pb-12 md:pt-28">
         <RevealOnScroll>
           <h1 className="mb-4 font-syne text-[40px] font-[800] leading-[1.02] text-white md:text-[64px]">Honest Pricing.</h1>
-          <p className="font-sans text-[16px] leading-[1.6] text-text-secondary md:text-[18px]">No hidden fees. No surprises. Just great work.</p>
+          <p className="font-sans text-[16px] leading-[1.6] text-text-secondary md:text-[18px]">Websites, design support, and online ordering setup without hidden fees.</p>
         </RevealOnScroll>
       </section>
 
@@ -103,7 +130,7 @@ export default function Pricing() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
           {webPlans.map((p, i) => (
             <RevealOnScroll key={i} delay={i * 0.08}>
-              <PricingCard plan={p} />
+              <PricingCard plan={p} onBuyNow={handleBuyNow} onAddToCart={handleAddToCart} />
             </RevealOnScroll>
           ))}
         </div>
@@ -112,18 +139,45 @@ export default function Pricing() {
       {/* Design Services */}
       <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
         <RevealOnScroll>
-          <p className="mb-10 text-center font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:mb-12 md:text-[13px]">À La Carte Design</p>
+          <div className="mb-10 text-center md:mb-12">
+            <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">Design Services</p>
+            <h2 className="font-syne text-[32px] font-bold leading-[1.08] text-white md:text-[44px]">Design Work That Supports The Launch.</h2>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {designServices.map((s, i) => (
-              <div key={i} className="rounded-[16px] p-6 text-center transition-all duration-200 hover:-translate-y-1 sm:p-8 md:p-10"
-                style={{ background: '#0E0E0E', border: '1px solid rgba(255,255,255,0.06)' }}>
-                <h3 className="font-syne font-bold text-[18px] text-white mb-3">{s.name}</h3>
-                <div className="font-syne font-[800] text-[32px] text-white mb-1">{s.price}</div>
-                <p className="font-sans text-[13px] text-text-secondary">{s.unit}</p>
-              </div>
+              <ServiceCard key={i} item={s} onAddToCart={handleAddToCart} />
             ))}
           </div>
         </RevealOnScroll>
+      </section>
+
+      {/* Add-ons */}
+      <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
+        <RevealOnScroll>
+          <div className="mb-10 text-center md:mb-12">
+            <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">Add-ons</p>
+            <h2 className="font-syne text-[32px] font-bold leading-[1.08] text-white md:text-[44px]">Upgrade Only What You Need.</h2>
+          </div>
+        </RevealOnScroll>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          {addOns.map((item, i) => (
+            <RevealOnScroll key={item.name} delay={i * 0.04}>
+              <div className="h-full rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1"
+                style={{ background: '#0E0E0E', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <p className="mb-3 font-syne text-[17px] font-bold leading-tight text-white">{item.name}</p>
+                <p className="font-sans text-[15px] text-text-secondary">{item.price}</p>
+                <button
+                  type="button"
+                  onClick={() => handleAddToCart(item)}
+                  className="mt-6 w-full rounded-full border border-white/[0.1] py-3 text-center font-sans text-[14px] font-medium text-white/65 transition-colors duration-150 hover:border-white/[0.22] hover:text-white"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </RevealOnScroll>
+          ))}
+        </div>
       </section>
 
       {/* Footer CTA */}

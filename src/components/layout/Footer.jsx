@@ -1,7 +1,14 @@
 import { Link } from 'react-router-dom';
 
 const footerLinks = {
-  Pages:    ['Home', 'Services', 'Portfolio', 'Pricing', 'Contact'],
+  Pages: [
+    { label: 'Home', to: '/' },
+    { label: 'Services', to: '/services' },
+    { label: 'Portfolio', to: '/portfolio' },
+    { label: 'Our Team', to: '/team' },
+    { label: 'Pricing', to: '/pricing' },
+    { label: 'Contact', to: '/contact' },
+  ],
   Services: ['Web Development', 'UI/UX Design', 'Branding', 'Motion Design'],
 };
 
@@ -29,10 +36,10 @@ export default function Footer() {
             <p className="font-sans text-[11px] uppercase tracking-[0.2em] text-text-muted mb-6">Pages</p>
             <ul className="space-y-3">
               {footerLinks.Pages.map((p) => (
-                <li key={p}>
-                  <Link to={`/${p === 'Home' ? '' : p.toLowerCase()}`}
+                <li key={p.to}>
+                  <Link to={p.to}
                     className="text-[14px] text-text-secondary hover:text-white transition-colors duration-150">
-                    {p}
+                    {p.label}
                   </Link>
                 </li>
               ))}
