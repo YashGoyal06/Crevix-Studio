@@ -24,13 +24,16 @@
   ::-webkit-scrollbar {
     width: 5px;
   }
+
   ::-webkit-scrollbar-track {
     background: #080808;
   }
+
   ::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.08);
     border-radius: 4px;
   }
+
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.15);
   }
@@ -42,6 +45,24 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+}
+
+@layer utilities {
+  @keyframes custom-marquee {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      /* Translates exactly half the width of the container (which contains duplicated items) */
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-custom-marquee {
+    animation: custom-marquee 35s linear infinite;
+    will-change: transform;
   }
 }
 
@@ -151,6 +172,7 @@
     from {
       transform: translate3d(-2%, -1%, 0) rotate(0deg) scale(1);
     }
+
     to {
       transform: translate3d(2%, 1%, 0) rotate(8deg) scale(1.05);
     }
