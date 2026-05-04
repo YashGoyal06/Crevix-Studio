@@ -1,9 +1,15 @@
 import { useMemo, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { RevealOnScroll } from '../hooks/useScrollReveal';
 import { useCart } from '../context/cartStore';
 import { useAuth } from '../context/authStore';
-import { formatCurrency, getPaymentLinkForItems } from '../data/pricing';
+import { formatCurrency } from '../data/pricing';
+import {
+  createRazorpayOrder,
+  loadRazorpayScript,
+  PUBLIC_RAZORPAY_KEY_ID,
+  verifyRazorpayPayment,
+} from '../lib/payments';
 import Layout from '../components/layout/Layout';
 
 const initialForm = {
@@ -14,6 +20,7 @@ const initialForm = {
 };
 
 export default function Checkout() {
+  const navigate = useNavigate();
   const location = useLocation();
   const { items: cartItems, clearCart } = useCart();
   const { user } = useAuth();
@@ -23,13 +30,13 @@ export default function Checkout() {
     email: user?.email || '',
   });
   const [error, setError] = useState('');
+  const [processing, setProcessing] = useState(false);
 
   const total = useMemo(
     () => checkoutItems.reduce((sum, item) => sum + (item.amount || 0), 0),
     [checkoutItems],
   );
 
-  const paymentLink = getPaymentLinkForItems(checkoutItems);
   const showSuccess = new URLSearchParams(location.search).get('success') === 'true';
 
   const handleChange = (e) => {
@@ -37,33 +44,109 @@ export default function Checkout() {
     setError('');
   };
 
-  const proceedToPayment = (e) => {
+  const proceedToPayment = async (e) => {
     e.preventDefault();
     if (!checkoutItems.length) return;
     if (!form.name.trim() || !form.email.trim() || !form.phone.trim()) {
       setError('Please fill in your name, email, and phone number.');
       return;
     }
-
-    window.localStorage.setItem('crevix-last-checkout', JSON.stringify({
-      customer: form,
-      items: checkoutItems,
-      total,
-      createdAt: new Date().toISOString(),
-    }));
-    if (user?.id) {
-      try {
-        const key = `crevix-purchases-${user.id}`;
-        const current = JSON.parse(window.localStorage.getItem(key) || '[]');
-        const merged = [...new Set([...current, ...checkoutItems.map((item) => item.id).filter(Boolean)])];
-        window.localStorage.setItem(key, JSON.stringify(merged));
-      } catch {
-        // Ignore local storage parse failures and continue payment.
-      }
+    if (total <= 0) {
+      setError('Total amount must be greater than 0.');
+      return;
     }
 
-    clearCart();
-    window.location.assign(paymentLink);
+    setError('');
+    setProcessing(true);
+    try {
+      await loadRazorpayScript();
+
+      const order = await createRazorpayOrder({
+        amountPaise: total * 100,
+        notes: {
+          user_id: user?.id || 'guest',
+          customer_name: form.name,
+          customer_email: form.email,
+          customer_phone: form.phone,
+          business_name: form.businessName || '',
+          item_ids: checkoutItems.map((item) => item.id).filter(Boolean).join(','),
+        },
+      });
+
+      const options = {
+        key: PUBLIC_RAZORPAY_KEY_ID || order.key_id,
+        amount: order.amount_paise,
+        currency: order.currency,
+        order_id: order.razorpay_order_id,
+        name: 'Crevix Studio',
+        description: `Order for ${checkoutItems.length} item${checkoutItems.length > 1 ? 's' : ''}`,
+        prefill: {
+          name: form.name,
+          email: form.email,
+          contact: form.phone,
+        },
+        notes: {
+          local_order_id: order.local_order_id,
+          receipt: order.receipt,
+        },
+        theme: {
+          color: '#FFFFFF',
+        },
+        modal: {
+          ondismiss: () => {
+            setError('Payment was cancelled.');
+            setProcessing(false);
+          },
+        },
+        handler: async (response) => {
+          try {
+            await verifyRazorpayPayment({
+              razorpayOrderId: response.razorpay_order_id,
+              razorpayPaymentId: response.razorpay_payment_id,
+              razorpaySignature: response.razorpay_signature,
+            });
+
+            window.localStorage.setItem('crevix-last-checkout', JSON.stringify({
+              customer: form,
+              items: checkoutItems,
+              total,
+              createdAt: new Date().toISOString(),
+              paymentId: response.razorpay_payment_id,
+              orderId: response.razorpay_order_id,
+            }));
+
+            if (user?.id) {
+              try {
+                const key = `crevix-purchases-${user.id}`;
+                const current = JSON.parse(window.localStorage.getItem(key) || '[]');
+                const merged = [...new Set([...current, ...checkoutItems.map((item) => item.id).filter(Boolean)])];
+                window.localStorage.setItem(key, JSON.stringify(merged));
+              } catch {
+                // Ignore local storage parse failures.
+              }
+            }
+
+            clearCart();
+            navigate('/checkout?success=true', { replace: true });
+          } catch (verifyError) {
+            setError(verifyError.message || 'Payment verification failed. Please contact support.');
+          } finally {
+            setProcessing(false);
+          }
+        },
+      };
+
+      const razorpay = new window.Razorpay(options);
+      razorpay.on('payment.failed', (response) => {
+        const reason = response?.error?.description || 'Payment failed. Please try again.';
+        setError(reason);
+        setProcessing(false);
+      });
+      razorpay.open();
+    } catch (checkoutError) {
+      setError(checkoutError.message || 'Unable to start payment. Please try again.');
+      setProcessing(false);
+    }
   };
 
   return (
@@ -178,13 +261,13 @@ export default function Checkout() {
 
               <button
                 type="submit"
-                disabled={!checkoutItems.length}
+                disabled={!checkoutItems.length || processing}
                 className="mt-8 w-full rounded-full bg-white px-6 py-4 text-center font-sans text-[15px] font-medium text-[#080808] transition-opacity duration-150 hover:opacity-85 disabled:cursor-not-allowed disabled:opacity-35"
               >
-                Proceed to Payment →
+                {processing ? 'Opening Payment...' : 'Proceed to Payment →'}
               </button>
               <p className="mt-4 text-center font-sans text-[12px] leading-[1.6] text-text-muted">
-                You will be redirected to a secure Razorpay/Stripe payment link.
+                A secure Razorpay checkout popup will open for UPI/cards/netbanking.
               </p>
             </form>
           </RevealOnScroll>

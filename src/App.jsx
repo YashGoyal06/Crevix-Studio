@@ -16,6 +16,7 @@ const Checkout  = lazy(() => import('./pages/Checkout'));
 const Contact   = lazy(() => import('./pages/Contact'));
 const Login     = lazy(() => import('./pages/Login'));
 const Profile   = lazy(() => import('./pages/Profile'));
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 
 const PageFade = ({ children }) => (
   <motion.div
@@ -43,6 +44,7 @@ const AnimatedRoutes = () => {
         <Route path="/contact"   element={<PageFade><Contact /></PageFade>} />
         <Route path="/login"     element={<PageFade><Login /></PageFade>} />
         <Route path="/profile"   element={<PageFade><ProtectedRoute><Profile /></ProtectedRoute></PageFade>} />
+        <Route path="/crevix-admin" element={<PageFade><AdminDashboard /></PageFade>} />
       </Routes>
     </AnimatePresence>
   );

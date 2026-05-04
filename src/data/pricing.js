@@ -10,8 +10,8 @@ export const webPlans = [
     id: 'basic-plan',
     type: 'Website Plan',
     name: 'Basic Plan',
-    price: '₹1999',
-    amount: 1999,
+    price: '₹1',
+    amount: 1,
     paymentLink: paymentLinks.basic,
     features: [
       '1 Page Website',

@@ -35,6 +35,14 @@ export const AuthProvider = ({ children }) => {
     if (error) throw error;
   };
 
+  const signInWithEmail = async (email, password) => {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) throw error;
+  };
+
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
@@ -47,6 +55,7 @@ export const AuthProvider = ({ children }) => {
       loading,
       isAuthenticated: Boolean(session?.user),
       signInWithGoogle,
+      signInWithEmail,
       signOut,
     }),
     [session, loading],
