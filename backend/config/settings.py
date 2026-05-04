@@ -22,6 +22,13 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-change-me")
 DEBUG = _env_bool("DJANGO_DEBUG", True)
 ALLOWED_HOSTS = _env_list("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost,calzone-wanted-cape.ngrok-free.dev,.railway.app,.render.com,.hf.space,proxy.spaces.internal.huggingface.tech")
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.hf.space",
+    "https://*.vercel.app",
+    "https://crevix-studio.in",
+    "https://www.crevix-studio.in"
+]
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
