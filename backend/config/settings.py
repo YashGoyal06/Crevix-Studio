@@ -24,10 +24,13 @@ ALLOWED_HOSTS = _env_list("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost,calzone-w
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.hf.space",
+    "https://cinedev-crevix-backend.hf.space",
     "https://*.vercel.app",
     "https://crevix-studio.in",
     "https://www.crevix-studio.in"
 ]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 INSTALLED_APPS = [
     "django.contrib.admin",
