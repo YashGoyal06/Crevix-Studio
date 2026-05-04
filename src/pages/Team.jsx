@@ -63,7 +63,7 @@ const team = [
     name: 'Anushka',
     role: 'Design Department',
     initials: 'A',
-    photo: '/Anushka.png',
+    photo: '/IMG_20260504_204323%20-%20Anushka%2024BAI10805.png',
     photoPosition: '50% 35%',
     linkedin: 'https://www.linkedin.com/in/anushka-09a694357/',
     gradient: 'from-[#6D28D9]/65 via-[#0EA5E9]/45 to-[#BE185D]/60',
