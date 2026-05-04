@@ -22,9 +22,17 @@ export default function Footer() {
         <div className="mb-14 grid grid-cols-1 gap-10 sm:grid-cols-2 md:mb-20 md:grid-cols-4 md:gap-12">
           {/* Brand */}
           <div>
-            <Link to="/" className="font-syne font-[800] text-[18px] flex items-baseline gap-1.5">
-              <span className="text-white">CREVIX</span>
-              <span className="text-gradient">STUDIO</span>
+            <Link to="/" className="group flex flex-col items-start gap-4">
+              <img 
+                src="/logo.png" 
+                alt="Crevix Studio" 
+                className="w-16 h-16 object-contain" 
+                style={{ mixBlendMode: 'screen' }}
+              />
+              <div className="font-syne font-[800] text-[18px] flex items-baseline gap-1.5">
+                <span className="text-white">CREVIX</span>
+                <span className="text-gradient">STUDIO</span>
+              </div>
             </Link>
             <p className="mt-5 text-[14px] text-text-secondary leading-relaxed max-w-[220px]">
               Designing the future, one pixel at a time.
