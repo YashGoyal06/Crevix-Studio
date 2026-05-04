@@ -32,10 +32,10 @@ const services = [
 
 export default function ServicesGrid() {
   return (
-    <section className="py-36 max-w-[1280px] mx-auto px-6">
+    <section className="mx-auto max-w-[1280px] px-4 py-20 sm:px-6 md:py-36">
       <RevealOnScroll>
-        <p className="font-sans text-[13px] text-text-secondary tracking-[0.15em] uppercase mb-4">What We Do</p>
-        <h2 className="font-syne font-bold text-[44px] text-white mb-20">
+        <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">What We Do</p>
+        <h2 className="mb-10 max-w-[760px] font-syne text-[34px] font-bold leading-[1.05] text-white md:mb-20 md:text-[44px]">
           Three Services. Zero Compromise.
         </h2>
       </RevealOnScroll>
@@ -44,7 +44,7 @@ export default function ServicesGrid() {
         {services.map((s, i) => (
           <RevealOnScroll key={i} delay={i * 0.08}>
             <div
-              className="rounded-[16px] p-10 transition-all duration-200 hover:-translate-y-1 group"
+              className="group rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1 sm:p-8 md:p-10"
               style={{
                 background: '#0E0E0E',
                 border: '1px solid rgba(255,255,255,0.06)',
@@ -52,9 +52,9 @@ export default function ServicesGrid() {
               onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)'}
               onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)'}
             >
-              <div className="mb-6">{s.icon}</div>
-              <h3 className="font-syne font-bold text-[20px] text-white mb-4">{s.title}</h3>
-              <p className="font-sans text-[15px] text-text-secondary leading-[1.7]">{s.body}</p>
+              <div className="mb-5 md:mb-6">{s.icon}</div>
+              <h3 className="mb-3 font-syne text-[19px] font-bold text-white md:mb-4 md:text-[20px]">{s.title}</h3>
+              <p className="font-sans text-[14px] leading-[1.7] text-text-secondary md:text-[15px]">{s.body}</p>
             </div>
           </RevealOnScroll>
         ))}

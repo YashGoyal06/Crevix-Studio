@@ -1,10 +1,9 @@
 import { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
 
 const FloatingMesh = ({ position, rotation, color, speed = 0.3, shape = 'box' }) => {
   const mesh = useRef();
-  const offset = useRef(Math.random() * Math.PI * 2);
+  const offset = useRef((position[0] * 1.7 + position[1] * 2.3 + position[2] * 0.9) * Math.PI);
 
   useFrame(({ clock }) => {
     if (!mesh.current) return;

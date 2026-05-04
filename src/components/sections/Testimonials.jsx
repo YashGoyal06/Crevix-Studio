@@ -20,16 +20,16 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="py-36 max-w-[1280px] mx-auto px-6">
+    <section className="mx-auto max-w-[1280px] px-4 py-20 sm:px-6 md:py-36">
       <RevealOnScroll>
-        <p className="font-sans text-[13px] text-text-secondary tracking-[0.15em] uppercase mb-4">What Clients Say</p>
-        <h2 className="font-syne font-bold text-[44px] text-white mb-20">Words From Real Clients.</h2>
+        <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">What Clients Say</p>
+        <h2 className="mb-10 font-syne text-[34px] font-bold leading-[1.05] text-white md:mb-20 md:text-[44px]">Words From Real Clients.</h2>
       </RevealOnScroll>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {testimonials.map((t, i) => (
           <RevealOnScroll key={i} delay={i * 0.08}>
-            <div className="rounded-[16px] p-10 h-full flex flex-col border-l-2 border-white/[0.15]"
+            <div className="flex h-full flex-col rounded-[16px] border-l-2 border-white/[0.15] p-6 sm:p-8 md:p-10"
               style={{ background: '#0E0E0E' }}>
               {/* Stars at top */}
               <div className="text-white/30 text-sm mb-6 tracking-wider">★★★★★</div>

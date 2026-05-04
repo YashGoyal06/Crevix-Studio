@@ -7,8 +7,13 @@
     --gradient: linear-gradient(135deg, #6D28D9, #BE185D, #EA580C);
   }
 
+  html {
+    background: #080808;
+  }
+
   body {
     @apply bg-void text-text-primary font-sans antialiased overflow-x-hidden;
+    min-height: 100vh;
   }
 
   ::selection {
@@ -37,5 +42,117 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+}
+
+@layer components {
+  .ambient-background {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 18% 14%, rgba(109, 40, 217, 0.22), transparent 31rem),
+      radial-gradient(circle at 84% 18%, rgba(14, 165, 233, 0.16), transparent 28rem),
+      radial-gradient(circle at 75% 72%, rgba(234, 88, 12, 0.13), transparent 32rem),
+      linear-gradient(180deg, rgba(8, 8, 8, 0.2), #080808 82%);
+  }
+
+  .ambient-background::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(8, 8, 8, 0.08), rgba(8, 8, 8, 0.72) 68%, #080808);
+  }
+
+  .ambient-background__mesh {
+    position: absolute;
+    inset: -20%;
+    opacity: 0.58;
+    filter: blur(54px);
+    background:
+      conic-gradient(from 120deg at 30% 42%, transparent 0deg, rgba(190, 24, 93, 0.2) 72deg, transparent 150deg, rgba(20, 184, 166, 0.13) 222deg, transparent 310deg),
+      radial-gradient(circle at 58% 28%, rgba(234, 179, 8, 0.08), transparent 24rem);
+    animation: ambient-drift 18s ease-in-out infinite alternate;
+  }
+
+  .ambient-background__grid {
+    position: absolute;
+    inset: 0;
+    opacity: 0.16;
+    mask-image: linear-gradient(to bottom, transparent, black 18%, black 62%, transparent);
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+    background-size: 72px 72px;
+    transform: perspective(900px) rotateX(58deg) translateY(-18%);
+    transform-origin: top center;
+  }
+
+  .ambient-background__beam {
+    position: absolute;
+    height: 1px;
+    width: 56vw;
+    opacity: 0.32;
+    filter: blur(0.5px);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.34), transparent);
+  }
+
+  .ambient-background__beam--one {
+    top: 22%;
+    left: -10%;
+    transform: rotate(-18deg);
+  }
+
+  .ambient-background__beam--two {
+    top: 48%;
+    right: -12%;
+    transform: rotate(14deg);
+    opacity: 0.22;
+  }
+
+  .ambient-background__beam--three {
+    bottom: 18%;
+    left: 20%;
+    width: 34vw;
+    transform: rotate(-9deg);
+    opacity: 0.16;
+  }
+
+  .glass-surface {
+    background: linear-gradient(145deg, rgba(17, 17, 17, 0.82), rgba(10, 10, 10, 0.64));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 24px 60px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(18px);
+  }
+
+  .light-sweep {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .light-sweep::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    background: linear-gradient(110deg, transparent 8%, rgba(255, 255, 255, 0.1), transparent 42%);
+    transform: translateX(-80%);
+    transition: opacity 180ms ease, transform 650ms ease;
+  }
+
+  .light-sweep:hover::before {
+    opacity: 1;
+    transform: translateX(80%);
+  }
+
+  @keyframes ambient-drift {
+    from {
+      transform: translate3d(-2%, -1%, 0) rotate(0deg) scale(1);
+    }
+    to {
+      transform: translate3d(2%, 1%, 0) rotate(8deg) scale(1.05);
+    }
   }
 }

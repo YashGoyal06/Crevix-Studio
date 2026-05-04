@@ -1,16 +1,20 @@
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { NoiseOverlay } from '../ui/NoiseOverlay';
+import { AmbientBackground } from '../ui/AmbientBackground';
 
 export default function Layout({ children }) {
   return (
     <>
+      <AmbientBackground />
       <NoiseOverlay />
       <Navbar />
-      <main className="pt-[72px]">
+      <main className="relative z-10 pt-[72px]">
         {children}
       </main>
-      <Footer />
+      <div className="relative z-10">
+        <Footer />
+      </div>
     </>
   );
 }

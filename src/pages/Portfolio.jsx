@@ -20,22 +20,22 @@ export default function Portfolio() {
 
   return (
     <Layout>
-      <section className="pt-28 pb-36 max-w-[1280px] mx-auto px-6">
+      <section className="mx-auto max-w-[1280px] px-4 pb-20 pt-20 sm:px-6 md:pb-36 md:pt-28">
         <RevealOnScroll>
-          <div className="text-center mb-16">
-            <p className="font-sans text-[13px] text-text-secondary tracking-[0.15em] uppercase mb-6">Selected Work</p>
-            <h1 className="font-syne font-[800] text-[64px] text-white">Our Portfolio.</h1>
+          <div className="mb-10 text-center md:mb-16">
+            <p className="mb-5 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:mb-6 md:text-[13px]">Selected Work</p>
+            <h1 className="font-syne text-[40px] font-[800] leading-[1.02] text-white md:text-[64px]">Our Portfolio.</h1>
           </div>
         </RevealOnScroll>
 
         {/* Filter pills */}
         <RevealOnScroll>
-          <div className="flex flex-wrap gap-3 justify-center mb-20">
+          <div className="mb-12 flex gap-3 overflow-x-auto pb-2 sm:flex-wrap sm:justify-center sm:overflow-visible md:mb-20">
             {filters.map((f) => (
               <button
                 key={f}
                 onClick={() => setActiveFilter(f)}
-                className={`px-6 py-2.5 rounded-full text-[13px] font-sans font-medium transition-all duration-150 ${
+                className={`shrink-0 rounded-full px-5 py-2.5 font-sans text-[13px] font-medium transition-all duration-150 sm:px-6 ${
                   activeFilter === f
                     ? 'bg-white text-[#080808]'
                     : 'text-text-secondary border border-white/[0.08] hover:text-white hover:border-white/[0.15]'
@@ -58,8 +58,8 @@ export default function Portfolio() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.3, ease: [0.25, 0.1, 0, 1] }}
-                className={`group relative overflow-hidden rounded-[16px] cursor-pointer ${project.tall ? 'md:row-span-2' : ''}`}
-                style={{ background: project.gradient, minHeight: project.tall ? 480 : 260 }}
+                className={`group relative min-h-[280px] cursor-pointer overflow-hidden rounded-[16px] ${project.tall ? 'md:row-span-2 md:min-h-[480px]' : 'md:min-h-[260px]'}`}
+                style={{ background: project.gradient }}
                 whileHover={{ scale: 1.02 }}
               >
                 {/* Category */}
@@ -77,7 +77,7 @@ export default function Portfolio() {
                   style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%)', padding: '60px 20px 20px' }}>
                   <h3 className="font-syne font-bold text-[22px] text-white">{project.name}</h3>
 
-                  <div className="max-h-0 overflow-hidden group-hover:max-h-16 transition-all duration-250">
+                  <div className="max-h-16 overflow-hidden transition-all duration-250 md:max-h-0 md:group-hover:max-h-16">
                     <p className="font-sans text-[12px] text-white/50 mt-1 mb-3">{project.sub}</p>
                     <span className="text-[12px] font-sans text-white/50 hover:text-white transition-colors duration-150">
                       View →

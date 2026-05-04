@@ -28,10 +28,9 @@ const ProjectCard = ({ project }) => (
   <motion.div
     whileHover={{ scale: 1.02 }}
     transition={{ duration: 0.25 }}
-    className={`relative overflow-hidden rounded-[16px] group cursor-pointer ${project.tall ? 'row-span-2' : ''}`}
+    className={`group relative min-h-[260px] cursor-pointer overflow-hidden rounded-[16px] md:min-h-0 ${project.tall ? 'md:row-span-2' : ''}`}
     style={{
       background: project.gradient,
-      minHeight: project.tall ? 500 : 230,
     }}
   >
     {/* Category badge */}
@@ -57,14 +56,14 @@ const ProjectCard = ({ project }) => (
 
 export default function FeaturedProjects() {
   return (
-    <section className="py-36 max-w-[1280px] mx-auto px-6">
+    <section className="mx-auto max-w-[1280px] px-4 py-20 sm:px-6 md:py-36">
       <RevealOnScroll>
-        <p className="font-sans text-[13px] text-text-secondary tracking-[0.15em] uppercase mb-4">Selected Work</p>
-        <h2 className="font-syne font-bold text-[44px] text-white mb-20">Work We're Proud Of.</h2>
+        <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">Selected Work</p>
+        <h2 className="mb-10 font-syne text-[34px] font-bold leading-[1.05] text-white md:mb-20 md:text-[44px]">Work We're Proud Of.</h2>
       </RevealOnScroll>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6" style={{ gridAutoRows: '230px' }}>
-        <RevealOnScroll className="row-span-2">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2" style={{ gridAutoRows: '230px' }}>
+        <RevealOnScroll className="md:row-span-2">
           <ProjectCard project={projects[0]} />
         </RevealOnScroll>
         <RevealOnScroll delay={0.08}>

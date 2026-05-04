@@ -59,22 +59,22 @@ export default function Contact() {
 
   return (
     <Layout>
-      <section className="py-36 max-w-[1280px] mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-[40%_55%] gap-20 items-start">
+      <section className="mx-auto max-w-[1280px] px-4 py-20 sm:px-6 md:py-28 lg:py-36">
+        <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[40%_55%] lg:gap-20">
           {/* Left — Info */}
           <div>
             <RevealOnScroll>
-              <p className="font-sans text-[13px] text-text-secondary tracking-[0.15em] uppercase mb-6">Get In Touch</p>
-              <h1 className="font-syne font-bold text-[44px] leading-[1.1] text-white mb-6">
+              <p className="mb-5 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:mb-6 md:text-[13px]">Get In Touch</p>
+              <h1 className="mb-5 font-syne text-[36px] font-bold leading-[1.08] text-white md:mb-6 md:text-[44px]">
                 Let's Build Something Great.
               </h1>
-              <p className="font-sans text-[15px] text-text-secondary leading-[1.75] mb-12">
+              <p className="mb-8 font-sans text-[15px] leading-[1.75] text-text-secondary md:mb-12">
                 We respond to all inquiries within 2 hours.
               </p>
             </RevealOnScroll>
 
             <RevealOnScroll delay={0.08}>
-              <div className="space-y-4 mb-12">
+              <div className="mb-4 space-y-4 md:mb-12">
                 <a href="mailto:hello@crevixstudio.com" className="block font-sans text-[15px] text-text-secondary hover:text-white transition-colors duration-150">
                   hello@crevixstudio.com
                 </a>
@@ -92,7 +92,7 @@ export default function Contact() {
 
           {/* Right — Form */}
           <RevealOnScroll delay={0.12}>
-            <div className="rounded-[16px] p-12"
+            <div className="rounded-[16px] p-5 sm:p-8 md:p-12"
               style={{ background: '#0E0E0E', border: '1px solid rgba(255,255,255,0.09)' }}>
               <AnimatePresence mode="wait">
                 {status === 'success' ? (
