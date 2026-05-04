@@ -1,103 +1,126 @@
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 const ease = [0.25, 0.1, 0.0, 1.0];
 
 export default function Hero() {
+  const pointerX = useMotionValue(0.5);
+  const pointerY = useMotionValue(0.45);
+  const smoothX = useSpring(pointerX, { stiffness: 90, damping: 24 });
+  const smoothY = useSpring(pointerY, { stiffness: 90, damping: 24 });
+  const glowX = useTransform(smoothX, (v) => `${v * 100}%`);
+  const glowY = useTransform(smoothY, (v) => `${v * 100}%`);
+  const dynamicGlow = useTransform([glowX, glowY], ([x, y]) => `radial-gradient(circle at ${x} ${y}, rgba(255,255,255,0.14), transparent 46%)`);
+
+  const handlePointerMove = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    pointerX.set((event.clientX - rect.left) / rect.width);
+    pointerY.set((event.clientY - rect.top) / rect.height);
+  };
+
+  const handlePointerLeave = () => {
+    pointerX.set(0.5);
+    pointerY.set(0.45);
+  };
+
   return (
-    <section className="relative flex min-h-[calc(100svh-72px)] flex-col items-center justify-center overflow-hidden px-4 py-20 text-center sm:px-6 md:min-h-screen">
-      <div className="absolute inset-x-3 top-[15%] bottom-[8%] -z-10 mx-auto max-w-[1120px] opacity-80 sm:inset-x-6 md:top-[18%] md:bottom-[12%]">
-        <motion.div
-          initial={{ opacity: 0, y: 28, scale: 0.98 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ delay: 0.15, duration: 0.9, ease }}
-          className="absolute inset-0 rounded-[24px] border border-white/[0.07] md:rounded-[32px]"
-          style={{
-            background: 'linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.015) 44%, rgba(255,255,255,0.045))',
-            boxShadow: '0 40px 120px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08)',
-          }}
-        />
-        <div className="absolute left-[8%] top-[14%] hidden h-24 w-48 rounded-[18px] border border-white/[0.08] bg-white/[0.035] backdrop-blur-md md:block">
-          <div className="m-5 h-2 w-20 rounded-full bg-white/25" />
-          <div className="mx-5 mt-4 grid grid-cols-4 gap-2">
-            {[0, 1, 2, 3].map((i) => (
-              <span key={i} className="h-8 rounded-md bg-white/[0.06]" />
-            ))}
-          </div>
-        </div>
-        <div className="absolute right-[9%] bottom-[12%] hidden h-28 w-56 rounded-[18px] border border-white/[0.08] bg-white/[0.035] backdrop-blur-md md:block">
-          <div className="m-5 h-2 w-24 rounded-full bg-white/25" />
-          <div className="mx-5 mt-5 flex items-end gap-2">
-            {[42, 68, 50, 84, 58, 74].map((height, i) => (
-              <span
-                key={i}
-                className="w-full rounded-t-md bg-white/[0.08]"
-                style={{ height }}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <motion.p
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1, duration: 0.7, ease }}
-        className="mb-6 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:mb-8 md:text-[13px]"
-      >
-        Creative Agency
-      </motion.p>
-
-      <motion.h1
-        initial={{ opacity: 0, y: 28 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2, duration: 0.8, ease }}
-        className="mx-auto max-w-[min(100%,18rem)] font-syne text-[clamp(1.85rem,7.8vw,2.55rem)] font-[800] leading-[1.08] text-white sm:max-w-[21rem] sm:text-[clamp(2.2rem,6vw,2.85rem)] md:hidden"
-      >
-        <span className="block">We</span>
-        <span className="block">Design</span>
-        <span className="block">Digital</span>
-        <span className="block text-[0.86em]">Experiences.</span>
-      </motion.h1>
-
-      <motion.h1
-        initial={{ opacity: 0, y: 28 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2, duration: 0.8, ease }}
-        className="mx-auto hidden max-w-[1120px] font-syne text-[clamp(60px,5vw,80px)] font-[800] leading-[0.95] text-white md:block"
-      >
-        We Design Digital
-        <br />
-        Experiences.
-      </motion.h1>
-
-      <motion.p
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.35, duration: 0.7, ease }}
-        className="mt-6 max-w-[480px] px-1 font-sans text-[15px] leading-[1.7] text-text-secondary sm:text-[17px] md:mt-8"
-      >
-        Brands, interfaces, and products crafted for
-        people who care about the details.
-      </motion.p>
-
+    <section
+      onMouseMove={handlePointerMove}
+      onMouseLeave={handlePointerLeave}
+      className="relative flex min-h-[calc(100svh-72px)] flex-col items-center justify-center overflow-hidden px-4 py-16 text-center sm:px-6 md:min-h-screen md:py-20"
+    >
+      <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_18%_5%,rgba(120,84,255,0.28),transparent_34%),radial-gradient(circle_at_82%_15%,rgba(0,183,255,0.2),transparent_36%),radial-gradient(circle_at_50%_100%,rgba(80,80,180,0.18),transparent_46%)]" />
+      <div className="absolute inset-0 -z-20 bg-[linear-gradient(180deg,rgba(3,3,6,0.2),rgba(2,2,4,0.78)_62%,rgba(1,1,2,0.95))]" />
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.6, ease }}
-        className="mt-8 flex w-full max-w-[340px] flex-col items-stretch gap-3 sm:mt-10 sm:max-w-none sm:flex-row sm:items-center sm:justify-center"
-      >
-        <Link to="/portfolio" className="w-full sm:w-auto">
-          <button className="w-full rounded-full bg-white px-8 py-3.5 font-sans text-[15px] font-medium text-[#080808] transition-opacity duration-150 hover:opacity-85 sm:w-auto">
-            View Our Work
-          </button>
-        </Link>
-        <Link to="/contact" className="w-full sm:w-auto">
-          <button className="w-full rounded-full border border-white/[0.15] px-8 py-3.5 font-sans text-[15px] font-medium text-white transition-opacity duration-150 hover:opacity-85 sm:w-auto">
-            Get Started
-          </button>
-        </Link>
-      </motion.div>
+        className="absolute inset-0 -z-10 opacity-80"
+        style={{ background: dynamicGlow }}
+      />
+
+      <div className="relative z-10 mx-auto w-full max-w-[980px]">
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.7, ease }}
+          className="mb-6 inline-flex rounded-full border border-white/[0.16] bg-white/[0.03] px-4 py-2 font-sans text-[11px] uppercase tracking-[0.18em] text-text-secondary md:mb-8 md:text-[12px]"
+        >
+          Creative Agency
+        </motion.p>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.8, ease }}
+          className="mx-auto max-w-[min(100%,19rem)] font-syne text-[clamp(2rem,8vw,2.7rem)] font-[800] leading-[1.02] text-white sm:max-w-[22rem] sm:text-[clamp(2.3rem,6vw,2.95rem)] md:hidden"
+        >
+          <span className="block">We</span>
+          <span className="block">Design</span>
+          <span className="block">Digital</span>
+          <span className="block text-gradient text-[0.88em]">Experiences.</span>
+        </motion.h1>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.8, ease }}
+          className="mx-auto hidden max-w-[900px] font-syne text-[clamp(60px,5.2vw,84px)] font-[800] leading-[0.94] text-white md:block"
+        >
+          We Design Digital
+          <br />
+          <span className="text-gradient">Experiences.</span>
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35, duration: 0.7, ease }}
+          className="mt-6 max-w-[560px] px-1 font-sans text-[15px] leading-[1.75] text-text-secondary sm:text-[17px] md:mt-8 mx-auto"
+        >
+          High-converting websites, premium design systems, and smooth product experiences crafted for modern brands.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.6, ease }}
+          className="mt-8 flex w-full max-w-[340px] flex-col items-stretch gap-3 sm:mt-10 sm:max-w-none sm:flex-row sm:items-center sm:justify-center"
+        >
+          <Link to="/portfolio" className="w-full sm:w-auto">
+            <motion.button
+              whileHover={{ y: -2, x: 1, scale: 1.02 }}
+              whileTap={{ scale: 0.99 }}
+              transition={{ type: 'spring', stiffness: 320, damping: 20 }}
+              className="w-full rounded-full bg-white px-8 py-3.5 font-sans text-[15px] font-medium text-[#080808] transition-opacity duration-150 hover:opacity-85 sm:w-auto"
+            >
+              View Our Work
+            </motion.button>
+          </Link>
+          <Link to="/pricing" className="w-full sm:w-auto">
+            <motion.button
+              whileHover={{ y: -2, x: -1, scale: 1.02 }}
+              whileTap={{ scale: 0.99 }}
+              transition={{ type: 'spring', stiffness: 320, damping: 20 }}
+              className="w-full rounded-full border border-white/[0.15] px-8 py-3.5 font-sans text-[15px] font-medium text-white transition-opacity duration-150 hover:opacity-85 sm:w-auto"
+            >
+              Choose Your Plan
+            </motion.button>
+          </Link>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.62, duration: 0.7, ease }}
+          className="mt-5 flex flex-wrap items-center justify-center gap-3"
+        >
+          {['Fast Delivery', 'Mobile Optimized', 'Conversion Focused'].map((tag) => (
+            <span
+              key={tag}
+              className="rounded-full border border-white/[0.13] bg-white/[0.02] px-3.5 py-1.5 font-sans text-[12px] text-white/75"
+            >
+              {tag}
+            </span>
+          ))}
+        </motion.div>
+      </div>
 
       <motion.div
         initial={{ opacity: 0 }}

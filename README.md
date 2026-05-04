@@ -1,16 +1,38 @@
-# React + Vite
+# Crevix App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend for Crevix Studio with:
+- Supabase authentication (Google OAuth)
+- Business profile management
+- User-scoped cart (each signed-in user sees only their own cart)
 
-Currently, two official plugins are available:
+## 1) Environment setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Copy `.env.example` to `.env` and add:
 
-## React Compiler
+```bash
+VITE_SUPABASE_URL=...
+VITE_SUPABASE_ANON_KEY=...
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 2) Supabase setup
 
-## Expanding the ESLint configuration
+1. Create a Supabase project.
+2. In Supabase SQL Editor, run `supabase/schema.sql`.
+3. In **Authentication > Providers > Google**, enable Google provider.
+4. Add redirect URLs:
+   - `http://localhost:5173/profile`
+   - your production URL `/profile`
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 3) Run app
+
+```bash
+npm install
+npm run dev
+```
+
+## Implemented routes
+
+- `/login` - Google sign-in page
+- `/profile` - protected business profile page
+- `/cart` - account-scoped cart
+- `/checkout` - protected checkout

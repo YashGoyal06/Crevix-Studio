@@ -1,13 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { RevealOnScroll } from '../hooks/useScrollReveal';
 import Layout from '../components/layout/Layout';
 import { useCart } from '../context/cartStore';
+import { useAuth } from '../context/authStore';
 import { addOns, designServices, webPlans } from '../data/pricing';
 
-const PricingCard = ({ plan, onBuyNow, onAddToCart }) => (
-  <div
-    className={`relative flex flex-col rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1 sm:p-8 md:p-10 ${
+const PricingCard = ({ plan, onBuyNow, onAddToCart, isPurchased }) => (
+  <motion.div
+    whileHover={{ y: -8, rotateX: -3, rotateY: 3 }}
+    transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+    className={`group relative flex flex-col rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1 sm:p-8 md:p-10 ${
       plan.featured ? '' : ''
     }`}
     style={{
@@ -23,10 +27,16 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart }) => (
       if (!plan.featured) e.currentTarget.style.boxShadow = 'none';
     }}
   >
+    <div className="pointer-events-none absolute inset-0 rounded-[16px] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
     {plan.featured && (
       <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-[11px] font-sans tracking-wider uppercase"
         style={{ background: '#1A1A1A', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.15)' }}>
         <span className="text-gradient">Most Popular</span>
+      </div>
+    )}
+    {isPurchased && (
+      <div className="absolute right-4 top-4 rounded-full border border-emerald-300/25 bg-emerald-400/10 px-3 py-1 text-[11px] font-sans uppercase tracking-[0.1em] text-emerald-200">
+        Purchased
       </div>
     )}
 
@@ -46,7 +56,7 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart }) => (
       ))}
     </ul>
 
-    <button
+    <motion.button
       type="button"
       onClick={() => onBuyNow(plan)}
       className={`block w-full rounded-full py-3.5 text-center font-sans text-[15px] font-medium transition-opacity duration-150 hover:opacity-85 ${
@@ -55,16 +65,21 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart }) => (
           : 'border border-white/[0.12] text-white hover:border-white/[0.2]'
       }`}
     >
-      Buy Now →
-    </button>
-    <button
+      <span className="inline-flex items-center gap-2">
+        {isPurchased ? 'Renew Plan' : 'Buy Now'}
+        <motion.span whileHover={{ x: 3 }} transition={{ type: 'spring', stiffness: 300, damping: 18 }}>→</motion.span>
+      </span>
+    </motion.button>
+    <motion.button
       type="button"
       onClick={() => onAddToCart(plan)}
       className="mt-3 block w-full rounded-full border border-white/[0.1] py-3.5 text-center font-sans text-[15px] font-medium text-white/65 transition-colors duration-150 hover:border-white/[0.22] hover:text-white"
+      whileHover={{ y: -1 }}
+      transition={{ duration: 0.2 }}
     >
       Add to Cart
-    </button>
-  </div>
+    </motion.button>
+  </motion.div>
 );
 
 const ServiceCard = ({ item, onAddToCart }) => (
@@ -86,7 +101,18 @@ const ServiceCard = ({ item, onAddToCart }) => (
 export default function Pricing() {
   const navigate = useNavigate();
   const { addItem } = useCart();
+  const { isAuthenticated, user } = useAuth();
   const [toast, setToast] = useState('');
+  const purchasedIds = useMemo(() => {
+    if (!user?.id || typeof window === 'undefined') return [];
+    try {
+      const key = `crevix-purchases-${user.id}`;
+      const stored = window.localStorage.getItem(key);
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  }, [user?.id]);
 
   const showAddedToast = (name) => {
     setToast(`${name} added to cart`);
@@ -99,10 +125,18 @@ export default function Pricing() {
   }, [toast]);
 
   const handleBuyNow = (item) => {
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: '/checkout' } });
+      return;
+    }
     navigate('/checkout', { state: { items: [item] } });
   };
 
   const handleAddToCart = (item) => {
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: '/pricing' } });
+      return;
+    }
     addItem(item);
     showAddedToast(item.name);
   };
@@ -130,7 +164,12 @@ export default function Pricing() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
           {webPlans.map((p, i) => (
             <RevealOnScroll key={i} delay={i * 0.08}>
-              <PricingCard plan={p} onBuyNow={handleBuyNow} onAddToCart={handleAddToCart} />
+              <PricingCard
+                plan={p}
+                onBuyNow={handleBuyNow}
+                onAddToCart={handleAddToCart}
+                isPurchased={purchasedIds.includes(p.id)}
+              />
             </RevealOnScroll>
           ))}
         </div>

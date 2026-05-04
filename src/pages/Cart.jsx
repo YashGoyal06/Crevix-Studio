@@ -6,7 +6,7 @@ import Layout from '../components/layout/Layout';
 
 export default function Cart() {
   const navigate = useNavigate();
-  const { items, removeItem, total } = useCart();
+  const { items, removeItem, total, requiresAuth, syncing } = useCart();
 
   const proceedToCheckout = () => {
     if (!items.length) return;
@@ -25,7 +25,22 @@ export default function Cart() {
 
         <RevealOnScroll>
           <div className="rounded-[16px] border border-white/[0.08] bg-[#0E0E0E]/85 p-5 sm:p-8">
-            {items.length ? (
+            {requiresAuth ? (
+              <div className="py-16 text-center">
+                <p className="font-syne text-[24px] font-bold text-white">Login to view your cart.</p>
+                <p className="mx-auto mt-3 max-w-[420px] font-sans text-[14px] leading-[1.7] text-text-secondary">
+                  Each cart is connected to a specific account so your items stay private and synced.
+                </p>
+                <Link
+                  to="/login"
+                  className="mt-6 inline-block rounded-full bg-white px-6 py-3.5 text-center font-sans text-[15px] font-medium text-[#080808] transition-opacity duration-150 hover:opacity-85"
+                >
+                  Continue with Google
+                </Link>
+              </div>
+            ) : syncing ? (
+              <div className="py-16 text-center font-sans text-[14px] text-text-secondary">Loading your cart...</div>
+            ) : items.length ? (
               <div className="space-y-4">
                 {items.map((item) => (
                   <div key={item.cartId} className="flex flex-col gap-4 rounded-[14px] border border-white/[0.06] bg-white/[0.025] p-4 sm:flex-row sm:items-center sm:justify-between">
@@ -70,7 +85,7 @@ export default function Cart() {
               <button
                 type="button"
                 onClick={proceedToCheckout}
-                disabled={!items.length}
+                disabled={!items.length || requiresAuth}
                 className="rounded-full bg-white px-6 py-3.5 text-center font-sans text-[15px] font-medium text-[#080808] transition-opacity duration-150 hover:opacity-85 disabled:cursor-not-allowed disabled:opacity-35"
               >
                 Proceed to Checkout →

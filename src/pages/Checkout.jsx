@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { RevealOnScroll } from '../hooks/useScrollReveal';
 import { useCart } from '../context/cartStore';
+import { useAuth } from '../context/authStore';
 import { formatCurrency, getPaymentLinkForItems } from '../data/pricing';
 import Layout from '../components/layout/Layout';
 
@@ -15,8 +16,12 @@ const initialForm = {
 export default function Checkout() {
   const location = useLocation();
   const { items: cartItems, clearCart } = useCart();
+  const { user } = useAuth();
   const checkoutItems = location.state?.items?.length ? location.state.items : cartItems;
-  const [form, setForm] = useState(initialForm);
+  const [form, setForm] = useState({
+    ...initialForm,
+    email: user?.email || '',
+  });
   const [error, setError] = useState('');
 
   const total = useMemo(
@@ -46,6 +51,16 @@ export default function Checkout() {
       total,
       createdAt: new Date().toISOString(),
     }));
+    if (user?.id) {
+      try {
+        const key = `crevix-purchases-${user.id}`;
+        const current = JSON.parse(window.localStorage.getItem(key) || '[]');
+        const merged = [...new Set([...current, ...checkoutItems.map((item) => item.id).filter(Boolean)])];
+        window.localStorage.setItem(key, JSON.stringify(merged));
+      } catch {
+        // Ignore local storage parse failures and continue payment.
+      }
+    }
 
     clearCart();
     window.location.assign(paymentLink);

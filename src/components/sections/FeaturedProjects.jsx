@@ -26,13 +26,29 @@ const projects = [
 
 const ProjectCard = ({ project }) => (
   <motion.div
-    whileHover={{ scale: 1.02 }}
-    transition={{ duration: 0.25 }}
+    whileHover={{ scale: 1.015, y: -6 }}
+    transition={{ type: 'spring', stiffness: 220, damping: 18 }}
     className={`group relative min-h-[260px] cursor-pointer overflow-hidden rounded-[16px] md:min-h-0 ${project.tall ? 'md:row-span-2' : ''}`}
     style={{
       background: project.gradient,
     }}
   >
+    <motion.div
+      className="absolute inset-0 opacity-60"
+      animate={{ backgroundPosition: ['0% 0%', '100% 100%'] }}
+      transition={{ duration: 14, repeat: Infinity, repeatType: 'reverse', ease: 'linear' }}
+      style={{
+        backgroundImage: 'radial-gradient(circle at 20% 20%, rgba(255,255,255,0.12), transparent 35%), radial-gradient(circle at 80% 80%, rgba(255,255,255,0.08), transparent 40%)',
+        backgroundSize: '140% 140%',
+      }}
+    />
+
+    <motion.div
+      className="absolute -left-12 top-1/2 h-44 w-44 -translate-y-1/2 rounded-full bg-white/[0.08] blur-3xl"
+      animate={{ x: [0, 26, 0] }}
+      transition={{ duration: 6.5, repeat: Infinity, ease: 'easeInOut' }}
+    />
+
     {/* Category badge */}
     <div className="absolute top-5 left-5 px-3 py-1 rounded-full text-[11px] font-sans tracking-wider uppercase text-white/60 bg-white/[0.06] border border-white/[0.08]">
       {project.category}
@@ -45,7 +61,7 @@ const ProjectCard = ({ project }) => (
 
     {/* Bottom gradient overlay */}
     <div className="absolute bottom-0 left-0 right-0 h-28"
-      style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.6), transparent)' }} />
+      style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.72), transparent)' }} />
 
     {/* Title */}
     <div className="absolute bottom-6 left-6">
