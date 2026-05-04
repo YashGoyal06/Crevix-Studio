@@ -20,7 +20,7 @@ def _env_list(name: str, default: str = "") -> list[str]:
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-change-me")
 DEBUG = _env_bool("DJANGO_DEBUG", True)
-ALLOWED_HOSTS = _env_list("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost,calzone-wanted-cape.ngrok-free.dev,.railway.app,.render.com,.hf.space")
+ALLOWED_HOSTS = _env_list("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost,calzone-wanted-cape.ngrok-free.dev,.railway.app,.render.com,.hf.space,proxy.spaces.internal.huggingface.tech")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
