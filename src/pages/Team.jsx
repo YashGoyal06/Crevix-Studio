@@ -29,6 +29,7 @@ const team = [
     photo: '/Divyanka.jpeg',
     photoPosition: '50% 35%',
     linkedin: 'https://www.linkedin.com/in/divyanka-gupta-1a71a8292/',
+    github: 'https://github.com/Adi-ti-06',
     gradient: 'from-[#BE185D]/65 via-[#6D28D9]/55 to-[#F97316]/60',
   },
   {
@@ -38,7 +39,7 @@ const team = [
     photo: '/Aditi%20Prakash%20.png',
     photoPosition: '50% 35%',
     linkedin: 'https://www.linkedin.com/in/aditi-prakash-26b4bb33b/',
-    github: 'https://github.com/Adi-ti-06',
+    github: 'https://github.com/Divyanka2005',
     gradient: 'from-[#F97316]/60 via-[#BE185D]/55 to-[#6D28D9]/60',
   },
   {
