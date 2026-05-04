@@ -269,12 +269,12 @@ def admin_stats(request: HttpRequest) -> JsonResponse:
         recent_orders = []
         for order in orders:
             recent_orders.append({
-                "id": order["razorpay_order_id"],
-                "amount": order["amount"],
+                "id": order.get("razorpay_order_id") or order.get("id", "N/A"),
+                "amount": order.get("amount", 0),
                 "email": order.get("email", "N/A"),
-                "date": order["created_at"],
+                "date": order.get("created_at") or order.get("date", "N/A"),
                 "razorpay_id": order.get("razorpay_payment_id", "N/A"),
-                "status": order["status"]
+                "status": order.get("status", "unknown")
             })
 
         return JsonResponse({
