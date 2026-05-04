@@ -49,9 +49,12 @@ export default function Navbar() {
       >
         <div className="w-full max-w-[1280px] mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-baseline gap-1.5 font-syne font-[800] text-[18px] tracking-wide">
-            <span className="text-white">CREVIX</span>
-            <span className="text-gradient">STUDIO</span>
+          <Link to="/" className="flex items-center gap-2 font-syne font-[800] text-[18px] tracking-wide group">
+            <img src="/logo.png" alt="Crevix" className="w-8 h-8 object-contain transition-transform group-hover:scale-110" />
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-white">CREVIX</span>
+              <span className="text-gradient">STUDIO</span>
+            </div>
           </Link>
 
           {/* Desktop nav */}
