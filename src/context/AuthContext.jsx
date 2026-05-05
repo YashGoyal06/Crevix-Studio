@@ -40,7 +40,28 @@ export const AuthProvider = ({ children }) => {
       email,
       password,
     });
-    if (error) throw error;
+    
+    if (error && error.message.includes('Invalid login credentials')) {
+      const { error: signUpError, data } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+      
+      if (signUpError) {
+        throw signUpError;
+      }
+      
+      // If sign up requires email confirmation, let the user know
+      if (data?.user && data?.user?.identities?.length === 0) {
+        throw new Error('Email already taken or needs confirmation.');
+      }
+      
+      if (!data?.session) {
+        throw new Error('Please check your email to confirm your account before logging in.');
+      }
+    } else if (error) {
+      throw error;
+    }
   };
 
   const signOut = async () => {
