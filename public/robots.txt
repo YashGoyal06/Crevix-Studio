@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://crevix.studio/sitemap.xml
+Sitemap: https://crevix-studio.in/sitemap.xml

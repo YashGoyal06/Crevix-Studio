@@ -5,7 +5,7 @@ export default function Meta({ title, description, image, url }) {
   const fullTitle = title ? `${title} | ${siteName}` : siteName;
   const defaultDescription = 'Handcrafted digital experiences for elite brands. We build premium websites, SaaS dashboards, and authentic digital identities.';
   const defaultImage = '/og-image.png'; // Make sure this exists later
-  const siteUrl = 'https://crevix.studio'; // Replace with real URL if different
+  const siteUrl = 'https://crevix-studio.in'; // Correct domain
 
   const fullUrl = url || siteUrl;
 
@@ -13,9 +13,9 @@ export default function Meta({ title, description, image, url }) {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
     "name": "Crevix Studio",
-    "image": "https://crevix.studio/og-image.png",
-    "@id": "https://crevix.studio",
-    "url": "https://crevix.studio",
+    "image": "https://crevix-studio.in/og-image.png",
+    "@id": "https://crevix-studio.in",
+    "url": "https://crevix-studio.in",
     "telephone": "",
     "address": {
       "@type": "PostalAddress",
