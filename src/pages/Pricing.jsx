@@ -77,7 +77,7 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, isPurchased }) => {
               onClick={() => navigate('/checkout', { state: { items: [plan], isAdvance: true } })}
               className="block w-full rounded-full bg-white py-3.5 text-center font-sans text-[15px] font-bold text-[#080808] transition-opacity duration-150 hover:opacity-90"
             >
-              Get Started
+              Pay Advance
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.01 }}
@@ -155,6 +155,15 @@ export default function Pricing() {
     }
   }, [user?.id]);
 
+  const lastCheckout = useMemo(() => {
+    if (typeof window === 'undefined') return null;
+    try {
+      return JSON.parse(window.localStorage.getItem('crevix-last-checkout') || 'null');
+    } catch {
+      return null;
+    }
+  }, []);
+
   const showAddedToast = (name) => {
     setToast(`${name} added to cart`);
   };
@@ -230,22 +239,24 @@ export default function Pricing() {
       </section>
 
       {/* Complete Payment Section */}
-      <section className="mx-auto max-w-[1280px] px-4 py-8 sm:px-6 md:py-12">
-        <RevealOnScroll>
-          <div className="rounded-3xl border border-white/5 bg-gradient-to-b from-white/[0.03] to-transparent p-8 text-center md:p-12">
-            <h2 className="mb-4 font-syne text-2xl font-bold text-white md:text-3xl">Already paid an advance?</h2>
-            <p className="mx-auto mb-8 max-w-2xl font-sans text-white/50">
-              If you have already started your project with an advance payment, you can complete your remaining balance here.
-            </p>
-            <Link 
-              to="/complete-payment"
-              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-8 py-4 font-sans font-medium text-white transition-all hover:bg-white hover:text-black"
-            >
-              Complete Your Payment →
-            </Link>
-          </div>
-        </RevealOnScroll>
-      </section>
+      {lastCheckout && (
+        <section className="mx-auto max-w-[1280px] px-4 py-8 sm:px-6 md:py-12">
+          <RevealOnScroll>
+            <div className="rounded-3xl border border-white/5 bg-gradient-to-b from-white/[0.03] to-transparent p-8 text-center md:p-12">
+              <h2 className="mb-4 font-syne text-2xl font-bold text-white md:text-3xl">Already paid an advance?</h2>
+              <p className="mx-auto mb-8 max-w-2xl font-sans text-white/50">
+                If you have already started your project with an advance payment, you can complete your remaining balance here.
+              </p>
+              <Link 
+                to="/complete-payment"
+                className="inline-flex items-center gap-2 rounded-full border border-white/20 px-8 py-4 font-sans font-medium text-white transition-all hover:bg-white hover:text-black"
+              >
+                Complete Your Payment →
+              </Link>
+            </div>
+          </RevealOnScroll>
+        </section>
+      )}
 
       {/* Design Services */}
       <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
