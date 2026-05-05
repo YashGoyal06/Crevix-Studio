@@ -74,7 +74,7 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, isPurchased }) => {
             <motion.button
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
-              onClick={() => navigate('/checkout', { state: { items: [plan], isAdvance: true } })}
+              onClick={() => onBuyNow(plan, true)}
               className="block w-full rounded-full bg-white py-3.5 text-center font-sans text-[15px] font-bold text-[#080808] transition-opacity duration-150 hover:opacity-90"
             >
               Pay Advance
@@ -82,7 +82,7 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, isPurchased }) => {
             <motion.button
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
-              onClick={() => navigate('/checkout', { state: { items: [plan] } })}
+              onClick={() => onBuyNow(plan, false)}
               className="block w-full rounded-full border border-white/[0.12] py-3.5 text-center font-sans text-[15px] font-medium text-white transition-colors duration-150 hover:border-white/[0.2] hover:bg-white/5"
             >
               Pay Full Amount
@@ -174,7 +174,7 @@ export default function Pricing() {
     return () => window.clearTimeout(timer);
   }, [toast]);
 
-  const handleBuyNow = (item) => {
+  const handleBuyNow = (item, isAdvance = false) => {
     if (item.paymentLink) {
       window.location.href = item.paymentLink;
       return;
@@ -183,7 +183,7 @@ export default function Pricing() {
       navigate('/login', { state: { from: '/checkout' } });
       return;
     }
-    navigate('/checkout', { state: { items: [item] } });
+    navigate('/checkout', { state: { items: [item], isAdvance } });
   };
 
   const handleAddToCart = (item) => {
