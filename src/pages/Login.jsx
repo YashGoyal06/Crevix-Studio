@@ -4,7 +4,7 @@ import Layout from '../components/layout/Layout';
 import { useAuth } from '../context/authStore';
 
 export default function Login() {
-  const { isAuthenticated, loading, signInWithGoogle, signInWithEmail } = useAuth();
+  const { isAuthenticated, loading, signInWithGoogle } = useAuth();
   const location = useLocation();
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [error, setError] = useState('');

@@ -43,42 +43,7 @@ export const AuthProvider = ({ children }) => {
     if (error) throw error;
   };
 
-  const signInWithEmail = async (email, password) => {
-    // Bypass for test verification (Development only)
-    if (import.meta.env.MODE === 'development' && email === 'gamingyash54@gmail.com' && password === 'Yash@123') {
-      const mockSession = { user: { id: 'test-user-id', email } };
-      localStorage.setItem('crevix_dummy_session', JSON.stringify(mockSession));
-      setSession(mockSession);
-      return;
-    }
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    
-    if (error && error.message.includes('Invalid login credentials')) {
-      const { error: signUpError, data } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-      
-      if (signUpError) {
-        throw signUpError;
-      }
-      
-      // If sign up requires email confirmation, let the user know
-      if (data?.user && data?.user?.identities?.length === 0) {
-        throw new Error('Email already taken or needs confirmation.');
-      }
-      
-      if (!data?.session) {
-        throw new Error('Please check your email to confirm your account before logging in.');
-      }
-    } else if (error) {
-      throw error;
-    }
-  };
 
   const signOut = async () => {
     localStorage.removeItem('crevix_dummy_session');
@@ -94,7 +59,6 @@ export const AuthProvider = ({ children }) => {
       loading,
       isAuthenticated: Boolean(session?.user),
       signInWithGoogle,
-      signInWithEmail,
       signOut,
     }),
     [session, loading],
