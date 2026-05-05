@@ -239,7 +239,7 @@ export default function Pricing() {
       </section>
 
       {/* Complete Payment Section */}
-      {lastCheckout && (
+      {isAuthenticated && lastCheckout?.isAdvance && (
         <section className="mx-auto max-w-[1280px] px-4 py-8 sm:px-6 md:py-12">
           <RevealOnScroll>
             <div className="rounded-3xl border border-white/5 bg-gradient-to-b from-white/[0.03] to-transparent p-8 text-center md:p-12">

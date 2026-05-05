@@ -114,6 +114,7 @@ export default function Checkout() {
               customer: form,
               items: checkoutItems,
               total,
+              isAdvance,
               createdAt: new Date().toISOString(),
               paymentId: response.razorpay_payment_id,
               orderId: response.razorpay_order_id,
