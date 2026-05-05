@@ -4,33 +4,32 @@ import { RevealOnScroll } from '../../hooks/useScrollReveal';
 
 const projects = [
   {
-    id: 'luminary',
-    name: 'Luminary',
-    category: 'E-commerce',
-    gradient: 'linear-gradient(135deg, #1a0533 0%, #2d0a4e 50%, #1a0533 100%)',
+    id: 'sipscene',
+    name: 'SipScene',
+    category: 'Restaurant / Cloud Kitchen',
+    gradient: 'linear-gradient(135deg, #1a0f05 0%, #2d180a 50%, #1a0f05 100%)',
     tall: true,
+    href: 'https://sip-scene-mauve.vercel.app/',
   },
   {
-    id: 'vault',
-    name: 'Vault',
-    category: 'Fintech',
-    gradient: 'linear-gradient(135deg, #0a1f1a 0%, #0d2e24 50%, #0a1f1a 100%)',
-  },
-  {
-    id: 'orion',
-    name: 'Orion Studio',
-    category: 'Architecture',
-    gradient: 'linear-gradient(135deg, #0f0c20 0%, #1a1730 50%, #0f0c20 100%)',
+    id: 'achievers',
+    name: 'Achievers Academy',
+    category: 'Coaching Institute',
+    gradient: 'linear-gradient(135deg, #051424 0%, #0a203a 50%, #051424 100%)',
+    href: 'https://achievers-academy-nu.vercel.app/',
   },
 ];
 
 const ProjectCard = ({ project }) => (
-  <motion.div
+  <motion.a
+    href={project.href || '#'}
+    target={project.href ? "_blank" : "_self"}
+    rel="noreferrer"
     whileHover={{ scale: 1.015, y: -6 }}
     transition={{ type: 'spring', stiffness: 220, damping: 18 }}
-    className={`group relative min-h-[260px] cursor-pointer overflow-hidden rounded-[16px] md:min-h-0 ${project.tall ? 'md:row-span-2' : ''}`}
+    className={`group relative min-h-[260px] cursor-pointer overflow-hidden rounded-[16px] block md:min-h-0 ${project.tall ? 'md:row-span-2' : ''}`}
     style={{
-      background: project.gradient,
+      background: project.image ? `url(${project.image}) center/cover no-repeat` : project.gradient,
     }}
   >
     <motion.div
@@ -67,7 +66,7 @@ const ProjectCard = ({ project }) => (
     <div className="absolute bottom-6 left-6">
       <h3 className="font-syne font-bold text-[24px] text-white">{project.name}</h3>
     </div>
-  </motion.div>
+  </motion.a>
 );
 
 export default function FeaturedProjects() {
@@ -82,11 +81,8 @@ export default function FeaturedProjects() {
         <RevealOnScroll className="md:row-span-2">
           <ProjectCard project={projects[0]} />
         </RevealOnScroll>
-        <RevealOnScroll delay={0.08}>
+        <RevealOnScroll delay={0.08} className="md:row-span-2">
           <ProjectCard project={projects[1]} />
-        </RevealOnScroll>
-        <RevealOnScroll delay={0.16}>
-          <ProjectCard project={projects[2]} />
         </RevealOnScroll>
       </div>
 

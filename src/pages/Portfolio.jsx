@@ -6,12 +6,8 @@ import Layout from '../components/layout/Layout';
 const filters = ['All', 'Web Development', 'UI/UX', 'Branding'];
 
 const projects = [
-  { id: 1, name: 'Vertex',  cat: 'UI/UX',           sub: 'SaaS Analytics Dashboard',  gradient: 'linear-gradient(135deg,#0f1a1a,#162828,#0f1a1a)', tall: false },
-  { id: 2, name: 'Noire',   cat: 'Branding',         sub: 'Luxury Fashion Identity',   gradient: 'linear-gradient(135deg,#141418,#1c1c24,#141418)', tall: true  },
-  { id: 3, name: 'Pulse',   cat: 'UI/UX',            sub: 'Mental Health Mobile App',  gradient: 'linear-gradient(135deg,#110d1f,#1a1430,#110d1f)', tall: false },
-  { id: 4, name: 'Solaris', cat: 'Web Development',  sub: 'Clean Energy Corp Site',    gradient: 'linear-gradient(135deg,#0f1810,#152418,#0f1810)', tall: true  },
-  { id: 5, name: 'Monark',  cat: 'Web Development',  sub: 'Premium Watch E-commerce',  gradient: 'linear-gradient(135deg,#121212,#1a1a1a,#121212)', tall: false },
-  { id: 6, name: 'Zenth',   cat: 'Branding',         sub: 'Architecture Portfolio',    gradient: 'linear-gradient(135deg,#14101c,#1c1628,#14101c)', tall: false },
+  { id: 1, name: 'SipScene', cat: 'Web Development', sub: 'Restaurant & Cloud Kitchen Prototype', gradient: 'linear-gradient(135deg,#1a0f05,#2d180a,#1a0f05)', tall: true, href: 'https://sip-scene-mauve.vercel.app/' },
+  { id: 2, name: 'Achievers Academy', cat: 'Web Development', sub: 'Coaching Institute Prototype', gradient: 'linear-gradient(135deg,#051424,#0a203a,#051424)', tall: true, href: 'https://achievers-academy-nu.vercel.app/' },
 ];
 
 export default function Portfolio() {
@@ -51,15 +47,18 @@ export default function Portfolio() {
         <motion.div layout className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <AnimatePresence>
             {filtered.map((project) => (
-              <motion.div
+              <motion.a
+                href={project.href || '#'}
+                target={project.href ? "_blank" : "_self"}
+                rel="noreferrer"
                 key={project.id}
                 layout
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.3, ease: [0.25, 0.1, 0, 1] }}
-                className={`group relative min-h-[280px] cursor-pointer overflow-hidden rounded-[16px] ${project.tall ? 'md:row-span-2 md:min-h-[480px]' : 'md:min-h-[260px]'}`}
-                style={{ background: project.gradient }}
+                className={`group relative min-h-[280px] cursor-pointer overflow-hidden rounded-[16px] block ${project.tall ? 'md:row-span-2 md:min-h-[480px]' : 'md:min-h-[260px]'}`}
+                style={{ background: project.image ? `url(${project.image}) center/cover no-repeat` : project.gradient }}
                 whileHover={{ scale: 1.02 }}
               >
                 {/* Category */}
@@ -84,7 +83,7 @@ export default function Portfolio() {
                     </span>
                   </div>
                 </div>
-              </motion.div>
+              </motion.a>
             ))}
           </AnimatePresence>
         </motion.div>
