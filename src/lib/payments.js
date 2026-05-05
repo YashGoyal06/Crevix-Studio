@@ -41,7 +41,7 @@ const toJson = async (response) => {
 };
 
 export const createRazorpayOrder = async ({ amountPaise, notes }) => {
-  const response = await fetch(`${BACKEND_BASE_URL}/api/payments/create_order`, {
+  const response = await fetch(`${BACKEND_BASE_URL}/api/create-order`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -58,7 +58,7 @@ export const verifyRazorpayPayment = async ({
   razorpayPaymentId,
   razorpaySignature,
 }) => {
-  const response = await fetch(`${BACKEND_BASE_URL}/api/payments/verify_payment`, {
+  const response = await fetch(`${BACKEND_BASE_URL}/api/verify-payment`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
