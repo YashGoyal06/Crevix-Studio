@@ -45,6 +45,7 @@ export function ProjectCard3D({ project }) {
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
+      data-cursor-text={project.comingSoon ? 'Soon' : 'View'}
       className={`group relative block ${project.comingSoon ? 'cursor-default' : 'cursor-pointer'}`}
       style={{ perspective: '1000px' }}
     >

@@ -89,6 +89,7 @@ export default function Hero() {
               whileHover={{ y: -2, x: 1, scale: 1.02 }}
               whileTap={{ scale: 0.99 }}
               transition={{ type: 'spring', stiffness: 320, damping: 20 }}
+              data-magnetic
               className="w-full rounded-full bg-white px-8 py-3.5 font-sans text-[15px] font-medium text-[#080808] transition-opacity duration-150 hover:opacity-85 sm:w-auto"
             >
               View Our Work
@@ -99,6 +100,7 @@ export default function Hero() {
               whileHover={{ y: -2, x: -1, scale: 1.02 }}
               whileTap={{ scale: 0.99 }}
               transition={{ type: 'spring', stiffness: 320, damping: 20 }}
+              data-magnetic
               className="w-full rounded-full border border-white/[0.15] px-8 py-3.5 font-sans text-[15px] font-medium text-white transition-opacity duration-150 hover:opacity-85 sm:w-auto"
             >
               Choose Your Plan

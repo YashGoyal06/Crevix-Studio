@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { 
   FiTrendingUp, 
   FiShoppingBag, 
@@ -9,6 +9,7 @@ import {
   FiLogOut,
   FiActivity
 } from 'react-icons/fi';
+import Meta from '../components/ui/Meta';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://127.0.0.1:8000';
 
@@ -20,7 +21,6 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState(null);
 
-  // Check for existing token
   useEffect(() => {
     const token = localStorage.getItem('crevix_admin_token');
     if (token) {
@@ -48,7 +48,7 @@ export default function AdminDashboard() {
         if (response.status === 403) handleLogout();
       }
     } catch (err) {
-      setError('Could not connect to admin API. Check if backend is running.');
+      setError('Could not connect to admin API.');
       console.error('Stats fetch error:', err);
     } finally {
       setLoading(false);
@@ -76,7 +76,7 @@ export default function AdminDashboard() {
         setError(data.error || 'Invalid credentials');
       }
     } catch (err) {
-      setError('Connection failed. Is backend running?');
+      setError('Connection failed.');
     } finally {
       setLoading(false);
     }
@@ -90,37 +90,42 @@ export default function AdminDashboard() {
 
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-void flex items-center justify-center p-6">
+      <div className="min-h-screen bg-void flex items-center justify-center p-6 relative overflow-hidden">
+        <Meta title="Admin Login" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,84,255,0.1),transparent_50%)]" />
+        
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-md bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-xl"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="w-full max-w-md bg-white/[0.03] border border-white/[0.08] rounded-[2.5rem] p-8 md:p-10 backdrop-blur-3xl relative z-10"
         >
-          <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center mb-6">
-            <FiLock className="text-white text-xl" />
+          <div className="w-14 h-14 bg-white/[0.05] rounded-2xl flex items-center justify-center mb-8 mx-auto border border-white/[0.1]">
+            <FiLock className="text-white text-2xl" />
           </div>
-          <h1 className="text-3xl font-display font-medium text-white mb-2">Admin Portal</h1>
-          <p className="text-white/50 mb-8">Enter your special ID and password to continue.</p>
+          <div className="text-center mb-10">
+            <h1 className="text-3xl font-syne font-bold text-white mb-3">Admin Portal</h1>
+            <p className="text-white/40 font-sans text-sm">Authentication required to access studio metrics.</p>
+          </div>
 
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-5">
             <div>
-              <label className="block text-xs font-medium text-white/30 uppercase tracking-widest mb-2 ml-1">Admin ID</label>
+              <label className="block text-[11px] font-sans font-medium text-white/30 uppercase tracking-[0.2em] mb-2.5 ml-1">Admin ID</label>
               <input 
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white/20 transition-colors"
+                className="w-full bg-white/[0.03] border border-white/[0.1] rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-white/20 transition-all font-sans text-sm"
                 placeholder="Enter ID"
                 required
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-white/30 uppercase tracking-widest mb-2 ml-1">Password</label>
+              <label className="block text-[11px] font-sans font-medium text-white/30 uppercase tracking-[0.2em] mb-2.5 ml-1">Password</label>
               <input 
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white/20 transition-colors"
+                className="w-full bg-white/[0.03] border border-white/[0.1] rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-white/20 transition-all font-sans text-sm"
                 placeholder="••••••••"
                 required
               />
@@ -130,7 +135,7 @@ export default function AdminDashboard() {
               <motion.p 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-red-400 text-sm py-2"
+                className="text-red-400 text-xs py-2 text-center font-sans"
               >
                 {error}
               </motion.p>
@@ -139,11 +144,11 @@ export default function AdminDashboard() {
             <button 
               type="submit"
               disabled={loading}
-              className="w-full bg-white text-void rounded-xl py-4 font-medium hover:bg-white/90 transition-colors flex items-center justify-center gap-2 group"
+              className="w-full bg-white text-void rounded-full py-4.5 font-sans font-bold text-sm hover:opacity-90 transition-all flex items-center justify-center gap-2 group mt-4 h-[56px]"
             >
               {loading ? 'Authenticating...' : (
                 <>
-                  Access Portal
+                  Enter Dashboard
                   <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
                 </>
               )}
@@ -155,93 +160,101 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-void text-white p-6 md:p-12">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-[#020203] text-white p-4 md:p-10 lg:p-16 relative overflow-hidden">
+      <Meta title="Admin Dashboard" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_10%,rgba(120,84,255,0.05),transparent_40%),radial-gradient(circle_at_90%_90%,rgba(0,183,255,0.05),transparent_40%)]" />
+      
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
-        <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+        <header className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16">
           <div>
-            <div className="flex items-center gap-3 text-white/40 mb-2">
-              <FiActivity />
-              <span className="text-xs uppercase tracking-[0.2em]">Management Console</span>
+            <div className="flex items-center gap-3 text-white/30 mb-3">
+              <FiActivity className="text-purple-400" />
+              <span className="text-[10px] uppercase tracking-[0.25em] font-sans font-bold">Crevix Internal Console</span>
             </div>
-            <h1 className="text-4xl font-display font-medium tracking-tight">Studio Dashboard</h1>
+            <h1 className="text-4xl md:text-5xl font-syne font-bold tracking-tight">Studio Dashboard.</h1>
           </div>
           <button 
             onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-all text-sm w-fit"
+            className="flex items-center gap-2.5 px-6 py-3 rounded-full bg-white/[0.03] border border-white/[0.08] text-white/50 hover:text-white hover:bg-white/[0.08] hover:border-white/20 transition-all font-sans text-sm font-medium w-fit group"
           >
-            <FiLogOut />
-            Logout
+            <FiLogOut className="group-hover:-translate-x-1 transition-transform" />
+            Sign Out
           </button>
         </header>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <StatCard 
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+          <AdminStatCard 
             title="Total Revenue" 
             value={stats ? `₹${stats.total_revenue.toLocaleString()}` : '...'} 
             icon={<FiTrendingUp className="text-emerald-400" />}
-            trend="+12.5% this month"
+            trend="+12.5% vs last month"
+            color="#34D399"
           />
-          <StatCard 
+          <AdminStatCard 
             title="Completed Orders" 
             value={stats ? stats.order_count : '...'} 
             icon={<FiShoppingBag className="text-blue-400" />}
-            trend="Live sync active"
+            trend="Real-time sync"
+            color="#60A5FA"
           />
-          <StatCard 
+          <AdminStatCard 
             title="Active Clients" 
             value={stats ? stats.order_count : '...'} 
             icon={<FiUsers className="text-purple-400" />}
-            trend="Verified via Razorpay"
+            trend="Verified transactions"
+            color="#A78BFA"
           />
         </div>
 
         {/* Recent Orders */}
-        <section className="bg-white/5 border border-white/10 rounded-[2.5rem] overflow-hidden backdrop-blur-xl">
-          <div className="p-8 border-b border-white/10 flex items-center justify-between">
-            <h2 className="text-xl font-medium">Recent Transactions</h2>
-            <button className="text-sm text-white/40 hover:text-white transition-colors">View All</button>
+        <section className="bg-white/[0.02] border border-white/[0.08] rounded-[2.5rem] overflow-hidden backdrop-blur-3xl shadow-2xl">
+          <div className="p-8 md:p-10 border-b border-white/[0.08] flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-syne font-bold mb-1">Recent Transactions</h2>
+              <p className="text-white/40 text-sm font-sans">Live feed of payments processed through Razorpay.</p>
+            </div>
+            <button className="text-xs uppercase tracking-widest text-white/30 hover:text-white transition-colors font-sans font-bold">Refresh</button>
           </div>
+          
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="text-white/30 text-xs uppercase tracking-widest">
-                  <th className="px-8 py-6 font-medium">Order ID</th>
-                  <th className="px-8 py-6 font-medium">Customer</th>
-                  <th className="px-8 py-6 font-medium">Amount</th>
-                  <th className="px-8 py-6 font-medium">Date</th>
-                  <th className="px-8 py-6 font-medium">Status</th>
+                <tr className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-sans font-bold">
+                  <th className="px-10 py-7 border-b border-white/[0.05]">Order ID</th>
+                  <th className="px-10 py-7 border-b border-white/[0.05]">Customer</th>
+                  <th className="px-10 py-7 border-b border-white/[0.05]">Amount</th>
+                  <th className="px-10 py-7 border-b border-white/[0.05]">Date</th>
+                  <th className="px-10 py-7 border-b border-white/[0.05]">Status</th>
                 </tr>
               </thead>
               <tbody className="text-sm">
                 {stats?.recent_orders.map((order) => (
-                  <tr key={order.id} className="border-t border-white/5 hover:bg-white/[0.02] transition-colors group">
-                    <td className="px-8 py-6 font-mono text-xs text-white/60">#{order.id.slice(-8).toUpperCase()}</td>
-                    <td className="px-8 py-6 text-white/80">{order.email}</td>
-                    <td className="px-8 py-6 font-medium">₹{order.amount.toLocaleString()}</td>
-                    <td className="px-8 py-6 text-white/40">
+                  <tr key={order.id} className="group hover:bg-white/[0.01] transition-all">
+                    <td className="px-10 py-8 font-mono text-[11px] text-white/50">#{order.id.slice(-8).toUpperCase()}</td>
+                    <td className="px-10 py-8 font-sans font-medium text-white/80">{order.email}</td>
+                    <td className="px-10 py-8 font-syne font-bold text-base">₹{order.amount.toLocaleString()}</td>
+                    <td className="px-10 py-8 text-white/40 font-sans">
                       {new Date(order.date).toLocaleDateString('en-IN', {
                         day: '2-digit',
                         month: 'short',
-                        year: 'numeric',
                         hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: false
-                      }).replace(',', ' •')}
+                        minute: '2-digit'
+                      })}
                     </td>
-                    <td className="px-8 py-6">
-                      <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                    <td className="px-10 py-8">
+                      <span className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest border ${
                         order.status === 'captured' || order.status === 'paid'
-                          ? 'bg-emerald-400/10 text-emerald-400' 
+                          ? 'bg-emerald-400/5 text-emerald-400 border-emerald-400/20' 
                         : order.status === 'authorized'
-                          ? 'bg-amber-400/10 text-amber-400'
+                          ? 'bg-amber-400/5 text-amber-400 border-amber-400/20'
                         : order.status === 'failed'
-                          ? 'bg-red-400/10 text-red-400'
-                        : 'bg-white/10 text-white/40'
+                          ? 'bg-red-400/5 text-red-400 border-red-400/20'
+                        : 'bg-white/5 text-white/40 border-white/10'
                       }`}>
-                        <span className={`w-1 h-1 rounded-full ${
-                          order.status === 'captured' || order.status === 'paid' ? 'bg-emerald-400 animate-pulse' : 
+                        <span className={`w-1.5 h-1.5 rounded-full ${
+                          order.status === 'captured' || order.status === 'paid' ? 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]' : 
                           order.status === 'authorized' ? 'bg-amber-400 animate-pulse' : 'bg-current'
                         }`} />
                         {order.status}
@@ -249,15 +262,13 @@ export default function AdminDashboard() {
                     </td>
                   </tr>
                 ))}
-                {(!stats || stats.recent_orders.length === 0) && (
-                  <tr>
-                    <td colSpan="5" className="px-8 py-12 text-center text-white/20 italic">
-                      No transactions found yet.
-                    </td>
-                  </tr>
-                )}
               </tbody>
             </table>
+            {(!stats || stats.recent_orders.length === 0) && (
+              <div className="px-10 py-20 text-center text-white/20 italic font-sans">
+                Waiting for incoming transaction data...
+              </div>
+            )}
           </div>
         </section>
       </div>
@@ -265,21 +276,48 @@ export default function AdminDashboard() {
   );
 }
 
-function StatCard({ title, value, icon, trend }) {
+function AdminStatCard({ title, value, icon, trend, color }) {
+  const cardRef = useRef(null);
+  const mouseX = useMotionValue(0.5);
+  const mouseY = useMotionValue(0.5);
+  const springConfig = { stiffness: 150, damping: 25 };
+  const smoothX = useSpring(mouseX, springConfig);
+  const smoothY = useSpring(mouseY, springConfig);
+  const rotateX = useTransform(smoothY, [0, 1], [6, -6]);
+  const rotateY = useTransform(smoothX, [0, 1], [-6, 6]);
+
+  const handleMouseMove = useCallback((e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    mouseX.set((e.clientX - rect.left) / rect.width);
+    mouseY.set((e.clientY - rect.top) / rect.height);
+  }, [mouseX, mouseY]);
+
+  const handleMouseLeave = useCallback(() => {
+    mouseX.set(0.5);
+    mouseY.set(0.5);
+  }, [mouseX, mouseY]);
+
   return (
     <motion.div 
-      whileHover={{ y: -4 }}
-      className="bg-white/5 border border-white/10 rounded-[2rem] p-8 backdrop-blur-xl"
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ rotateX, rotateY, transformStyle: 'preserve-3d', perspective: '1000px' }}
+      className="group bg-white/[0.03] border border-white/[0.08] rounded-[2.5rem] p-8 md:p-10 backdrop-blur-3xl relative overflow-hidden"
     >
-      <div className="flex items-start justify-between mb-6">
-        <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-2xl">
-          {icon}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none" />
+      <div className="relative z-10">
+        <div className="flex items-start justify-between mb-8">
+          <div className="w-14 h-14 rounded-2xl bg-white/[0.05] border border-white/[0.08] flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-300">
+            {icon}
+          </div>
+          <div className="h-2 w-2 rounded-full mt-2" style={{ backgroundColor: color, boxShadow: `0 0 10px ${color}` }} />
         </div>
-      </div>
-      <div>
-        <p className="text-white/40 text-sm font-medium mb-1 uppercase tracking-widest">{title}</p>
-        <h3 className="text-4xl font-display font-medium mb-2 tracking-tight">{value}</h3>
-        <p className="text-xs text-white/30 font-medium">{trend}</p>
+        <div>
+          <p className="text-white/30 text-[11px] font-sans font-bold mb-2 uppercase tracking-[0.2em]">{title}</p>
+          <h3 className="text-4xl font-syne font-bold mb-3 tracking-tight">{value}</h3>
+          <p className="text-[10px] text-white/20 font-sans font-bold uppercase tracking-widest">{trend}</p>
+        </div>
       </div>
     </motion.div>
   );

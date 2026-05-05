@@ -1,11 +1,16 @@
 import { RevealOnScroll } from '../hooks/useScrollReveal';
 import Layout from '../components/layout/Layout';
+import Meta from '../components/ui/Meta';
 import { ProjectCard3D } from '../components/ui/ProjectCard3D';
 import { projects } from '../data/projects';
 
 export default function Portfolio() {
   return (
     <Layout>
+      <Meta 
+        title="Our Portfolio" 
+        description="Explore our curated collection of premium web prototypes, SaaS dashboards, and digital products built by Crevix Studio."
+      />
       <section className="mx-auto max-w-[1280px] px-4 pb-20 pt-20 sm:px-6 md:pb-36 md:pt-28">
         <RevealOnScroll>
           <div className="mb-16 text-center md:mb-24">

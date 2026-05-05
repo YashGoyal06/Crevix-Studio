@@ -44,8 +44,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signInWithEmail = async (email, password) => {
-    // Bypass for test verification
-    if (email === 'gamingyash54@gmail.com' && password === 'Yash@123') {
+    // Bypass for test verification (Development only)
+    if (import.meta.env.MODE === 'development' && email === 'gamingyash54@gmail.com' && password === 'Yash@123') {
       const mockSession = { user: { id: 'test-user-id', email } };
       localStorage.setItem('crevix_dummy_session', JSON.stringify(mockSession));
       setSession(mockSession);
