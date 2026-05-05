@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import Layout from '../components/layout/Layout';
 import { useAuth } from '../context/authStore';
 import { supabase } from '../lib/supabaseClient';
+import { webPlans, addOns, designServices } from '../data/pricing';
 
 const emptyForm = {
   businessName: '',
@@ -19,6 +20,18 @@ export default function Profile() {
   const [hasSavedProfile, setHasSavedProfile] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+
+  const purchasedItems = useMemo(() => {
+    if (!user?.id || typeof window === 'undefined') return [];
+    try {
+      const key = `crevix-purchases-${user.id}`;
+      const stored = window.localStorage.getItem(key);
+      const parsed = stored ? JSON.parse(stored) : [];
+      return parsed.map(item => typeof item === 'string' ? { id: item, status: 'full' } : item);
+    } catch {
+      return [];
+    }
+  }, [user?.id]);
 
   useEffect(() => {
     let active = true;
@@ -210,6 +223,46 @@ export default function Profile() {
             </>
           )}
         </form>
+
+        <div className="mt-16">
+          <div className="mb-8 border-b border-white/[0.08] pb-6">
+            <h2 className="font-syne text-[28px] font-[800] text-white">Your Plans</h2>
+            <p className="mt-2 font-sans text-[15px] text-text-secondary">View your active plans and payment status.</p>
+          </div>
+          
+          <div className="flex flex-col gap-4">
+            {purchasedItems.length === 0 ? (
+              <div className="rounded-[16px] border border-white/[0.08] bg-[#0E0E0E]/85 p-8 text-center font-sans text-[14px] text-text-secondary">
+                You haven't purchased any plans yet.
+              </div>
+            ) : (
+              purchasedItems.map((item, index) => {
+                const allPlans = [...webPlans, ...addOns, ...designServices];
+                const planDetails = allPlans.find(p => p.id === item.id) || { name: item.id, type: 'Custom Plan' };
+                
+                return (
+                  <div key={index} className="flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-[16px] border border-white/[0.08] bg-[#0E0E0E]/85 p-6">
+                    <div>
+                      <h3 className="font-syne text-[18px] font-bold text-white">{planDetails.name}</h3>
+                      <p className="mt-1 font-sans text-[13px] text-text-secondary">{planDetails.type}</p>
+                    </div>
+                    <div className="mt-4 sm:mt-0 flex items-center gap-3">
+                      {item.status === 'full' ? (
+                        <div className="rounded-full border border-emerald-300/25 bg-emerald-400/10 px-4 py-2 text-[12px] font-sans uppercase tracking-[0.1em] text-emerald-200">
+                          Full Amount Done
+                        </div>
+                      ) : (
+                        <div className="rounded-full border border-amber-300/25 bg-amber-400/10 px-4 py-2 text-[12px] font-sans uppercase tracking-[0.1em] text-amber-200">
+                          Advance Given
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </div>
       </section>
     </Layout>
   );

@@ -7,7 +7,7 @@ import { useCart } from '../context/cartStore';
 import { useAuth } from '../context/authStore';
 import { addOns, designServices, webPlans } from '../data/pricing';
 
-const PricingCard = ({ plan, onBuyNow, onAddToCart, isPurchased, hasAdvancePaid }) => {
+const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
   const isWebPlan = plan.type === 'Website Plan';
 
   return (
@@ -37,9 +37,14 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, isPurchased, hasAdvancePaid 
           <span className="text-gradient">Most Popular</span>
         </div>
       )}
-      {isPurchased && (
+      {purchaseStatus === 'full' && (
         <div className="absolute right-4 top-4 rounded-full border border-emerald-300/25 bg-emerald-400/10 px-3 py-1 text-[11px] font-sans uppercase tracking-[0.1em] text-emerald-200">
-          Purchased
+          Plan Purchased
+        </div>
+      )}
+      {purchaseStatus === 'advance' && (
+        <div className="absolute right-4 top-4 rounded-full border border-amber-300/25 bg-amber-400/10 px-3 py-1 text-[11px] font-sans uppercase tracking-[0.1em] text-amber-200">
+          Advance Given
         </div>
       )}
 
@@ -71,13 +76,19 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, isPurchased, hasAdvancePaid 
       <div className="space-y-3">
         {isWebPlan ? (
           <>
-            {hasAdvancePaid ? (
-              <Link
-                to="/complete-payment"
+            {purchaseStatus === 'full' ? (
+              <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-4 text-center">
+                <p className="font-sans text-[14px] font-bold text-emerald-400">Full Amount Done</p>
+              </div>
+            ) : purchaseStatus === 'advance' ? (
+              <motion.button
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
+                onClick={() => onBuyNow(plan, false, true)}
                 className="block w-full rounded-full bg-emerald-500 py-3.5 text-center font-sans text-[15px] font-bold text-white transition-opacity duration-150 hover:opacity-90"
               >
                 Complete Payment
-              </Link>
+              </motion.button>
             ) : (
               <>
                 <motion.button
@@ -114,7 +125,7 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, isPurchased, hasAdvancePaid 
               }`}
             >
               <span className="inline-flex items-center gap-2">
-                {isPurchased ? 'Renew Plan' : 'Buy Now'}
+                {purchaseStatus === 'full' ? 'Renew Plan' : 'Buy Now'}
                 <motion.span whileHover={{ x: 3 }} transition={{ type: 'spring', stiffness: 300, damping: 18 }}>→</motion.span>
               </span>
             </motion.button>
@@ -155,12 +166,13 @@ export default function Pricing() {
   const { addItem } = useCart();
   const { isAuthenticated, user } = useAuth();
   const [toast, setToast] = useState('');
-  const purchasedIds = useMemo(() => {
+  const purchasedItems = useMemo(() => {
     if (!user?.id || typeof window === 'undefined') return [];
     try {
       const key = `crevix-purchases-${user.id}`;
       const stored = window.localStorage.getItem(key);
-      return stored ? JSON.parse(stored) : [];
+      const parsed = stored ? JSON.parse(stored) : [];
+      return parsed.map(item => typeof item === 'string' ? { id: item, status: 'full' } : item);
     } catch {
       return [];
     }
@@ -185,7 +197,7 @@ export default function Pricing() {
     return () => window.clearTimeout(timer);
   }, [toast]);
 
-  const handleBuyNow = (item, isAdvance = false) => {
+  const handleBuyNow = (item, isAdvance = false, isRemaining = false) => {
     if (item.paymentLink) {
       window.location.href = item.paymentLink;
       return;
@@ -194,7 +206,7 @@ export default function Pricing() {
       navigate('/login', { state: { from: '/checkout' } });
       return;
     }
-    navigate('/checkout', { state: { items: [item], isAdvance } });
+    navigate('/checkout', { state: { items: [item], isAdvance, isRemaining } });
   };
 
   const handleAddToCart = (item) => {
@@ -242,8 +254,7 @@ export default function Pricing() {
                 plan={p}
                 onBuyNow={handleBuyNow}
                 onAddToCart={handleAddToCart}
-                isPurchased={purchasedIds.includes(p.id)}
-                hasAdvancePaid={isAuthenticated && lastCheckout?.isAdvance && lastCheckout?.items?.some(item => item.id === p.id || item.name === p.name)}
+                purchaseStatus={purchasedItems.find(item => item.id === p.id)?.status}
               />
             </RevealOnScroll>
           ))}

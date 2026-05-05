@@ -27,6 +27,7 @@ export default function Checkout() {
   const { user } = useAuth();
   const checkoutItems = location.state?.items?.length ? location.state.items : cartItems;
   const isAdvance = location.state?.isAdvance || false;
+  const isRemaining = location.state?.isRemaining || false;
   const [form, setForm] = useState({
     ...initialForm,
     email: user?.email || '',
@@ -36,10 +37,13 @@ export default function Checkout() {
 
   const total = useMemo(() => {
     return checkoutItems.reduce((sum, item) => {
-      const price = isAdvance ? (item.advancePrice || item.amount) : (item.fullPrice || item.amount);
+      let price = item.amount;
+      if (isRemaining) price = item.remainingPrice || item.amount;
+      else if (isAdvance) price = item.advancePrice || item.amount;
+      else price = item.fullPrice || item.amount;
       return sum + (price || 0);
     }, 0);
-  }, [checkoutItems, isAdvance]);
+  }, [checkoutItems, isAdvance, isRemaining]);
 
   const showSuccess = new URLSearchParams(location.search).get('success') === 'true';
 
@@ -123,11 +127,27 @@ export default function Checkout() {
             if (user?.id) {
               try {
                 const key = `crevix-purchases-${user.id}`;
-                const current = JSON.parse(window.localStorage.getItem(key) || '[]');
-                const merged = [...new Set([...current, ...checkoutItems.map((item) => item.id).filter(Boolean)])];
-                window.localStorage.setItem(key, JSON.stringify(merged));
+                let current = [];
+                try {
+                  const stored = JSON.parse(window.localStorage.getItem(key) || '[]');
+                  current = stored.map(item => typeof item === 'string' ? { id: item, status: 'full' } : item);
+                } catch { current = []; }
+                
+                const status = (isAdvance && !isRemaining) ? 'advance' : 'full';
+                const newPurchases = checkoutItems.map(item => ({ id: item.id, status })).filter(i => i.id);
+                
+                newPurchases.forEach(newItem => {
+                  const existingIndex = current.findIndex(c => c.id === newItem.id);
+                  if (existingIndex >= 0) {
+                    current[existingIndex].status = newItem.status;
+                  } else {
+                    current.push(newItem);
+                  }
+                });
+                
+                window.localStorage.setItem(key, JSON.stringify(current));
               } catch {
-                // Ignore local storage parse failures.
+                // Ignore local storage failures
               }
             }
 
@@ -228,11 +248,13 @@ export default function Checkout() {
                         <div>
                           <p className="font-syne text-[17px] font-bold text-white">{item.name}</p>
                           <p className="mt-1 font-sans text-[13px] text-text-secondary">
-                            {item.type} {isAdvance && <span className="text-white/40 ml-1 text-[11px] uppercase tracking-wider">(Advance)</span>}
+                            {item.type} 
+                            {isAdvance && !isRemaining && <span className="text-white/40 ml-1 text-[11px] uppercase tracking-wider">(Advance)</span>}
+                            {isRemaining && <span className="text-white/40 ml-1 text-[11px] uppercase tracking-wider">(Remaining)</span>}
                           </p>
                         </div>
                         <p className="shrink-0 font-sans text-[14px] text-white">
-                          {formatCurrency(isAdvance ? (item.advancePrice || item.amount) : (item.fullPrice || item.amount))}
+                          {formatCurrency(isRemaining ? (item.remainingPrice || item.amount) : (isAdvance ? (item.advancePrice || item.amount) : (item.fullPrice || item.amount)))}
                         </p>
                       </div>
                       {item.features && (
