@@ -10,6 +10,7 @@ import {
   FiActivity
 } from 'react-icons/fi';
 import Meta from '../components/ui/Meta';
+import { previewInvoice } from '../lib/payments';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://127.0.0.1:8000';
 
@@ -213,6 +214,28 @@ export default function AdminDashboard() {
             trend="High ticket conversion"
             color="#60A5FA"
           />
+        </div>
+
+        {/* Studio Tools */}
+        <div className="mb-16">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl font-syne font-bold">Studio Tools</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <button 
+              onClick={previewInvoice}
+              className="flex items-center justify-between p-8 rounded-[2.5rem] bg-white/[0.03] border border-white/[0.08] hover:bg-white/[0.06] hover:border-white/20 transition-all group"
+            >
+              <div className="text-left">
+                <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-sans font-bold mb-2">Internal Tools</p>
+                <h3 className="text-xl font-syne font-bold">Preview Premium Invoice</h3>
+                <p className="text-white/20 text-xs mt-2 font-sans">Generate a sample PDF to verify design.</p>
+              </div>
+              <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 group-hover:text-white group-hover:border-white/30 transition-all">
+                <FiArrowRight />
+              </div>
+            </button>
+          </div>
         </div>
 
         {/* Recent Orders */}

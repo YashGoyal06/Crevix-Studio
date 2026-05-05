@@ -71,74 +71,185 @@ export const verifyRazorpayPayment = async ({
 };
 
 export const generateInvoice = (checkoutData) => {
-  const { customer, items, total, paymentId, orderId, createdAt } = checkoutData;
+  const { customer, items, total, paymentId, orderId, createdAt, isAdvance, isRemaining } = checkoutData;
   if (!total) return;
-  const doc = new jsPDF();
-  const date = new Date(createdAt || Date.now()).toLocaleDateString('en-IN');
-
-  // Theme Colors
-  const primary = '#000000';
-  const secondary = '#555555';
-
-  // Header
-  doc.setFillColor(0, 0, 0);
-  doc.rect(0, 0, 210, 40, 'F');
   
-  doc.setTextColor(255, 255, 255);
+  const doc = new jsPDF();
+  const date = new Date(createdAt || Date.now()).toLocaleDateString('en-IN', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+
+  // Colors
+  const colors = {
+    primary: '#000000',
+    secondary: '#444444',
+    accent: '#000000',
+    lightGray: '#F9F9F9',
+    border: '#EEEEEE',
+    white: '#FFFFFF',
+    success: '#10B981'
+  };
+
+  // Header Background
+  doc.setFillColor(colors.primary);
+  doc.rect(0, 0, 210, 50, 'F');
+  
+  // Brand Logo/Name
+  doc.setTextColor(colors.white);
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(24);
-  doc.text('CREVIX STUDIO', 20, 25);
+  doc.setFontSize(26);
+  doc.text('CREVIX STUDIO', 20, 32);
   
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
-  doc.text('INVOICE', 170, 25);
-
-  // Info Section
-  doc.setTextColor(primary);
+  doc.text('DESIGN • DEVELOPMENT • BRANDING', 20, 40);
+  
+  // Invoice Label
   doc.setFontSize(12);
   doc.setFont('helvetica', 'bold');
-  doc.text('Billed To:', 20, 60);
+  doc.text('TAX INVOICE', 160, 32, { align: 'right' });
   doc.setFont('helvetica', 'normal');
-  doc.text(customer?.name || 'Customer', 20, 67);
-  doc.text(customer?.email || '', 20, 73);
-  doc.text(customer?.phone || '', 20, 79);
+  doc.setFontSize(9);
+  doc.text(`Invoice #: ${orderId?.slice(-8).toUpperCase() || 'INV-TEST'}`, 160, 38, { align: 'right' });
 
+  // Addresses Section
+  doc.setTextColor(colors.primary);
+  doc.setFontSize(10);
   doc.setFont('helvetica', 'bold');
-  doc.text('Invoice Details:', 120, 60);
+  doc.text('ISSUED BY:', 20, 65);
   doc.setFont('helvetica', 'normal');
-  doc.text(`Date: ${date}`, 120, 67);
-  doc.text(`Order ID: ${orderId?.slice(-10) || 'N/A'}`, 120, 73);
-  doc.text(`Payment ID: ${paymentId?.slice(-10) || 'N/A'}`, 120, 79);
+  doc.setTextColor(colors.secondary);
+  doc.text('Crevix Studio', 20, 71);
+  doc.text('Delhi, India', 20, 76);
+  doc.text('payments@crevix-studio.in', 20, 81);
+
+  doc.setTextColor(colors.primary);
+  doc.setFont('helvetica', 'bold');
+  doc.text('BILLED TO:', 120, 65);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(colors.secondary);
+  doc.text(customer?.name || 'Customer Name', 120, 71);
+  doc.text(customer?.email || 'Email Address', 120, 76);
+  doc.text(customer?.phone || 'Phone Number', 120, 81);
+  if (customer?.businessName) doc.text(customer.businessName, 120, 86);
+
+  // Status Bar
+  doc.setFillColor(colors.lightGray);
+  doc.rect(20, 95, 170, 15, 'F');
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(colors.primary);
+  doc.text('Payment Date:', 25, 104);
+  doc.setFont('helvetica', 'normal');
+  doc.text(date, 55, 104);
+  
+  doc.setFont('helvetica', 'bold');
+  doc.text('Payment ID:', 110, 104);
+  doc.setFont('helvetica', 'normal');
+  doc.text(paymentId || 'N/A', 135, 104);
 
   // Table Header
-  doc.setFillColor(245, 245, 245);
-  doc.rect(20, 95, 170, 10, 'F');
+  doc.setFillColor(colors.primary);
+  doc.rect(20, 120, 170, 10, 'F');
+  doc.setTextColor(colors.white);
   doc.setFont('helvetica', 'bold');
-  doc.text('Description', 25, 102);
-  doc.text('Amount', 160, 102);
+  doc.setFontSize(10);
+  doc.text('Description', 25, 126.5);
+  doc.text('Status', 120, 126.5);
+  doc.text('Amount', 160, 126.5);
 
   // Table Items
-  let y = 115;
+  let y = 140;
+  doc.setTextColor(colors.primary);
   doc.setFont('helvetica', 'normal');
+  
   items?.forEach((item) => {
-    doc.text(item.name || 'Service', 25, y);
-    doc.text(`INR ${item.amount?.toLocaleString() || '0'}`, 160, y);
-    y += 10;
+    // Determine the actual amount for this item in this transaction
+    let displayAmount = item.amount;
+    if (isRemaining) displayAmount = item.remainingPrice || item.amount;
+    else if (isAdvance) displayAmount = item.advancePrice || item.amount;
+    else displayAmount = item.fullPrice || item.amount;
+
+    doc.setFont('helvetica', 'bold');
+    doc.text(item.name || 'Service Package', 25, y);
+    
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(colors.secondary);
+    doc.text(item.type || 'Web Design & Development', 25, y + 5);
+    
+    doc.setFontSize(10);
+    doc.setTextColor(colors.primary);
+    const statusText = isRemaining ? 'Remaining' : (isAdvance ? 'Advance' : 'Full Payment');
+    doc.text(statusText, 120, y + 2);
+    doc.text(`INR ${displayAmount?.toLocaleString() || '0'}`, 160, y + 2);
+    
+    // Line separator
+    doc.setDrawColor(colors.border);
+    doc.line(20, y + 10, 190, y + 10);
+    y += 15;
   });
 
-  // Footer
-  doc.setDrawColor(230, 230, 230);
-  doc.line(20, 180, 190, 180);
+  // Totals Section
+  const totalsY = Math.max(y + 10, 180);
+  doc.setFont('helvetica', 'normal');
+  doc.text('Subtotal:', 140, totalsY);
+  doc.text(`INR ${total?.toLocaleString()}`, 160, totalsY);
   
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(14);
-  doc.text('Total Paid', 25, 195);
-  doc.text(`INR ${total?.toLocaleString()}`, 160, 195);
+  doc.text('Total Paid:', 140, totalsY + 10);
+  doc.setTextColor(colors.success);
+  doc.text(`INR ${total?.toLocaleString()}`, 160, totalsY + 10);
 
-  doc.setFontSize(10);
-  doc.setFont('helvetica', 'italic');
-  doc.setTextColor(secondary);
-  doc.text('Thank you for choosing Crevix Studio. Let\'s build something great.', 105, 220, { align: 'center' });
+  // Paid Watermark/Badge
+  doc.setDrawColor(colors.success);
+  doc.setLineWidth(0.5);
+  doc.rect(20, totalsY - 5, 40, 15);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(12);
+  doc.text('PAID IN FULL', 25, totalsY + 5);
 
-  doc.save(`Crevix_Invoice_${orderId?.slice(-6) || 'Order'}.pdf`);
+  // Footer
+  doc.setTextColor(colors.secondary);
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+  doc.text('Note: This is a computer-generated invoice and does not require a physical signature.', 20, 260);
+  doc.text('For any queries, please reach out to hello@crevixstudio.com', 20, 265);
+  
+  doc.setFont('helvetica', 'bold');
+  doc.text('Thank you for working with Crevix Studio!', 105, 275, { align: 'center' });
+
+  doc.save(`Crevix_Invoice_${orderId?.slice(-6).toUpperCase() || 'ORDER'}.pdf`);
+};
+
+export const previewInvoice = () => {
+  const dummyData = {
+    customer: {
+      name: 'John Doe',
+      email: 'john@example.com',
+      phone: '+91 98765 43210',
+      businessName: 'Example Corp'
+    },
+    items: [
+      {
+        id: 'premium-plan',
+        name: 'Premium Studio Plan',
+        type: 'Web Development',
+        amount: 49999,
+        advancePrice: 24999,
+        remainingPrice: 25000,
+        fullPrice: 44999
+      }
+    ],
+    total: 24999,
+    isAdvance: true,
+    isRemaining: false,
+    paymentId: 'pay_ABC123XYZ789',
+    orderId: 'order_ORD987LMN456',
+    createdAt: new Date().toISOString()
+  };
+  
+  generateInvoice(dummyData);
 };
