@@ -6,8 +6,8 @@ import Layout from '../components/layout/Layout';
 const filters = ['All', 'Web Development', 'UI/UX', 'Branding'];
 
 const projects = [
-  { id: 1, name: 'SipScene', cat: 'Web Development', sub: 'Restaurant & Cloud Kitchen Prototype', gradient: 'linear-gradient(135deg,#1a0f05,#2d180a,#1a0f05)', tall: true, href: 'https://sip-scene-mauve.vercel.app/' },
-  { id: 2, name: 'Achievers Academy', cat: 'Web Development', sub: 'Coaching Institute Prototype', gradient: 'linear-gradient(135deg,#051424,#0a203a,#051424)', tall: true, href: 'https://achievers-academy-nu.vercel.app/' },
+  { id: 1, name: 'SipScene', cat: 'Web Development', sub: 'Restaurant & Cloud Kitchen Prototype', gradient: 'linear-gradient(135deg,#1a0f05,#2d180a,#1a0f05)', tall: true, href: 'https://sip-scene-mauve.vercel.app/', image: '/Sipscene-ss.png' },
+  { id: 2, name: 'Achievers Academy', cat: 'Web Development', sub: 'Coaching Institute Prototype', gradient: 'linear-gradient(135deg,#051424,#0a203a,#051424)', tall: true, href: 'https://achievers-academy-nu.vercel.app/', image: '/achievers-academy-ss.png' },
 ];
 
 export default function Portfolio() {

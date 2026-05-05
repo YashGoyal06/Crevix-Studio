@@ -10,6 +10,7 @@ const projects = [
     gradient: 'linear-gradient(135deg, #1a0f05 0%, #2d180a 50%, #1a0f05 100%)',
     tall: true,
     href: 'https://sip-scene-mauve.vercel.app/',
+    image: '/Sipscene-ss.png',
   },
   {
     id: 'achievers',
@@ -17,6 +18,7 @@ const projects = [
     category: 'Coaching Institute',
     gradient: 'linear-gradient(135deg, #051424 0%, #0a203a 50%, #051424 100%)',
     href: 'https://achievers-academy-nu.vercel.app/',
+    image: '/achievers-academy-ss.png',
   },
 ];
 
