@@ -53,8 +53,36 @@ export default function Contact() {
     const errs = validate();
     if (Object.keys(errs).length) { setErrors(errs); return; }
     setStatus('loading');
-    await new Promise((r) => setTimeout(r, 1200));
-    setStatus('success');
+
+    try {
+      const payload = {
+        access_key: import.meta.env.VITE_WEB3FORMS_KEY,
+        subject: `[Crevix Studio] New query: ${form.type || 'Contact Form'}`,
+        from_name: form.name,
+        name: form.name,
+        email: form.email,
+        'Call Reason': form.type,
+        'Preferred Call Time': form.preferredTime || 'Not specified',
+        message: form.message,
+      };
+
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setStatus('success');
+      } else {
+        console.error('Web3Forms error:', data);
+        setStatus('error');
+      }
+    } catch (err) {
+      console.error('Submission failed:', err);
+      setStatus('error');
+    }
   };
 
   return (
@@ -75,8 +103,8 @@ export default function Contact() {
 
             <RevealOnScroll delay={0.08}>
               <div className="mb-4 space-y-4 md:mb-12">
-                <a href="mailto:hello@crevixstudio.com" className="block font-sans text-[15px] text-text-secondary hover:text-white transition-colors duration-150">
-                  hello@crevixstudio.com
+                <a href="mailto:contact@crevix-studio.in" className="block font-sans text-[15px] text-text-secondary hover:text-white transition-colors duration-150">
+                  contact@crevix-studio.in
                 </a>
                 <a href="tel:+919999999999" className="block font-sans text-[15px] text-text-secondary hover:text-white transition-colors duration-150">
                   +91 99999 99999
@@ -107,6 +135,23 @@ export default function Contact() {
                     </div>
                     <h3 className="font-syne font-bold text-[22px] text-white mb-3">Request received.</h3>
                     <p className="font-sans text-[14px] text-text-secondary">We'll reach out soon to help with your query.</p>
+                  </motion.div>
+                ) : status === 'error' ? (
+                  <motion.div
+                    key="error"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="flex flex-col items-center justify-center py-20 text-center"
+                  >
+                    <div className="w-12 h-12 rounded-full border border-red-500/40 flex items-center justify-center text-red-400 text-lg mb-6">
+                      ✕
+                    </div>
+                    <h3 className="font-syne font-bold text-[22px] text-white mb-3">Something went wrong.</h3>
+                    <p className="font-sans text-[14px] text-text-secondary mb-6">Please try again or email us directly at contact@crevix-studio.in</p>
+                    <button
+                      onClick={() => setStatus('idle')}
+                      className="font-sans text-[13px] text-text-secondary hover:text-white underline underline-offset-4 transition-colors duration-150"
+                    >Try again →</button>
                   </motion.div>
                 ) : (
                   <motion.form key="form" onSubmit={handleSubmit} className="space-y-6">
