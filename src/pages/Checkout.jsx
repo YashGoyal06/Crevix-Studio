@@ -6,6 +6,7 @@ import { useAuth } from '../context/authStore';
 import { formatCurrency } from '../data/pricing';
 import {
   createRazorpayOrder,
+  generateInvoice,
   loadRazorpayScript,
   PUBLIC_RAZORPAY_KEY_ID,
   verifyRazorpayPayment,
@@ -229,6 +230,7 @@ export default function Checkout() {
             </RevealOnScroll>
           </div>
         ) : (
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[0.9fr_1.1fr]">
           <RevealOnScroll>
             <aside className="rounded-[16px] border border-white/[0.08] bg-[#0E0E0E]/85 p-5 sm:p-8">
               <p className="mb-6 font-syne text-[22px] font-bold text-white">Order Summary</p>
@@ -339,7 +341,8 @@ export default function Checkout() {
               </p>
             </form>
           </RevealOnScroll>
-        </div>
+          </div>
+        )}
       </section>
     </Layout>
   );

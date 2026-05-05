@@ -66,6 +66,16 @@ export default function CompletePayment() {
               razorpayPaymentId: response.razorpay_payment_id,
               razorpaySignature: response.razorpay_signature,
             });
+            
+            window.localStorage.setItem('crevix-last-checkout', JSON.stringify({
+              customer: { name: formData.name, phone: formData.phone },
+              items: [{ name: selectedPlan.name, amount: selectedPlan.remainingPrice }],
+              total: selectedPlan.remainingPrice,
+              createdAt: new Date().toISOString(),
+              paymentId: response.razorpay_payment_id,
+              orderId: response.razorpay_order_id,
+            }));
+
             navigate('/checkout?success=true');
           } catch (verifyError) {
             setError('Payment verification failed. Please contact support.');
