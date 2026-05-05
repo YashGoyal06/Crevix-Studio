@@ -183,7 +183,7 @@ export const generateInvoice = (checkoutData) => {
     doc.setTextColor(colors.primary);
     const statusText = isRemaining ? 'Remaining' : (isAdvance ? 'Advance' : 'Full Payment');
     doc.text(statusText, 120, y + 2);
-    doc.text(`INR ${displayAmount?.toLocaleString() || '0'}`, 160, y + 2);
+    doc.text(`INR ${displayAmount?.toLocaleString() || '0'}`, 190, y + 2, { align: 'right' });
     
     // Line separator
     doc.setDrawColor(colors.border);
@@ -194,14 +194,14 @@ export const generateInvoice = (checkoutData) => {
   // Totals Section
   const totalsY = Math.max(y + 10, 180);
   doc.setFont('helvetica', 'normal');
-  doc.text('Subtotal:', 140, totalsY);
-  doc.text(`INR ${total?.toLocaleString()}`, 160, totalsY);
+  doc.text('Subtotal:', 130, totalsY);
+  doc.text(`INR ${total?.toLocaleString()}`, 190, totalsY, { align: 'right' });
   
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(14);
-  doc.text('Total Paid:', 140, totalsY + 10);
+  doc.text('Total Paid:', 130, totalsY + 10);
   doc.setTextColor(colors.success);
-  doc.text(`INR ${total?.toLocaleString()}`, 160, totalsY + 10);
+  doc.text(`INR ${total?.toLocaleString()}`, 190, totalsY + 10, { align: 'right' });
 
   // Paid Watermark/Badge
   doc.setDrawColor(colors.success);
