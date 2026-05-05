@@ -6,8 +6,8 @@ import { useAuth } from '../context/authStore';
 export default function Login() {
   const { isAuthenticated, loading, signInWithGoogle, signInWithEmail } = useAuth();
   const location = useLocation();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('gamingyash54@gmail.com');
+  const [password, setPassword] = useState('Yash@123');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [error, setError] = useState('');
   const nextPath = location.state?.from || '/profile';

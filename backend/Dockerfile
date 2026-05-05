@@ -26,4 +26,4 @@ COPY . /app/
 EXPOSE 7860
 
 # Start gunicorn on port 7860
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:7860"]
+CMD python manage.py migrate && gunicorn config.wsgi:application --bind 0.0.0.0:7860
