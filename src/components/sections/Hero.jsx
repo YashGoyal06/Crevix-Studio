@@ -52,10 +52,9 @@ export default function Hero() {
           transition={{ delay: 0.2, duration: 0.8, ease }}
           className="mx-auto max-w-[min(100%,19rem)] font-syne text-[clamp(2rem,8vw,2.7rem)] font-[800] leading-[1.02] text-white sm:max-w-[22rem] sm:text-[clamp(2.3rem,6vw,2.95rem)] md:hidden"
         >
-          <span className="block">We</span>
-          <span className="block">Design</span>
           <span className="block">Digital</span>
-          <span className="block text-gradient text-[0.88em]">Experiences.</span>
+          <span className="block text-gradient">Design</span>
+          <span className="block">Studio.</span>
         </motion.h1>
 
         <motion.h1
@@ -64,9 +63,9 @@ export default function Hero() {
           transition={{ delay: 0.2, duration: 0.8, ease }}
           className="mx-auto hidden max-w-[900px] font-syne text-[clamp(60px,5.2vw,84px)] font-[800] leading-[0.94] text-white md:block"
         >
-          We Design Digital
+          We Are A Digital
           <br />
-          <span className="text-gradient">Experiences.</span>
+          <span className="text-gradient">Design Studio.</span>
         </motion.h1>
 
         <motion.p

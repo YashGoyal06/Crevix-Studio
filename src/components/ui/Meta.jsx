@@ -1,9 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 
 export default function Meta({ title, description, image, url }) {
-  const siteName = 'Crevix Studio';
+  const siteName = 'Crevix Studio | Digital Design Agency';
   const fullTitle = title ? `${title} | ${siteName}` : siteName;
-  const defaultDescription = 'Handcrafted digital experiences for elite brands. We build premium websites, SaaS dashboards, and authentic digital identities.';
+  const defaultDescription = 'Crevix Studio is a premium digital design agency specializing in high-end websites, SaaS dashboards, and branding. We craft elite digital identities for modern businesses.';
   const defaultImage = '/og-image.png'; // Make sure this exists later
   const siteUrl = 'https://crevix-studio.in'; // Correct domain
 
