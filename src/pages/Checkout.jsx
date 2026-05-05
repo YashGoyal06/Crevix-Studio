@@ -194,7 +194,7 @@ export default function Checkout() {
                     Download Invoice
                   </button>
                   <a 
-                    href={`https://wa.me/919999999999?text=Hi Crevix! I just made a payment for my project. Can we discuss the next steps?`}
+                    href={`https://wa.me/917318304955?text=Hi Crevix! I just made a payment for my project. Can we discuss the next steps?`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-3 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-6 py-5 font-sans font-bold text-emerald-400 transition-all hover:bg-emerald-500/20"
@@ -204,22 +204,6 @@ export default function Checkout() {
                     </svg>
                     Confirm on WhatsApp
                   </a>
-                </div>
-
-                <div className="rounded-2xl bg-white/[0.03] p-6 text-left border border-white/5">
-                  <div className="flex gap-4 items-start">
-                    <div className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 text-white">
-                      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="font-syne font-bold text-white">Project Timeline Sent</p>
-                      <p className="mt-1 font-sans text-sm text-white/40 leading-relaxed">
-                        We've sent a detailed project timeline and next steps to your email. Check your inbox (and spam folder) to get started.
-                      </p>
-                    </div>
-                  </div>
                 </div>
 
                 <div className="mt-12">
