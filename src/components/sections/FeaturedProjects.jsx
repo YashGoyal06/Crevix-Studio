@@ -29,7 +29,7 @@ const ProjectCard = ({ project }) => (
     rel="noreferrer"
     whileHover={{ scale: 1.015, y: -6 }}
     transition={{ type: 'spring', stiffness: 220, damping: 18 }}
-    className={`group relative min-h-[260px] cursor-pointer overflow-hidden rounded-[16px] block md:min-h-0 ${project.tall ? 'md:row-span-2' : ''}`}
+    className={`group relative min-h-[320px] h-full cursor-pointer overflow-hidden rounded-[16px] block`}
     style={{
       background: project.image ? `url(${project.image}) center/cover no-repeat` : project.gradient,
     }}
@@ -79,11 +79,11 @@ export default function FeaturedProjects() {
         <h2 className="mb-10 font-syne text-[34px] font-bold leading-[1.05] text-white md:mb-20 md:text-[44px]">Work We're Proud Of.</h2>
       </RevealOnScroll>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2" style={{ gridAutoRows: '230px' }}>
-        <RevealOnScroll className="md:row-span-2">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2" style={{ gridAutoRows: 'minmax(280px, auto)' }}>
+        <RevealOnScroll className="md:row-span-2 h-full">
           <ProjectCard project={projects[0]} />
         </RevealOnScroll>
-        <RevealOnScroll delay={0.08} className="md:row-span-2">
+        <RevealOnScroll delay={0.08} className="md:row-span-2 h-full">
           <ProjectCard project={projects[1]} />
         </RevealOnScroll>
       </div>
