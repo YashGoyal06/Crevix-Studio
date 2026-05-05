@@ -184,7 +184,7 @@ export default function AdminDashboard() {
         </header>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           <AdminStatCard 
             title="Total Revenue" 
             value={stats ? `₹${stats.total_revenue.toLocaleString()}` : '...'} 
@@ -193,18 +193,25 @@ export default function AdminDashboard() {
             color="#34D399"
           />
           <AdminStatCard 
-            title="Completed Orders" 
-            value={stats ? stats.order_count : '...'} 
-            icon={<FiShoppingBag className="text-blue-400" />}
-            trend="Real-time sync"
-            color="#60A5FA"
+            title="Pending Payments" 
+            value="₹12,500" 
+            icon={<FiActivity className="text-amber-400" />}
+            trend="4 projects in progress"
+            color="#FBBF24"
           />
           <AdminStatCard 
             title="Active Clients" 
             value={stats ? stats.order_count : '...'} 
             icon={<FiUsers className="text-purple-400" />}
-            trend="Verified transactions"
+            trend="New projects this week"
             color="#A78BFA"
+          />
+          <AdminStatCard 
+            title="Avg. Project Value" 
+            value={stats ? `₹${Math.round(stats.total_revenue / (stats.order_count || 1)).toLocaleString()}` : '...'} 
+            icon={<FiShoppingBag className="text-blue-400" />}
+            trend="High ticket conversion"
+            color="#60A5FA"
           />
         </div>
 
@@ -225,6 +232,7 @@ export default function AdminDashboard() {
                   <th className="px-10 py-7 border-b border-white/[0.05]">Order ID</th>
                   <th className="px-10 py-7 border-b border-white/[0.05]">Customer</th>
                   <th className="px-10 py-7 border-b border-white/[0.05]">Amount</th>
+                  <th className="px-10 py-7 border-b border-white/[0.05]">Project Status</th>
                   <th className="px-10 py-7 border-b border-white/[0.05]">Date</th>
                   <th className="px-10 py-7 border-b border-white/[0.05]">Status</th>
                 </tr>
@@ -235,6 +243,11 @@ export default function AdminDashboard() {
                     <td className="px-10 py-8 font-mono text-[11px] text-white/50">#{order.id.slice(-8).toUpperCase()}</td>
                     <td className="px-10 py-8 font-sans font-medium text-white/80">{order.email}</td>
                     <td className="px-10 py-8 font-syne font-bold text-base">₹{order.amount.toLocaleString()}</td>
+                    <td className="px-10 py-8">
+                      <span className="inline-flex items-center gap-2 rounded-full border border-white/5 bg-white/[0.03] px-3 py-1 text-[10px] font-sans font-medium text-white/40">
+                        {order.status === 'captured' ? 'Developing' : 'Awaiting Payment'}
+                      </span>
+                    </td>
                     <td className="px-10 py-8 text-white/40 font-sans">
                       {new Date(order.date).toLocaleDateString('en-IN', {
                         day: '2-digit',

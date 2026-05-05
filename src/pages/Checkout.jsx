@@ -159,15 +159,76 @@ export default function Checkout() {
           <div className="mb-10 text-center md:mb-14">
             <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">Checkout</p>
             <h1 className="font-syne text-[40px] font-[800] leading-[1.02] text-white md:text-[64px]">Complete Your Order.</h1>
-            {showSuccess && (
-              <p className="mx-auto mt-5 max-w-[520px] rounded-full border border-emerald-400/20 bg-emerald-400/10 px-5 py-3 font-sans text-[14px] text-emerald-200">
-                Payment flow completed. We will contact you shortly.
-              </p>
-            )}
           </div>
         </RevealOnScroll>
 
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+        {showSuccess ? (
+          <div className="mx-auto max-w-[800px]">
+            <RevealOnScroll>
+              <div className="rounded-[32px] border border-white/10 bg-white/[0.02] p-8 md:p-16 text-center backdrop-blur-xl">
+                <div className="mb-8 flex justify-center">
+                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400">
+                    <svg className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                </div>
+                <h2 className="mb-4 font-syne text-3xl font-bold text-white md:text-4xl">Payment Successful!</h2>
+                <p className="mb-10 font-sans text-white/50 text-lg">
+                  Welcome to the studio. Your project is now officially in our pipeline.
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+                  <button 
+                    onClick={() => {
+                      const lastCheckout = JSON.parse(localStorage.getItem('crevix-last-checkout') || '{}');
+                      generateInvoice(lastCheckout);
+                    }}
+                    className="flex items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-6 py-5 font-sans font-bold text-white transition-all hover:bg-white/10"
+                  >
+                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Download Invoice
+                  </button>
+                  <a 
+                    href={`https://wa.me/919999999999?text=Hi Crevix! I just made a payment for my project. Can we discuss the next steps?`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-3 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-6 py-5 font-sans font-bold text-emerald-400 transition-all hover:bg-emerald-500/20"
+                  >
+                    <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.246 2.248 3.484 5.232 3.484 8.412-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.309 1.656zm6.224-3.82l.303.18c1.397.83 3.013 1.269 4.657 1.27h.006c5.566 0 10.096-4.53 10.098-10.098.001-2.697-1.051-5.234-2.961-7.145s-4.448-2.963-7.146-2.963c-5.568 0-10.097 4.53-10.1 10.099-.001 1.774.463 3.509 1.34 5.025l.197.339-1.01 3.689 3.776-.991z" />
+                    </svg>
+                    Confirm on WhatsApp
+                  </a>
+                </div>
+
+                <div className="rounded-2xl bg-white/[0.03] p-6 text-left border border-white/5">
+                  <div className="flex gap-4 items-start">
+                    <div className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 text-white">
+                      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="font-syne font-bold text-white">Project Timeline Sent</p>
+                      <p className="mt-1 font-sans text-sm text-white/40 leading-relaxed">
+                        We've sent a detailed project timeline and next steps to your email. Check your inbox (and spam folder) to get started.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-12">
+                  <Link to="/" className="text-white/40 hover:text-white transition-colors font-sans text-sm underline underline-offset-8">
+                    Return to Home
+                  </Link>
+                </div>
+              </div>
+            </RevealOnScroll>
+          </div>
+        ) : (
           <RevealOnScroll>
             <aside className="rounded-[16px] border border-white/[0.08] bg-[#0E0E0E]/85 p-5 sm:p-8">
               <p className="mb-6 font-syne text-[22px] font-bold text-white">Order Summary</p>

@@ -88,7 +88,7 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, isPurchased }) => {
               Pay Full Amount
             </motion.button>
             <p className="px-2 text-center font-sans text-[11px] leading-relaxed text-white/40">
-              Start with a small advance or pay full amount. Remaining can be completed later.
+              Start with a small advance or pay full amount. <span className="text-amber-400/60">Advance valid for 7 days.</span> Remaining can be completed later.
             </p>
           </>
         ) : (
@@ -196,6 +196,15 @@ export default function Pricing() {
 
       <section className="mx-auto max-w-[1280px] px-4 pb-8 pt-20 text-center sm:px-6 md:pb-12 md:pt-28">
         <RevealOnScroll>
+          <div className="mb-6 flex items-center justify-center">
+            <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/20 bg-amber-500/10 px-4 py-1.5 font-sans text-[11px] font-bold uppercase tracking-widest text-amber-200">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-amber-500"></span>
+              </span>
+              Prices Increase After May 15th
+            </div>
+          </div>
           <h1 className="mb-4 font-syne text-[40px] font-[800] leading-[1.02] text-white md:text-[64px]">Honest Pricing.</h1>
           <p className="font-sans text-[16px] leading-[1.6] text-text-secondary md:text-[18px]">Websites, design support, and online ordering setup without hidden fees.</p>
         </RevealOnScroll>
