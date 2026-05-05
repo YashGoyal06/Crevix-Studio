@@ -5,6 +5,7 @@ import { RevealOnScroll } from '../hooks/useScrollReveal';
 import Layout from '../components/layout/Layout';
 import { useCart } from '../context/cartStore';
 import { useAuth } from '../context/authStore';
+import { supabase } from '../lib/supabaseClient';
 import { addOns, designServices, webPlans } from '../data/pricing';
 
 const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
@@ -166,16 +167,25 @@ export default function Pricing() {
   const { addItem } = useCart();
   const { isAuthenticated, user } = useAuth();
   const [toast, setToast] = useState('');
-  const purchasedItems = useMemo(() => {
-    if (!user?.id || typeof window === 'undefined') return [];
-    try {
-      const key = `crevix-purchases-${user.id}`;
-      const stored = window.localStorage.getItem(key);
-      const parsed = stored ? JSON.parse(stored) : [];
-      return parsed.map(item => typeof item === 'string' ? { id: item, status: 'full' } : item);
-    } catch {
-      return [];
-    }
+  const [purchasedItems, setPurchasedItems] = useState([]);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    let active = true;
+    
+    const loadPurchases = async () => {
+      const { data, error } = await supabase
+        .from('purchased_plans')
+        .select('plan_id, status')
+        .eq('user_id', user.id);
+        
+      if (active && data) {
+        setPurchasedItems(data.map(item => ({ id: item.plan_id, status: item.status })));
+      }
+    };
+    
+    loadPurchases();
+    return () => { active = false; };
   }, [user?.id]);
 
   const lastCheckout = useMemo(() => {

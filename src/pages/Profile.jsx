@@ -21,52 +21,53 @@ export default function Profile() {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
-  const purchasedItems = useMemo(() => {
-    if (!user?.id || typeof window === 'undefined') return [];
-    try {
-      const key = `crevix-purchases-${user.id}`;
-      const stored = window.localStorage.getItem(key);
-      const parsed = stored ? JSON.parse(stored) : [];
-      return parsed.map(item => typeof item === 'string' ? { id: item, status: 'full' } : item);
-    } catch {
-      return [];
-    }
-  }, [user?.id]);
+  const [purchasedItems, setPurchasedItems] = useState([]);
 
   useEffect(() => {
     let active = true;
-    const loadProfile = async () => {
+    const loadProfileAndPurchases = async () => {
       if (!user) return;
       setLoading(true);
       setError('');
 
-      const { data, error: fetchError } = await supabase
-        .from('business_profiles')
-        .select('business_name, phone, website, about')
-        .eq('user_id', user.id)
-        .maybeSingle();
+      const [profileResult, purchasesResult] = await Promise.all([
+        supabase
+          .from('business_profiles')
+          .select('business_name, phone, website, about')
+          .eq('user_id', user.id)
+          .maybeSingle(),
+        supabase
+          .from('purchased_plans')
+          .select('plan_id, status')
+          .eq('user_id', user.id)
+      ]);
 
       if (!active) return;
 
-      if (fetchError) {
+      if (profileResult.error) {
         setError('Unable to load profile right now.');
-      } else if (data) {
+      } else if (profileResult.data) {
         setHasSavedProfile(true);
         setIsEditing(false);
         setForm({
-          businessName: data.business_name || '',
-          phone: data.phone || '',
-          website: data.website || '',
-          about: data.about || '',
+          businessName: profileResult.data.business_name || '',
+          phone: profileResult.data.phone || '',
+          website: profileResult.data.website || '',
+          about: profileResult.data.about || '',
         });
       } else {
         setHasSavedProfile(false);
         setIsEditing(true);
       }
+
+      if (purchasesResult.data) {
+        setPurchasedItems(purchasesResult.data.map(item => ({ id: item.plan_id, status: item.status })));
+      }
+
       setLoading(false);
     };
 
-    loadProfile();
+    loadProfileAndPurchases();
     return () => {
       active = false;
     };

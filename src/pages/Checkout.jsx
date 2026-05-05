@@ -12,6 +12,7 @@ import {
   verifyRazorpayPayment,
 } from '../lib/payments';
 import Layout from '../components/layout/Layout';
+import { supabase } from '../lib/supabaseClient';
 
 const initialForm = {
   name: '',
@@ -125,29 +126,25 @@ export default function Checkout() {
             }));
 
             if (user?.id) {
-              try {
-                const key = `crevix-purchases-${user.id}`;
-                let current = [];
+              const status = (isAdvance && !isRemaining) ? 'advance' : 'full';
+              const itemsToUpsert = checkoutItems.map(item => ({
+                user_id: user.id,
+                plan_id: item.id,
+                status: status,
+              })).filter(i => i.plan_id);
+
+              if (itemsToUpsert.length > 0) {
                 try {
-                  const stored = JSON.parse(window.localStorage.getItem(key) || '[]');
-                  current = stored.map(item => typeof item === 'string' ? { id: item, status: 'full' } : item);
-                } catch { current = []; }
-                
-                const status = (isAdvance && !isRemaining) ? 'advance' : 'full';
-                const newPurchases = checkoutItems.map(item => ({ id: item.id, status })).filter(i => i.id);
-                
-                newPurchases.forEach(newItem => {
-                  const existingIndex = current.findIndex(c => c.id === newItem.id);
-                  if (existingIndex >= 0) {
-                    current[existingIndex].status = newItem.status;
-                  } else {
-                    current.push(newItem);
+                  const { error: upsertError } = await supabase
+                    .from('purchased_plans')
+                    .upsert(itemsToUpsert, { onConflict: 'user_id, plan_id' });
+                  
+                  if (upsertError) {
+                    console.error('Supabase upsert error:', upsertError);
                   }
-                });
-                
-                window.localStorage.setItem(key, JSON.stringify(current));
-              } catch {
-                // Ignore local storage failures
+                } catch (err) {
+                  console.error('Failed to sync purchases to Supabase', err);
+                }
               }
             }
 
