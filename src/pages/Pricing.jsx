@@ -7,80 +7,121 @@ import { useCart } from '../context/cartStore';
 import { useAuth } from '../context/authStore';
 import { addOns, designServices, webPlans } from '../data/pricing';
 
-const PricingCard = ({ plan, onBuyNow, onAddToCart, isPurchased }) => (
-  <motion.div
-    whileHover={{ y: -8, rotateX: -3, rotateY: 3 }}
-    transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-    className={`group relative flex flex-col rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1 sm:p-8 md:p-10 ${
-      plan.featured ? '' : ''
-    }`}
-    style={{
-      background: plan.featured ? '#141414' : '#0E0E0E',
-      border: plan.featured ? 'none' : '1px solid rgba(255,255,255,0.06)',
-      borderTop: plan.featured ? '1px solid #FFFFFF' : undefined,
-      boxShadow: plan.featured ? '0 24px 48px rgba(0,0,0,0.4)' : 'none',
-    }}
-    onMouseEnter={(e) => {
-      if (!plan.featured) e.currentTarget.style.boxShadow = '0 16px 32px rgba(0,0,0,0.3)';
-    }}
-    onMouseLeave={(e) => {
-      if (!plan.featured) e.currentTarget.style.boxShadow = 'none';
-    }}
-  >
-    <div className="pointer-events-none absolute inset-0 rounded-[16px] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-    {plan.featured && (
-      <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-[11px] font-sans tracking-wider uppercase"
-        style={{ background: '#1A1A1A', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.15)' }}>
-        <span className="text-gradient">Most Popular</span>
-      </div>
-    )}
-    {isPurchased && (
-      <div className="absolute right-4 top-4 rounded-full border border-emerald-300/25 bg-emerald-400/10 px-3 py-1 text-[11px] font-sans uppercase tracking-[0.1em] text-emerald-200">
-        Purchased
-      </div>
-    )}
+const PricingCard = ({ plan, onBuyNow, onAddToCart, isPurchased }) => {
+  const isWebPlan = plan.type === 'Website Plan';
 
-    <div className="mb-8">
-      <p className="font-syne font-bold text-[18px] text-white mb-3">{plan.name}</p>
-      <div className="flex flex-wrap items-end gap-1">
-        <span className="font-syne text-[38px] font-[800] leading-none text-white md:text-[44px]">{plan.price}</span>
-      </div>
-    </div>
-
-    <ul className="space-y-4 flex-1 mb-10">
-      {plan.features.map((f, i) => (
-        <li key={i} className="flex items-start gap-3 font-sans text-[14px] leading-[1.55] text-[#C9C9C9]">
-          <span className="mt-[2px] text-white/30">✓</span>
-          {f}
-        </li>
-      ))}
-    </ul>
-
-    <motion.button
-      type="button"
-      onClick={() => onBuyNow(plan)}
-      className={`block w-full rounded-full py-3.5 text-center font-sans text-[15px] font-medium transition-opacity duration-150 hover:opacity-85 ${
-        plan.featured
-          ? 'bg-white text-[#080808]'
-          : 'border border-white/[0.12] text-white hover:border-white/[0.2]'
+  return (
+    <motion.div
+      whileHover={{ y: -8, rotateX: -3, rotateY: 3 }}
+      transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+      className={`group relative flex flex-col rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1 sm:p-8 md:p-10 ${
+        plan.featured ? '' : ''
       }`}
+      style={{
+        background: plan.featured ? '#141414' : '#0E0E0E',
+        border: plan.featured ? 'none' : '1px solid rgba(255,255,255,0.06)',
+        borderTop: plan.featured ? '1px solid #FFFFFF' : undefined,
+        boxShadow: plan.featured ? '0 24px 48px rgba(0,0,0,0.4)' : 'none',
+      }}
+      onMouseEnter={(e) => {
+        if (!plan.featured) e.currentTarget.style.boxShadow = '0 16px 32px rgba(0,0,0,0.3)';
+      }}
+      onMouseLeave={(e) => {
+        if (!plan.featured) e.currentTarget.style.boxShadow = 'none';
+      }}
     >
-      <span className="inline-flex items-center gap-2">
-        {isPurchased ? 'Renew Plan' : 'Buy Now'}
-        <motion.span whileHover={{ x: 3 }} transition={{ type: 'spring', stiffness: 300, damping: 18 }}>→</motion.span>
-      </span>
-    </motion.button>
-    <motion.button
-      type="button"
-      onClick={() => onAddToCart(plan)}
-      className="mt-3 block w-full rounded-full border border-white/[0.1] py-3.5 text-center font-sans text-[15px] font-medium text-white/65 transition-colors duration-150 hover:border-white/[0.22] hover:text-white"
-      whileHover={{ y: -1 }}
-      transition={{ duration: 0.2 }}
-    >
-      Add to Cart
-    </motion.button>
-  </motion.div>
-);
+      <div className="pointer-events-none absolute inset-0 rounded-[16px] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      {plan.featured && (
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-[11px] font-sans tracking-wider uppercase"
+          style={{ background: '#1A1A1A', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.15)' }}>
+          <span className="text-gradient">Most Popular</span>
+        </div>
+      )}
+      {isPurchased && (
+        <div className="absolute right-4 top-4 rounded-full border border-emerald-300/25 bg-emerald-400/10 px-3 py-1 text-[11px] font-sans uppercase tracking-[0.1em] text-emerald-200">
+          Purchased
+        </div>
+      )}
+
+      <div className="mb-8">
+        <p className="font-syne font-bold text-[18px] text-white mb-3">{plan.name}</p>
+        <div className="flex flex-col gap-1">
+          <div className="flex items-baseline gap-2">
+            <span className="font-syne text-[38px] font-[800] leading-none text-white md:text-[44px]">{plan.price}</span>
+            <span className="font-sans text-[13px] text-white/40">Full Amount</span>
+          </div>
+          {isWebPlan && (
+            <div className="mt-1 flex items-baseline gap-2">
+              <span className="font-syne text-[22px] font-bold text-white/80">{plan.advance}</span>
+              <span className="font-sans text-[12px] text-white/30 italic">Start with Advance</span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <ul className="space-y-4 flex-1 mb-10">
+        {plan.features.map((f, i) => (
+          <li key={i} className="flex items-start gap-3 font-sans text-[14px] leading-[1.55] text-[#C9C9C9]">
+            <span className="mt-[2px] text-white/30">✓</span>
+            {f}
+          </li>
+        ))}
+      </ul>
+
+      <div className="space-y-3">
+        {isWebPlan ? (
+          <>
+            <motion.button
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
+              onClick={() => navigate('/checkout', { state: { items: [plan], isAdvance: true } })}
+              className="block w-full rounded-full bg-white py-3.5 text-center font-sans text-[15px] font-bold text-[#080808] transition-opacity duration-150 hover:opacity-90"
+            >
+              Get Started
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
+              onClick={() => navigate('/checkout', { state: { items: [plan] } })}
+              className="block w-full rounded-full border border-white/[0.12] py-3.5 text-center font-sans text-[15px] font-medium text-white transition-colors duration-150 hover:border-white/[0.2] hover:bg-white/5"
+            >
+              Pay Full Amount
+            </motion.button>
+            <p className="px-2 text-center font-sans text-[11px] leading-relaxed text-white/40">
+              Start with a small advance or pay full amount. Remaining can be completed later.
+            </p>
+          </>
+        ) : (
+          <>
+            <motion.button
+              type="button"
+              onClick={() => onBuyNow(plan)}
+              className={`block w-full rounded-full py-3.5 text-center font-sans text-[15px] font-medium transition-opacity duration-150 hover:opacity-85 ${
+                plan.featured
+                  ? 'bg-white text-[#080808]'
+                  : 'border border-white/[0.12] text-white hover:border-white/[0.2]'
+              }`}
+            >
+              <span className="inline-flex items-center gap-2">
+                {isPurchased ? 'Renew Plan' : 'Buy Now'}
+                <motion.span whileHover={{ x: 3 }} transition={{ type: 'spring', stiffness: 300, damping: 18 }}>→</motion.span>
+              </span>
+            </motion.button>
+            <motion.button
+              type="button"
+              onClick={() => onAddToCart(plan)}
+              className="mt-3 block w-full rounded-full border border-white/[0.1] py-3.5 text-center font-sans text-[15px] font-medium text-white/65 transition-colors duration-150 hover:border-white/[0.22] hover:text-white"
+              whileHover={{ y: -1 }}
+              transition={{ duration: 0.2 }}
+            >
+              Add to Cart
+            </motion.button>
+          </>
+        )}
+      </div>
+    </motion.div>
+  );
+};
 
 const ServiceCard = ({ item, onAddToCart }) => (
   <div className="rounded-[16px] p-6 text-center transition-all duration-200 hover:-translate-y-1 sm:p-8 md:p-10"
@@ -125,6 +166,10 @@ export default function Pricing() {
   }, [toast]);
 
   const handleBuyNow = (item) => {
+    if (item.paymentLink) {
+      window.location.href = item.paymentLink;
+      return;
+    }
     if (!isAuthenticated) {
       navigate('/login', { state: { from: '/checkout' } });
       return;
@@ -173,6 +218,24 @@ export default function Pricing() {
             </RevealOnScroll>
           ))}
         </div>
+      </section>
+
+      {/* Complete Payment Section */}
+      <section className="mx-auto max-w-[1280px] px-4 py-8 sm:px-6 md:py-12">
+        <RevealOnScroll>
+          <div className="rounded-3xl border border-white/5 bg-gradient-to-b from-white/[0.03] to-transparent p-8 text-center md:p-12">
+            <h2 className="mb-4 font-syne text-2xl font-bold text-white md:text-3xl">Already paid an advance?</h2>
+            <p className="mx-auto mb-8 max-w-2xl font-sans text-white/50">
+              If you have already started your project with an advance payment, you can complete your remaining balance here.
+            </p>
+            <Link 
+              to="/complete-payment"
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-8 py-4 font-sans font-medium text-white transition-all hover:bg-white hover:text-black"
+            >
+              Complete Your Payment →
+            </Link>
+          </div>
+        </RevealOnScroll>
       </section>
 
       {/* Design Services */}

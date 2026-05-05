@@ -12,6 +12,7 @@ const navLinks = [
   { label: 'Our Team',  to: '/team' },
   { label: 'Pricing',   to: '/pricing' },
   { label: 'Contact',   to: '/contact' },
+  { label: 'Complete Payment', to: '/complete-payment' },
 ];
 
 const HamburgerIcon = ({ open }) => (

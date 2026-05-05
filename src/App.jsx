@@ -17,6 +17,7 @@ const Checkout  = lazy(() => import('./pages/Checkout'));
 const Contact   = lazy(() => import('./pages/Contact'));
 const Login     = lazy(() => import('./pages/Login'));
 const Profile   = lazy(() => import('./pages/Profile'));
+const CompletePayment = lazy(() => import('./pages/CompletePayment'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 
 const PageFade = ({ children }) => (
@@ -45,6 +46,7 @@ const AnimatedRoutes = () => {
         <Route path="/contact"   element={<PageFade><Contact /></PageFade>} />
         <Route path="/login"     element={<PageFade><Login /></PageFade>} />
         <Route path="/profile"   element={<PageFade><ProtectedRoute><Profile /></ProtectedRoute></PageFade>} />
+        <Route path="/complete-payment" element={<PageFade><CompletePayment /></PageFade>} />
         <Route path="/crevix-admin" element={<PageFade><AdminDashboard /></PageFade>} />
       </Routes>
     </AnimatePresence>

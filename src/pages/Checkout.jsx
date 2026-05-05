@@ -25,6 +25,7 @@ export default function Checkout() {
   const { items: cartItems, clearCart } = useCart();
   const { user } = useAuth();
   const checkoutItems = location.state?.items?.length ? location.state.items : cartItems;
+  const isAdvance = location.state?.isAdvance || false;
   const [form, setForm] = useState({
     ...initialForm,
     email: user?.email || '',
@@ -32,10 +33,12 @@ export default function Checkout() {
   const [error, setError] = useState('');
   const [processing, setProcessing] = useState(false);
 
-  const total = useMemo(
-    () => checkoutItems.reduce((sum, item) => sum + (item.amount || 0), 0),
-    [checkoutItems],
-  );
+  const total = useMemo(() => {
+    return checkoutItems.reduce((sum, item) => {
+      const price = isAdvance ? (item.advancePrice || item.amount) : (item.fullPrice || item.amount);
+      return sum + (price || 0);
+    }, 0);
+  }, [checkoutItems, isAdvance]);
 
   const showSuccess = new URLSearchParams(location.search).get('success') === 'true';
 
@@ -176,9 +179,13 @@ export default function Checkout() {
                       <div className="flex items-start justify-between gap-4">
                         <div>
                           <p className="font-syne text-[17px] font-bold text-white">{item.name}</p>
-                          <p className="mt-1 font-sans text-[13px] text-text-secondary">{item.type}</p>
+                          <p className="mt-1 font-sans text-[13px] text-text-secondary">
+                            {item.type} {isAdvance && <span className="text-white/40 ml-1 text-[11px] uppercase tracking-wider">(Advance)</span>}
+                          </p>
                         </div>
-                        <p className="shrink-0 font-sans text-[14px] text-white">{item.price}</p>
+                        <p className="shrink-0 font-sans text-[14px] text-white">
+                          {formatCurrency(isAdvance ? (item.advancePrice || item.amount) : (item.fullPrice || item.amount))}
+                        </p>
                       </div>
                       {item.features && (
                         <ul className="mt-4 space-y-2">
