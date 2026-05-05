@@ -68,8 +68,13 @@ export function ProjectCard3D({ project }) {
             <motion.img
               src={project.image}
               alt={project.alt || project.name}
-              className="absolute inset-0 h-full w-full object-cover object-top opacity-30"
-              animate={{ scale: isHovered ? 1.08 : 1, opacity: isHovered ? 0.45 : 0.30 }}
+              loading="lazy"
+              initial={{ opacity: 0 }}
+              animate={{ 
+                opacity: isHovered ? 0.45 : 0.30, 
+                scale: isHovered ? 1.08 : 1 
+              }}
+              className="absolute inset-0 h-full w-full object-cover object-top"
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             />
           )}

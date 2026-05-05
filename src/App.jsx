@@ -5,6 +5,7 @@ import IntroLoader from './pages/IntroLoader';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import GoogleAnalytics from './components/ui/GoogleAnalytics';
 
 const Home      = lazy(() => import('./pages/Home'));
 const Services  = lazy(() => import('./pages/Services'));
@@ -57,6 +58,7 @@ export default function App() {
     <AuthProvider>
       <CartProvider>
         <BrowserRouter>
+          <GoogleAnalytics />
           <Suspense fallback={
             <div className="fixed inset-0 bg-void flex items-center justify-center">
               <div className="w-8 h-8 rounded-full border-2 border-white/20 border-t-white animate-spin" />
