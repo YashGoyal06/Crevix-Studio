@@ -7,7 +7,7 @@ import { useCart } from '../context/cartStore';
 import { useAuth } from '../context/authStore';
 import { addOns, designServices, webPlans } from '../data/pricing';
 
-const PricingCard = ({ plan, onBuyNow, onAddToCart, isPurchased }) => {
+const PricingCard = ({ plan, onBuyNow, onAddToCart, isPurchased, hasAdvancePaid }) => {
   const isWebPlan = plan.type === 'Website Plan';
 
   return (
@@ -71,25 +71,36 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, isPurchased }) => {
       <div className="space-y-3">
         {isWebPlan ? (
           <>
-            <motion.button
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
-              onClick={() => onBuyNow(plan, true)}
-              className="block w-full rounded-full bg-white py-3.5 text-center font-sans text-[15px] font-bold text-[#080808] transition-opacity duration-150 hover:opacity-90"
-            >
-              Pay Advance
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
-              onClick={() => onBuyNow(plan, false)}
-              className="block w-full rounded-full border border-white/[0.12] py-3.5 text-center font-sans text-[15px] font-medium text-white transition-colors duration-150 hover:border-white/[0.2] hover:bg-white/5"
-            >
-              Pay Full Amount
-            </motion.button>
-            <p className="px-2 text-center font-sans text-[11px] leading-relaxed text-white/40">
-              Start with a small advance or pay full amount. <span className="text-amber-400/60">Advance valid for 7 days.</span> Remaining can be completed later.
-            </p>
+            {hasAdvancePaid ? (
+              <Link
+                to="/complete-payment"
+                className="block w-full rounded-full bg-emerald-500 py-3.5 text-center font-sans text-[15px] font-bold text-white transition-opacity duration-150 hover:opacity-90"
+              >
+                Complete Payment
+              </Link>
+            ) : (
+              <>
+                <motion.button
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.99 }}
+                  onClick={() => onBuyNow(plan, true)}
+                  className="block w-full rounded-full bg-white py-3.5 text-center font-sans text-[15px] font-bold text-[#080808] transition-opacity duration-150 hover:opacity-90"
+                >
+                  Pay Advance
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.99 }}
+                  onClick={() => onBuyNow(plan, false)}
+                  className="block w-full rounded-full border border-white/[0.12] py-3.5 text-center font-sans text-[15px] font-medium text-white transition-colors duration-150 hover:border-white/[0.2] hover:bg-white/5"
+                >
+                  Pay Full Amount
+                </motion.button>
+                <p className="px-2 text-center font-sans text-[11px] leading-relaxed text-white/40">
+                  Start with a small advance or pay full amount. <span className="text-amber-400/60">Advance valid for 7 days.</span> Remaining can be completed later.
+                </p>
+              </>
+            )}
           </>
         ) : (
           <>
@@ -232,31 +243,13 @@ export default function Pricing() {
                 onBuyNow={handleBuyNow}
                 onAddToCart={handleAddToCart}
                 isPurchased={purchasedIds.includes(p.id)}
+                hasAdvancePaid={isAuthenticated && lastCheckout?.isAdvance && lastCheckout?.items?.some(item => item.id === p.id || item.name === p.name)}
               />
             </RevealOnScroll>
           ))}
         </div>
       </section>
 
-      {/* Complete Payment Section */}
-      {isAuthenticated && lastCheckout?.isAdvance && (
-        <section className="mx-auto max-w-[1280px] px-4 py-8 sm:px-6 md:py-12">
-          <RevealOnScroll>
-            <div className="rounded-3xl border border-white/5 bg-gradient-to-b from-white/[0.03] to-transparent p-8 text-center md:p-12">
-              <h2 className="mb-4 font-syne text-2xl font-bold text-white md:text-3xl">Already paid an advance?</h2>
-              <p className="mx-auto mb-8 max-w-2xl font-sans text-white/50">
-                If you have already started your project with an advance payment, you can complete your remaining balance here.
-              </p>
-              <Link 
-                to="/complete-payment"
-                className="inline-flex items-center gap-2 rounded-full border border-white/20 px-8 py-4 font-sans font-medium text-white transition-all hover:bg-white hover:text-black"
-              >
-                Complete Your Payment →
-              </Link>
-            </div>
-          </RevealOnScroll>
-        </section>
-      )}
 
       {/* Design Services */}
       <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
