@@ -109,7 +109,7 @@ export default function Contact() {
                 <a href="tel:+917817833974" className="block font-sans text-[15px] text-text-secondary hover:text-white transition-colors duration-150">
                   +91 78178 33974
                 </a>
-                <a href="https://wa.me/98987422911" target="_blank" rel="noreferrer"
+                <a href="https://wa.me/9198987422911" target="_blank" rel="noreferrer"
                   className="block font-sans text-[15px] text-text-secondary hover:text-white transition-colors duration-150">
                   Chat on WhatsApp →
                 </a>
