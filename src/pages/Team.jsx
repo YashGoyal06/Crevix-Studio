@@ -47,7 +47,8 @@ const team = [
     role: 'Client Acquisition Team',
     initials: 'AS',
     photo: '/anshika.jpg',
-    photoPosition: '50% 35%',
+    photoPosition: '50% 25%',
+    scale: 1.45,
     linkedin: 'https://www.linkedin.com/in/anshika-sahu-?utm_source=share_via&utm_content=profile&utm_medium=member_android',
     github: 'https://github.com/anshikasahu-lab',
     gradient: 'from-[#06B6D4]/60 via-[#8B5CF6]/55 to-[#EC4899]/60',
@@ -134,7 +135,10 @@ const TeamCard = ({ member, index }) => (
               src={member.photo}
               alt={member.name}
               className="h-full w-full object-cover"
-              style={{ objectPosition: member.photoPosition || 'center' }}
+              style={{ 
+                objectPosition: member.photoPosition || 'center',
+                transform: member.scale ? `scale(${member.scale})` : 'none',
+              }}
             />
           ) : (
             <span className="font-syne text-[42px] font-[800] text-white sm:text-[48px]">
