@@ -83,7 +83,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="flex flex-col items-start justify-between gap-4 border-t border-white/[0.05] pt-8 sm:flex-row sm:items-center">
-          <p className="text-[12px] text-text-muted">© 2025 Crevix Studio. All rights reserved.</p>
+          <p className="text-[12px] text-text-muted">© 2026 Crevix Studio. All rights reserved.</p>
           <div className="flex flex-wrap items-center gap-3 text-[12px] text-text-muted sm:gap-4">
             <a href="#" className="hover:text-white transition-colors duration-150">Privacy Policy</a>
             <span>·</span>
