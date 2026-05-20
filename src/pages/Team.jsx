@@ -2,6 +2,7 @@ import { RevealOnScroll } from '../hooks/useScrollReveal';
 import Layout from '../components/layout/Layout';
 
 const team = [
+  // — Founder —
   {
     name: 'Yash Goyal',
     role: 'Founder/CEO',
@@ -12,6 +13,7 @@ const team = [
     github: 'https://github.com/YashGoyal06',
     gradient: 'from-[#6D28D9]/70 via-[#BE185D]/60 to-[#EA580C]/70',
   },
+  // — Technical —
   {
     name: 'Raj Sachan',
     role: 'Technical Department',
@@ -22,6 +24,38 @@ const team = [
     github: 'https://github.com/rawwwj00',
     gradient: 'from-[#0EA5E9]/60 via-[#6D28D9]/55 to-[#14B8A6]/60',
   },
+  // — Graphic Designers —
+  {
+    name: 'Anushka',
+    role: 'Graphic Designer',
+    initials: 'A',
+    photo: '/anushka.jpg',
+    photoPosition: '50% 35%',
+    linkedin: 'https://www.linkedin.com/in/anushka-09a694357/',
+    github: 'https://github.com/anushkaa-star',
+    gradient: 'from-[#6D28D9]/65 via-[#0EA5E9]/45 to-[#BE185D]/60',
+  },
+  {
+    name: 'Pragalbha Padhy',
+    role: 'Graphic Designer',
+    initials: 'PP',
+    photo: '/pragalbha-padhy.jpg',
+    photoPosition: '50% 34%',
+    linkedin: 'https://www.linkedin.com/in/pragalbha-padhy-087bb6364',
+    github: 'https://github.com/pragalbha25bai11493-ai',
+    gradient: 'from-[#BE185D]/60 via-[#EA580C]/50 to-[#FACC15]/45',
+  },
+  {
+    name: 'Shweta Gupta',
+    role: 'Graphic Designer',
+    initials: 'SG',
+    photo: '/shweta.jpg',
+    photoPosition: '50% 35%',
+    linkedin: 'https://www.linkedin.com/in/shw3tagupta/',
+    instagram: 'https://www.instagram.com/shweta.zip/',
+    gradient: 'from-[#8B5CF6]/60 via-[#D946EF]/55 to-[#FF007F]/60',
+  },
+  // — Client Acquisition —
   {
     name: 'Divyanka',
     role: 'Client Acquisition Team',
@@ -53,6 +87,7 @@ const team = [
     github: 'https://github.com/anshikasahu-lab',
     gradient: 'from-[#06B6D4]/60 via-[#8B5CF6]/55 to-[#EC4899]/60',
   },
+  // — Social Media —
   {
     name: 'Prashansha Srivastava',
     role: 'Social Media',
@@ -68,40 +103,10 @@ const team = [
     role: 'Social Media',
     initials: 'D',
     photo: '/divyanshi.jpg',
+    photoPosition: '50% 35%',
     linkedin: 'https://www.linkedin.com/in/divyanshi-gupta-989245359',
     instagram: '#',
-    photoPosition: '50% 35%',
     gradient: 'from-[#EA580C]/60 via-[#BE185D]/55 to-[#14B8A6]/50',
-  },
-  {
-    name: 'Anushka',
-    role: 'Graphic Designer',
-    initials: 'A',
-    photo: '/anushka.jpg',
-    photoPosition: '50% 35%',
-    linkedin: 'https://www.linkedin.com/in/anushka-09a694357/',
-    github: 'https://github.com/anushkaa-star',
-    gradient: 'from-[#6D28D9]/65 via-[#0EA5E9]/45 to-[#BE185D]/60',
-  },
-  {
-    name: 'Pragalbha Padhy',
-    role: 'Graphic Designer',
-    initials: 'PP',
-    photo: '/pragalbha-padhy.jpg',
-    photoPosition: '50% 34%',
-    linkedin: 'https://www.linkedin.com/in/pragalbha-padhy-087bb6364',
-    github: 'https://github.com/pragalbha25bai11493-ai',
-    gradient: 'from-[#BE185D]/60 via-[#EA580C]/50 to-[#FACC15]/45',
-  },
-  {
-    name: 'Shweta Gupta',
-    role: 'Graphic Designer',
-    initials: 'SG',
-    photo: '/shweta.jpg',
-    photoPosition: '50% 35%',
-    linkedin: 'https://www.linkedin.com/in/shw3tagupta/',
-    instagram: 'https://www.instagram.com/shweta.zip/',
-    gradient: 'from-[#8B5CF6]/60 via-[#D946EF]/55 to-[#FF007F]/60',
   },
 ];
 
