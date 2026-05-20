@@ -59,6 +59,7 @@ const team = [
     photo: '/prashansha-srivastava.jpg',
     photoPosition: '50% 35%',
     linkedin: 'https://www.linkedin.com/in/prashansha-srivastava-442a74379',
+    instagram: '#',
     gradient: 'from-[#14B8A6]/60 via-[#0EA5E9]/55 to-[#6D28D9]/60',
   },
   {
@@ -67,6 +68,7 @@ const team = [
     initials: 'D',
     photo: '/divyanshi.jpg',
     linkedin: 'https://www.linkedin.com/in/divyanshi-gupta-989245359',
+    instagram: '#',
     photoPosition: '50% 35%',
     gradient: 'from-[#EA580C]/60 via-[#BE185D]/55 to-[#14B8A6]/50',
   },
@@ -97,6 +99,7 @@ const team = [
     photo: '',
     linkedin: '',
     github: '',
+    instagram: '#',
     gradient: 'from-[#8B5CF6]/60 via-[#D946EF]/55 to-[#FF007F]/60',
   },
 ];
@@ -110,6 +113,12 @@ const GithubIcon = () => (
 const LinkedinIcon = () => (
   <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="currentColor" aria-hidden="true">
     <path d="M6.94 8.96H3.77v10.12h3.17V8.96ZM5.35 4a1.84 1.84 0 1 0 0 3.68 1.84 1.84 0 0 0 0-3.68Zm13.88 9.55c0-3.04-1.62-4.86-4.08-4.86a3.5 3.5 0 0 0-3.16 1.73V8.96H8.95v10.12h3.17v-5.02c0-1.33.25-2.61 1.9-2.61 1.62 0 1.64 1.52 1.64 2.69v4.94h3.17l.4-5.53Z" />
+  </svg>
+);
+
+const InstagramIcon = () => (
+  <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="currentColor" aria-hidden="true">
+    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051C.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
   </svg>
 );
 
@@ -149,6 +158,17 @@ const TeamCard = ({ member, index }) => (
               className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.1] text-white/55 transition-colors duration-150 hover:border-white/[0.22] hover:text-white"
             >
               <LinkedinIcon />
+            </a>
+          )}
+          {member.instagram && (
+            <a
+              href={member.instagram}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`${member.name} Instagram`}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.1] text-white/55 transition-colors duration-150 hover:border-white/[0.22] hover:text-white"
+            >
+              <InstagramIcon />
             </a>
           )}
           {member.github && (
