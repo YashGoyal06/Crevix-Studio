@@ -24,6 +24,17 @@ const team = [
     github: 'https://github.com/rawwwj00',
     gradient: 'from-[#0EA5E9]/60 via-[#6D28D9]/55 to-[#14B8A6]/60',
   },
+  {
+    name: 'Kriti Tripathi',
+    role: 'Technical Department',
+    initials: 'KT',
+    photo: '/kriti.jpeg',
+    photoPosition: '50% 24%',
+    linkedin: 'https://www.linkedin.com/in/kriti-tripathi/',
+    github: '#',
+    instagram: 'https://www.instagram.com/_kritayy',
+    gradient: 'from-[#0EA5E9]/60 via-[#6D28D9]/55 to-[#14B8A6]/60',
+  },
   // — Graphic Designers —
   {
     name: 'Anushka',
@@ -64,6 +75,17 @@ const team = [
     photoPosition: '50% 35%',
     linkedin: 'https://www.linkedin.com/in/divyanka-gupta-1a71a8292/',
     github: 'https://github.com/Divyanka2005',
+    gradient: 'from-[#BE185D]/65 via-[#6D28D9]/55 to-[#F97316]/60',
+  },
+  {
+    name: 'Riddhi Garg',
+    role: 'Client Acquisition Team',
+    initials: 'RG',
+    photo: '/riddhi.jpg',
+    photoPosition: '50% 35%',
+    linkedin: 'https://www.linkedin.com/in/riddhi-garg-997834257',
+    github: 'https://github.com/Divyanka2005',
+    instagram: 'https://www.instagram.com/riddhigarg___/',
     gradient: 'from-[#BE185D]/65 via-[#6D28D9]/55 to-[#F97316]/60',
   },
   {
