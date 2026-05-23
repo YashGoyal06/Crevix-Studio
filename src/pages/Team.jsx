@@ -29,7 +29,7 @@ const team = [
     role: 'Technical Department',
     initials: 'KT',
     photo: '/kriti.jpeg',
-    photoPosition: '50% 24%',
+    photoPosition: '50% 45%',
     linkedin: 'https://www.linkedin.com/in/kriti-tripathi/',
     github: '#',
     instagram: 'https://www.instagram.com/_kritayy',
