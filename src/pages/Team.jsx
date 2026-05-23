@@ -31,7 +31,7 @@ const team = [
     photo: '/kriti.jpeg',
     photoPosition: '50% 50%',
     linkedin: 'https://www.linkedin.com/in/kriti-tripathi/',
-    github: '#',
+    github: 'https://github.com/kriti2818',
     instagram: 'https://www.instagram.com/_kritayy',
     gradient: 'from-[#0EA5E9]/60 via-[#6D28D9]/55 to-[#14B8A6]/60',
   },
