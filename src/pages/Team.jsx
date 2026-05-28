@@ -84,8 +84,16 @@ const team = [
     photo: '/riddhi.jpg',
     photoPosition: '50% 50%',
     linkedin: 'https://www.linkedin.com/in/riddhi-garg-997834257',
-    github: 'https://github.com/Divyanka2005',
     instagram: 'https://www.instagram.com/riddhigarg___/',
+    gradient: 'from-[#BE185D]/65 via-[#6D28D9]/55 to-[#F97316]/60',
+  },
+  {
+    name: 'Tanishka Pandey',
+    role: 'Client Acquisition Team',
+    initials: 'TP',
+    photo: '/tanishka.webp',
+    photoPosition: '50% 50%',
+    instagram: 'https://www.instagram.com/tanishkayk',
     gradient: 'from-[#BE185D]/65 via-[#6D28D9]/55 to-[#F97316]/60',
   },
   {
