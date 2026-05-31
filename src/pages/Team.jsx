@@ -57,6 +57,16 @@ const team = [
     instagram: 'https://instagram.com/yashi._.6',
     gradient: 'from-[#0EA5E9]/60 via-[#6D28D9]/55 to-[#14B8A6]/60',
   },
+  {
+    name: 'Pranathi T R',
+    role: 'Technical Department',
+    initials: 'PTR',
+    photo: '/pranathi.png',
+    photoPosition: '50% 50%',
+    linkedin: 'https://www.linkedin.com/in/pranathi-tr-152547278',
+    github: 'https://github.com/ptr25',
+    gradient: 'from-[#0EA5E9]/60 via-[#6D28D9]/55 to-[#14B8A6]/60',
+  },
   // — Graphic Designers —
   {
     name: 'Anushka',
@@ -155,8 +165,19 @@ const team = [
     photo: '/anshika.jpg',
     photoPosition: '50% 24%',
     scale: 1.8,
-    linkedin: 'https://www.linkedin.com/in/anshika-sahu-?utm_source=share_via&utm_content=profile&utm_medium=member_android',
+    linkedin: 'https://www.linkedin.com/in/anshika-sahu-',
     github: 'https://github.com/anshikasahu-lab',
+    gradient: 'from-[#06B6D4]/60 via-[#8B5CF6]/55 to-[#EC4899]/60',
+  },
+  {
+    name: 'Nikita Arora',
+    role: 'Client Acquisition Team',
+    initials: 'NA',
+    photo: '/Nikita.jpg',
+    photoPosition: '50% 24%',
+    scale: 1.8,
+    linkedin: 'https://www.linkedin.com/in/nikita-arora-0b18b2385',
+    instagram: 'https://www.instagram.com/nikkss__.20',
     gradient: 'from-[#06B6D4]/60 via-[#8B5CF6]/55 to-[#EC4899]/60',
   },
   // — Social Media —
