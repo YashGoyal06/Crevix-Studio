@@ -1,8 +1,9 @@
 import { RevealOnScroll } from '../hooks/useScrollReveal';
 import Layout from '../components/layout/Layout';
+import { motion } from 'framer-motion';
 
 const team = [
-  // — Founder —
+  // Founder
   {
     name: 'Yash Goyal',
     role: 'Founder/CEO',
@@ -13,7 +14,7 @@ const team = [
     github: 'https://github.com/YashGoyal06',
     gradient: 'from-[#6D28D9]/70 via-[#BE185D]/60 to-[#EA580C]/70',
   },
-  // — Technical —
+  // Technical
   {
     name: 'Raj Sachan',
     role: 'Technical Department',
@@ -49,7 +50,7 @@ const team = [
   {
     name: 'Yashi Pandey',
     role: 'Technical Department',
-    initials: 'TP',
+    initials: 'YP',
     photo: '/Yashi.jpeg',
     photoPosition: '50% 50%',
     linkedin: 'https://www.linkedin.com/in/yashi-pandey-31b659323/',
@@ -57,7 +58,7 @@ const team = [
     instagram: 'https://instagram.com/yashi._.6',
     gradient: 'from-[#0EA5E9]/60 via-[#6D28D9]/55 to-[#14B8A6]/60',
   },
-  // — Graphic Designers —
+  // Graphic Designers
   {
     name: 'Anushka',
     role: 'Graphic Designer',
@@ -88,7 +89,7 @@ const team = [
     instagram: 'https://www.instagram.com/shweta.zip/',
     gradient: 'from-[#8B5CF6]/60 via-[#D946EF]/55 to-[#FF007F]/60',
   },
-  // — Client Acquisition —
+  // Client Acquisition
   {
     name: 'Divyanka',
     role: 'Client Acquisition Team',
@@ -159,7 +160,7 @@ const team = [
     github: 'https://github.com/anshikasahu-lab',
     gradient: 'from-[#06B6D4]/60 via-[#8B5CF6]/55 to-[#EC4899]/60',
   },
-  // — Social Media —
+  // Social Media
   {
     name: 'Prashansha Srivastava',
     role: 'Social Media',
@@ -182,6 +183,52 @@ const team = [
   },
 ];
 
+const departmentOrder = [
+  'Founder/CEO',
+  'Technical Department',
+  'Graphic Designer',
+  'Client Acquisition Team',
+  'Social Media',
+];
+
+const departmentDetails = {
+  'Founder/CEO': {
+    title: 'Founder',
+    label: 'Vision and direction',
+    accent: 'from-[#F97316] via-[#BE185D] to-[#6D28D9]',
+  },
+  'Technical Department': {
+    title: 'Technology',
+    label: 'Engineering and product systems',
+    accent: 'from-[#0EA5E9] via-[#14B8A6] to-[#6D28D9]',
+  },
+  'Graphic Designer': {
+    title: 'Design',
+    label: 'Visual identity and creative direction',
+    accent: 'from-[#FACC15] via-[#EA580C] to-[#BE185D]',
+  },
+  'Client Acquisition Team': {
+    title: 'Client Growth',
+    label: 'Partnerships and acquisition',
+    accent: 'from-[#F97316] via-[#BE185D] to-[#8B5CF6]',
+  },
+  'Social Media': {
+    title: 'Social Media',
+    label: 'Community and content',
+    accent: 'from-[#14B8A6] via-[#0EA5E9] to-[#BE185D]',
+  },
+};
+
+const teamByDepartment = departmentOrder
+  .map((department) => ({
+    department,
+    ...departmentDetails[department],
+    members: team.filter((member) => member.role === department),
+  }))
+  .filter((group) => group.members.length);
+
+const hasSocialLink = (href) => href && href !== '#';
+
 const GithubIcon = () => (
   <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="currentColor" aria-hidden="true">
     <path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.52 2.87 8.36 6.84 9.72.5.1.68-.22.68-.49v-1.9c-2.78.62-3.37-1.22-3.37-1.22-.45-1.19-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.9 1.56 2.35 1.11 2.92.85.09-.66.35-1.11.63-1.37-2.22-.26-4.55-1.14-4.55-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.32 9.32 0 0 1 12 6.98c.85 0 1.7.12 2.5.34 1.9-1.33 2.74-1.05 2.74-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.95.68 1.92v2.78c0 .27.18.59.69.49A10.15 10.15 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z" />
@@ -200,68 +247,122 @@ const InstagramIcon = () => (
   </svg>
 );
 
-const TeamCard = ({ member, index }) => (
-  <RevealOnScroll delay={(index % 4) * 0.06}>
-    <article className="group flex h-full flex-col overflow-hidden rounded-[16px] border border-white/[0.08] bg-[#0E0E0E]/80 transition-all duration-200 hover:-translate-y-1 hover:border-white/[0.15]">
-      <div className={`relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-gradient-to-br ${member.gradient}`}>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.22),transparent_34%),linear-gradient(to_top,rgba(8,8,8,0.42),transparent_62%)]" />
+const SocialLink = ({ href, label, children }) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noreferrer"
+    aria-label={label}
+    className="flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.12] bg-black/25 text-white/65 backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:border-white/[0.28] hover:bg-white hover:text-black"
+  >
+    {children}
+  </a>
+);
 
-        <div className="relative flex h-36 w-36 items-center justify-center overflow-hidden rounded-full border border-white/[0.18] bg-black/20 shadow-2xl ring-8 ring-black/10 backdrop-blur-md transition-transform duration-300 group-hover:scale-[1.03] sm:h-40 sm:w-40">
+const IntroFrame = () => (
+  <div className="pointer-events-none absolute -inset-x-5 -inset-y-4 md:-inset-x-20 md:-inset-y-10">
+    {[
+      { side: 'left-[4%]', delay: 0 },
+      { side: 'right-[4%]', delay: 0.18 },
+    ].map((line) => (
+      <motion.span
+        key={line.side}
+        className={`absolute ${line.side} top-0 h-28 w-[3px] rounded-full bg-gradient-to-b from-transparent via-[#FACC15] to-transparent shadow-[0_0_14px_rgba(250,204,21,0.65),0_0_34px_rgba(14,165,233,0.42),0_0_52px_rgba(190,24,93,0.32)]`}
+        initial={{ y: '-130%', opacity: 0 }}
+        animate={{
+          y: ['-130%', '360%'],
+          opacity: [0, 1, 1, 0],
+        }}
+        transition={{
+          duration: 2.35,
+          ease: 'linear',
+          delay: line.delay,
+          repeat: Infinity,
+          repeatType: 'loop',
+          opacity: {
+            duration: 2.35,
+            ease: 'easeInOut',
+            times: [0, 0.14, 0.82, 1],
+            repeat: Infinity,
+            repeatType: 'loop',
+            delay: line.delay,
+          },
+        }}
+      />
+    ))}
+  </div>
+);
+
+const DepartmentShortcut = ({ group, className = '' }) => (
+  <a
+    href={`#${group.department.toLowerCase().replaceAll(' ', '-')}`}
+    className={`group rounded-[16px] border border-white/[0.08] bg-white/[0.035] p-4 text-center backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.18] hover:bg-white/[0.06] ${className}`}
+  >
+    <span className={`mx-auto mb-4 block h-1.5 w-12 rounded-full bg-gradient-to-r ${group.accent} transition-all duration-300 group-hover:w-16`} />
+    <span className="block font-syne text-[18px] font-bold leading-tight text-white">{group.title}</span>
+    <span className="mt-1 block font-sans text-[12px] text-white/42">
+      {group.members.length} {group.members.length === 1 ? 'member' : 'members'}
+    </span>
+  </a>
+);
+
+const TeamCard = ({ member, index, accent }) => (
+  <RevealOnScroll delay={(index % 4) * 0.06}>
+    <article className="group flex h-full min-h-[430px] w-full flex-col overflow-hidden rounded-[18px] border border-white/[0.08] bg-[#101010]/90 shadow-[0_20px_70px_rgba(0,0,0,0.28)] transition-all duration-300 ease-out hover:-translate-y-2 hover:border-white/[0.22] hover:shadow-[0_28px_90px_rgba(0,0,0,0.48)]">
+      <div className={`relative aspect-[4/5] overflow-hidden bg-gradient-to-br ${member.gradient}`}>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_26%_18%,rgba(255,255,255,0.24),transparent_32%),linear-gradient(to_top,rgba(8,8,8,0.86),rgba(8,8,8,0.12)_54%,rgba(8,8,8,0.08))]" />
+
+        <div className="absolute inset-x-5 top-5 z-10 flex items-center justify-between gap-3">
+          <span className={`rounded-full bg-gradient-to-r ${accent} px-3 py-1 font-sans text-[10px] font-bold uppercase tracking-[0.14em] text-white shadow-lg shadow-black/20`}>
+            {member.role.replace(' Department', '').replace(' Team', '')}
+          </span>
+          <span className="rounded-full border border-white/[0.16] bg-black/25 px-2.5 py-1 font-mono text-[10px] text-white/70 backdrop-blur-md">
+            {String(index + 1).padStart(2, '0')}
+          </span>
+        </div>
+
+        <div className="absolute inset-0 flex items-center justify-center px-8 pt-10">
           {member.photo ? (
             <img
               src={member.photo}
               alt={member.name}
-              className="h-full w-full object-cover"
+              className="h-full w-full rounded-[14px] object-cover shadow-2xl ring-1 ring-white/[0.12] transition duration-500 ease-out group-hover:scale-[1.055]"
               style={{
                 objectPosition: member.photoPosition || 'center',
-                transform: member.scale ? `scale(${member.scale})` : 'none',
+                ...(member.scale ? { transform: `scale(${member.scale})` } : {}),
               }}
             />
           ) : (
-            <span className="font-syne text-[42px] font-[800] text-white sm:text-[48px]">
+            <span className="flex h-36 w-36 items-center justify-center rounded-full border border-white/[0.18] bg-black/20 font-syne text-[42px] font-[800] text-white shadow-2xl backdrop-blur-md sm:text-[48px]">
               {member.initials}
             </span>
           )}
         </div>
+
       </div>
 
-      <div className="flex flex-1 flex-col p-6">
-        <p className="font-syne text-[20px] font-bold leading-tight text-white">{member.name}</p>
-        <p className="mt-2 min-h-[22px] font-sans text-[14px] text-text-secondary">{member.role}</p>
+      <div className="px-5 pt-5 text-center">
+        <p className="font-syne text-[22px] font-bold leading-tight text-white">{member.name.trim()}</p>
+        <p className="mx-auto mt-2 font-sans text-[13px] text-white/62">{member.role}</p>
+      </div>
 
-        <div className="mt-auto flex items-center gap-3 pt-6">
-          {member.linkedin && (
-            <a
-              href={member.linkedin}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={`${member.name} LinkedIn`}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.1] text-white/55 transition-colors duration-150 hover:border-white/[0.22] hover:text-white"
-            >
+      <div className="mt-auto flex flex-col items-center justify-center gap-3 p-5">
+        <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-white/36">Connect</p>
+        <div className="flex translate-y-1 items-center justify-center gap-2 opacity-80 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+          {hasSocialLink(member.linkedin) && (
+            <SocialLink href={member.linkedin} label={`${member.name} LinkedIn`}>
               <LinkedinIcon />
-            </a>
+            </SocialLink>
           )}
-          {member.instagram && (
-            <a
-              href={member.instagram}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={`${member.name} Instagram`}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.1] text-white/55 transition-colors duration-150 hover:border-white/[0.22] hover:text-white"
-            >
+          {hasSocialLink(member.instagram) && (
+            <SocialLink href={member.instagram} label={`${member.name} Instagram`}>
               <InstagramIcon />
-            </a>
+            </SocialLink>
           )}
-          {member.github && (
-            <a
-              href={member.github}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={`${member.name} GitHub`}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.1] text-white/55 transition-colors duration-150 hover:border-white/[0.22] hover:text-white"
-            >
+          {hasSocialLink(member.github) && (
+            <SocialLink href={member.github} label={`${member.name} GitHub`}>
               <GithubIcon />
-            </a>
+            </SocialLink>
           )}
         </div>
       </div>
@@ -270,22 +371,117 @@ const TeamCard = ({ member, index }) => (
 );
 
 export default function Team() {
+  const founderGroup = teamByDepartment.find((group) => group.department === 'Founder/CEO');
+  const leftHeroGroups = teamByDepartment.filter((group) =>
+    ['Technical Department', 'Graphic Designer'].includes(group.department)
+  );
+  const rightHeroGroups = teamByDepartment.filter((group) =>
+    ['Client Acquisition Team', 'Social Media'].includes(group.department)
+  );
+
   return (
     <Layout>
-      <section className="mx-auto max-w-[1280px] px-4 pb-20 pt-20 sm:px-6 md:pb-28 md:pt-28">
-        <RevealOnScroll>
-          <div className="mx-auto mb-12 max-w-[760px] text-center md:mb-20">
-            <p className="mb-5 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:mb-6 md:text-[13px]">Our Team</p>
-            <h1 className="font-syne text-[40px] font-[800] leading-[1.02] text-white md:text-[64px]">Meet The People Behind Crevix.</h1>
-            <p className="mx-auto mt-6 max-w-[620px] font-sans text-[15px] leading-[1.75] text-text-secondary md:text-[17px]">
-              A focused studio team across strategy, technology, design, PR, and social media.
-            </p>
-          </div>
-        </RevealOnScroll>
+      <section className="relative mx-auto max-w-[1320px] overflow-visible px-4 pb-20 pt-0 sm:px-6 md:pb-28 md:pt-0">
+        <div className="pointer-events-none absolute left-1/2 top-16 h-[340px] w-[620px] -translate-x-1/2 rounded-full bg-[#BE185D]/10 blur-[120px]" />
+        <div className="pointer-events-none absolute -right-24 top-[460px] h-[300px] w-[300px] rounded-full bg-[#0EA5E9]/10 blur-[100px]" />
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {team.map((member, index) => (
-            <TeamCard key={member.name} member={member} index={index} />
+        <div className="relative mx-auto mb-12 max-w-[1240px] px-5 pb-10 pt-2 text-center md:mb-20 md:px-8 md:pb-14 md:pt-2">
+          <IntroFrame />
+          {founderGroup && (
+            <RevealOnScroll delay={0.04}>
+              <DepartmentShortcut group={founderGroup} className="mx-auto mb-8 block max-w-[220px]" />
+            </RevealOnScroll>
+          )}
+
+          <div className="grid items-center gap-5 lg:grid-cols-[220px_minmax(0,1fr)_220px]">
+            <RevealOnScroll delay={0.1} className="order-2 grid grid-cols-2 gap-3 lg:order-1 lg:grid-cols-1">
+              {leftHeroGroups.map((group) => (
+                <DepartmentShortcut key={group.department} group={group} />
+              ))}
+            </RevealOnScroll>
+
+            <motion.div
+              className="order-1 lg:order-2"
+            initial={{ opacity: 0, scale: 1.22, rotate: -1.5, filter: 'blur(12px)' }}
+            animate={{
+              opacity: [0, 1, 1],
+              scale: [1.22, 0.94, 1],
+              rotate: [-1.5, 0.35, 0],
+              filter: ['blur(12px)', 'blur(0px)', 'blur(0px)'],
+            }}
+            transition={{
+              duration: 0.9,
+              ease: [0.16, 1, 0.3, 1],
+              times: [0, 0.62, 1],
+            }}
+          >
+            <p className="mb-5 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:mb-6 md:text-[13px]">Our Team</p>
+            <motion.h1
+              className="font-syne text-[40px] font-[800] leading-[1.02] text-white md:text-[64px]"
+              animate={{
+                textShadow: [
+                  '0 0 0 rgba(255,255,255,0)',
+                  '0 0 34px rgba(255,255,255,0.38)',
+                  '0 0 0 rgba(255,255,255,0)',
+                ],
+              }}
+              transition={{ duration: 0.9, ease: 'easeOut', times: [0, 0.48, 1] }}
+            >
+              Meet The People Behind Crevix.
+            </motion.h1>
+            <motion.p
+              className="mx-auto mt-6 max-w-[620px] font-sans text-[15px] leading-[1.75] text-text-secondary md:text-[17px]"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, ease: 'easeOut', delay: 0.42 }}
+            >
+              A focused studio team arranged by craft, with every pin showing the person behind the work.
+            </motion.p>
+            </motion.div>
+
+            <RevealOnScroll delay={0.16} className="order-3 grid grid-cols-2 gap-3 lg:grid-cols-1">
+              {rightHeroGroups.map((group) => (
+                <DepartmentShortcut key={group.department} group={group} />
+              ))}
+            </RevealOnScroll>
+          </div>
+        </div>
+
+        <div className="space-y-20">
+          {teamByDepartment.map((group, groupIndex) => (
+            <section
+              key={group.department}
+              id={group.department.toLowerCase().replaceAll(' ', '-')}
+              className="scroll-mt-24"
+            >
+              <RevealOnScroll delay={groupIndex * 0.04}>
+                <div className="mx-auto mb-7 flex max-w-[760px] flex-col items-center justify-center gap-4 border-t border-white/[0.08] pt-8 text-center">
+                  <div>
+                    <span className={`mx-auto mb-4 block h-1.5 w-16 rounded-full bg-gradient-to-r ${group.accent}`} />
+                    <h2 className="font-syne text-[30px] font-[800] leading-tight text-white md:text-[44px]">{group.title}</h2>
+                    <p className="mt-2 font-sans text-[14px] text-text-secondary md:text-[15px]">{group.label}</p>
+                  </div>
+                  <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-white/35">
+                    {group.members.length} {group.members.length === 1 ? 'person' : 'people'}
+                  </p>
+                </div>
+              </RevealOnScroll>
+
+              <div className="mx-auto flex max-w-[1180px] flex-wrap justify-center gap-5">
+                {group.members.map((member, index) => (
+                  <div
+                    key={member.name}
+                    className="w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)] xl:w-[calc(25%-15px)]"
+                  >
+                    <TeamCard
+                      member={member}
+                      index={index + groupIndex}
+                      accent={group.accent}
+                    />
+                  </div>
+                ))}
+              </div>
+            </section>
           ))}
         </div>
       </section>

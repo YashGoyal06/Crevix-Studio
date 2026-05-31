@@ -40,7 +40,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className="fixed top-0 left-0 right-0 z-[100] h-[72px] flex items-center"
+        className="fixed top-0 left-0 right-0 z-[10000] h-[72px] flex items-center"
         style={{
           background: 'rgba(8,8,8,0.85)',
           backdropFilter: 'blur(16px)',
@@ -133,7 +133,7 @@ export default function Navbar() {
 
       {/* Mobile overlay */}
       <motion.div
-        className="fixed inset-0 z-[99] md:hidden flex flex-col pt-[72px]"
+        className="fixed inset-0 z-[9999] md:hidden flex flex-col pt-[72px]"
         style={{
           background: 'rgba(8,8,8,0.95)',
           backdropFilter: 'blur(16px)',

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const footerLinks = {
   Pages: [
@@ -12,11 +13,80 @@ const footerLinks = {
   Services: ['Web Development', 'UI/UX Design', 'Branding', 'Motion Design'],
 };
 
+const snakePath =
+  'M -180 40 C -120 18 -60 18 0 40 S 120 62 180 40 S 300 18 360 40 S 480 62 540 40 S 660 18 720 40 S 840 62 900 40 S 1020 18 1080 40 S 1200 62 1260 40 S 1380 18 1440 40 S 1560 62 1620 40';
+
+const SnakeZigzag = () => (
+  <div className="pointer-events-none absolute left-1/2 top-0 z-10 w-[120vw] -translate-x-1/2 overflow-hidden">
+    <motion.svg
+      viewBox="-180 0 1800 72"
+      preserveAspectRatio="none"
+      className="h-16 w-full"
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.8 }}
+    >
+      <defs>
+        <linearGradient id="footerSnakeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#0EA5E9" />
+          <stop offset="22%" stopColor="#14B8A6" />
+          <stop offset="48%" stopColor="#FACC15" />
+          <stop offset="72%" stopColor="#EA580C" />
+          <stop offset="100%" stopColor="#BE185D" />
+        </linearGradient>
+        <filter id="footerSnakeGlow" x="-8%" y="-120%" width="116%" height="340%">
+          <feGaussianBlur stdDeviation="5" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+
+      <motion.path
+        d={snakePath}
+        fill="none"
+        stroke="url(#footerSnakeGradient)"
+        strokeWidth="6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        vectorEffect="non-scaling-stroke"
+        filter="url(#footerSnakeGlow)"
+        variants={{
+          hidden: { pathLength: 0, opacity: 0 },
+          show: {
+            pathLength: 1,
+            opacity: 1,
+            transition: { duration: 1.45, ease: [0.16, 1, 0.3, 1] },
+          },
+        }}
+      />
+      <motion.path
+        d={snakePath}
+        fill="none"
+        stroke="rgba(255,255,255,0.76)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        vectorEffect="non-scaling-stroke"
+        variants={{
+          hidden: { pathLength: 0, opacity: 0 },
+          show: {
+            pathLength: 1,
+            opacity: 1,
+            transition: { duration: 1.45, ease: [0.16, 1, 0.3, 1], delay: 0.08 },
+          },
+        }}
+      />
+    </motion.svg>
+  </div>
+);
+
 export default function Footer() {
   return (
     <footer className="relative bg-void pb-10 pt-16 md:pb-12 md:pt-24">
+      <SnakeZigzag />
       {/* Top border — subtle */}
-      <div className="absolute top-0 left-0 right-0 h-[1px] bg-white/[0.06]" />
 
       <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
         <div className="mb-14 grid grid-cols-1 gap-10 sm:grid-cols-2 md:mb-20 md:grid-cols-4 md:gap-12">
