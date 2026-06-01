@@ -102,16 +102,6 @@ const team = [
   },
   // — Client Acquisition —
   {
-    name: 'Divyanka',
-    role: 'Client Acquisition Team',
-    initials: 'D',
-    photo: teamPhoto('divyanka.webp'),
-    photoPosition: '50% 35%',
-    linkedin: 'https://www.linkedin.com/in/divyanka-gupta-1a71a8292/',
-    github: 'https://github.com/Divyanka2005',
-    gradient: 'from-[#BE185D]/65 via-[#6D28D9]/55 to-[#F97316]/60',
-  },
-  {
     name: 'Abhimanyu Manojawas',
     role: 'Client Acquisition Team',
     initials: 'AM',
@@ -181,17 +171,6 @@ const team = [
     linkedin: 'https://www.linkedin.com/in/bhumi17',
     instagram: 'https://www.instagram.com/bhuuumiiiiiii',
     gradient: 'from-[#F97316]/60 via-[#BE185D]/55 to-[#6D28D9]/60',
-  },
-  {
-    name: 'Anshika Sahu',
-    role: 'Client Acquisition Team',
-    initials: 'AS',
-    photo: teamPhoto('anshika.webp'),
-    photoPosition: '50% 24%',
-    scale: 1.8,
-    linkedin: 'https://www.linkedin.com/in/anshika-sahu-',
-    github: 'https://github.com/anshikasahu-lab',
-    gradient: 'from-[#06B6D4]/60 via-[#8B5CF6]/55 to-[#EC4899]/60',
   },
   {
     name: 'Nikita Arora',
