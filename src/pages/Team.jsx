@@ -253,8 +253,8 @@ const getPhotoEnhanceClassName = (member) =>
     : 'brightness-[1.03] contrast-[1.05] saturate-[1.06]';
 
 const TeamCard = ({ member, index }) => (
-  <RevealOnScroll delay={(index % 4) * 0.06}>
-    <article className="group flex h-full flex-col overflow-hidden rounded-lg border border-white/[0.08] bg-[#0E0E0E]/85 shadow-[0_18px_50px_rgba(0,0,0,0.22)] transition-all duration-200 hover:-translate-y-1 hover:border-white/[0.16]">
+  <RevealOnScroll delay={(index % 4) * 0.06} className="flex w-full max-w-[320px] sm:w-[calc(50%-0.75rem)] lg:w-[calc(25%-1.125rem)]">
+    <article className="group flex h-full w-full flex-col overflow-hidden rounded-lg border border-white/[0.08] bg-[#0E0E0E]/85 shadow-[0_18px_50px_rgba(0,0,0,0.22)] transition-all duration-200 hover:-translate-y-1 hover:border-white/[0.16]">
       <div className={`relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-gradient-to-br p-5 ${member.gradient}`}>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.24),transparent_32%),radial-gradient(circle_at_62%_46%,rgba(255,255,255,0.1),transparent_28%),linear-gradient(to_top,rgba(8,8,8,0.48),transparent_64%)]" />
 
@@ -346,12 +346,12 @@ export default function Team() {
           {teamSections.map((section) => (
             <section key={section.title}>
               <RevealOnScroll>
-                <h2 className="mb-6 font-syne text-[24px] font-[800] leading-tight text-white md:text-[32px]">
+                <h2 className="mb-6 text-center font-syne text-[24px] font-[800] leading-tight text-white md:text-[32px]">
                   {section.title}
                 </h2>
               </RevealOnScroll>
 
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="flex flex-wrap justify-center gap-6">
                 {section.members.map((member) => (
                   <TeamCard
                     key={member.name}
