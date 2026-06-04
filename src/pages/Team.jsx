@@ -69,6 +69,17 @@ const team = [
     github: 'https://github.com/ptr25',
     gradient: 'from-[#0EA5E9]/60 via-[#6D28D9]/55 to-[#14B8A6]/60',
   },
+  {
+    name: 'Vanshika Pal',
+    role: 'Technical Department',
+    initials: 'VP',
+    photo: teamPhoto('vanshika.jpeg'),
+    photoPosition: '50% 50%',
+    linkedin: 'https://www.linkedin.com/in/vanshika-pal-045ab7312',
+    instagram:'https://www.instagram.com/vvcnoo/',
+    github: 'https://github.com/vanshika1030',
+    gradient: 'from-[#0EA5E9]/60 via-[#6D28D9]/55 to-[#14B8A6]/60',
+  },
   // — Graphic Designers —
   {
     name: 'Anushka',
