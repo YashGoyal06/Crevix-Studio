@@ -9,7 +9,7 @@ const team = [
     name: 'Yash Goyal',
     role: 'Founder/CEO',
     initials: 'YG',
-    photo: teamPhoto('yash-goyal.webp'),
+    photo: teamPhoto('yash-goyal.png'),
     photoPosition: '50% 28%',
     linkedin: 'https://www.linkedin.com/in/yashgoyal06/',
     github: 'https://github.com/YashGoyal06',
@@ -20,7 +20,7 @@ const team = [
     name: 'Raj Sachan',
     role: 'Technical Department',
     initials: 'RS',
-    photo: teamPhoto('raj-sachan.webp'),
+    photo: teamPhoto('raj-sachan.png'),
     photoPosition: '50% 24%',
     linkedin: 'https://www.linkedin.com/in/rajsachan/',
     github: 'https://github.com/rawwwj00',
@@ -30,7 +30,7 @@ const team = [
     name: 'Kriti Tripathi',
     role: 'Technical Department',
     initials: 'KT',
-    photo: teamPhoto('kriti.webp'),
+    photo: teamPhoto('kriti.png'),
     photoPosition: '50% 50%',
     linkedin: 'https://www.linkedin.com/in/kriti-tripathi/',
     github: 'https://github.com/kriti2818',
@@ -41,7 +41,7 @@ const team = [
     name: 'Manjiri  Gawali ',
     role: 'Technical Department',
     initials: 'MG',
-    photo: teamPhoto('Manjiri.webp'),
+    photo: teamPhoto('Manjiri.png'),
     photoPosition: '50% 50%',
     linkedin: 'https://www.linkedin.com/in/manjiri-gawali-89556a25b/',
     github: 'https://github.com/ManjirimGawali',
@@ -51,8 +51,8 @@ const team = [
   {
     name: 'Yashi Pandey',
     role: 'Technical Department',
-    initials: 'TP',
-    photo: teamPhoto('Yashi.webp'),
+    initials: 'YP',
+    photo: teamPhoto('Yashi.png'),
     photoPosition: '50% 50%',
     linkedin: 'https://www.linkedin.com/in/yashi-pandey-31b659323/',
     github: 'https://github.com/yaship6',
@@ -63,7 +63,7 @@ const team = [
     name: 'Pranathi T R',
     role: 'Technical Department',
     initials: 'PTR',
-    photo: teamPhoto('pranathi.webp'),
+    photo: teamPhoto('pranathi.png'),
     photoPosition: '50% 50%',
     linkedin: 'https://www.linkedin.com/in/pranathi-tr-152547278',
     github: 'https://github.com/ptr25',
@@ -74,7 +74,7 @@ const team = [
     name: 'Anushka',
     role: 'Graphic Designer',
     initials: 'A',
-    photo: teamPhoto('anushka.webp'),
+    photo: teamPhoto('anushka.png'),
     photoPosition: '50% 35%',
     linkedin: 'https://www.linkedin.com/in/anushka-09a694357/',
     github: 'https://github.com/anushkaa-star',
@@ -84,7 +84,7 @@ const team = [
     name: 'Pragalbha Padhy',
     role: 'Graphic Designer',
     initials: 'PP',
-    photo: teamPhoto('pragalbha-padhy.webp'),
+    photo: teamPhoto('pragalbha-padhy.png'),
     photoPosition: '50% 34%',
     linkedin: 'https://www.linkedin.com/in/pragalbha-padhy-087bb6364',
     github: 'https://github.com/pragalbha25bai11493-ai',
@@ -94,7 +94,7 @@ const team = [
     name: 'Shweta Gupta',
     role: 'Graphic Designer',
     initials: 'SG',
-    photo: teamPhoto('shweta.webp'),
+    photo: teamPhoto('shweta.png'),
     photoPosition: '50% 35%',
     linkedin: 'https://www.linkedin.com/in/shw3tagupta/',
     instagram: 'https://www.instagram.com/shweta.zip/',
@@ -105,7 +105,7 @@ const team = [
     name: 'Abhimanyu Manojawas',
     role: 'Client Acquisition Team',
     initials: 'AM',
-    photo: teamPhoto('Abhimanyu.webp'),
+    photo: teamPhoto('Abhimanyu.png'),
     photoPosition: '50% 35%',
     linkedin: 'https://www.linkedin.com/in/abhimanyu-manojawas-50687528b',
     instagram: 'https://www.instagram.com/manyu_elayath_',
@@ -115,7 +115,7 @@ const team = [
     name: 'Trisha Kapoor',
     role: 'Client Acquisition Team',
     initials: 'TK',
-    photo: teamPhoto('Trisha.webp'),
+    photo: teamPhoto('Trisha.png'),
     photoPosition: '50% 35%',
     linkedin: 'https://www.linkedin.com/in/trisha-kapoor2412',
     instagram: 'https://www.instagram.com/ttriishhaaa',
@@ -125,7 +125,7 @@ const team = [
     name: 'Riddhi Garg',
     role: 'Client Acquisition Team',
     initials: 'RG',
-    photo: teamPhoto('riddhi.webp'),
+    photo: teamPhoto('Riddhi.png'),
     photoPosition: '50% 50%',
     linkedin: 'https://www.linkedin.com/in/riddhi-garg-997834257',
     instagram: 'https://www.instagram.com/riddhigarg___/',
@@ -135,7 +135,7 @@ const team = [
     name: 'Tanishka Pandey',
     role: 'Client Acquisition Team',
     initials: 'TP',
-    photo: teamPhoto('tanishka-pandey.webp'),
+    photo: teamPhoto('tanishka-pandey.png'),
     photoPosition: '50% 50%',
     instagram: 'https://www.instagram.com/tanishkayk',
     gradient: 'from-[#BE185D]/65 via-[#6D28D9]/55 to-[#F97316]/60',
@@ -144,7 +144,7 @@ const team = [
     name: 'Aditi Prakash',
     role: 'Client Acquisition Team',
     initials: 'AP',
-    photo: teamPhoto('aditi-prakash.webp'),
+    photo: teamPhoto('aditi-prakash.png'),
     photoPosition: '50% 35%',
     linkedin: 'https://www.linkedin.com/in/aditi-prakash-26b4bb33b/',
     github: 'https://github.com/Adi-ti-06',
@@ -154,7 +154,7 @@ const team = [
     name: 'Tanishka Singh',
     role: 'Client Acquisition Team',
     initials: 'TS',
-    photo: teamPhoto('tanishka-singh.webp'),
+    photo: teamPhoto('tanishka-singh.png'),
     photoPosition: '50% 35%',
     linkedin: 'https://www.linkedin.com/in/tanishka-singh-371851377',
     instagram: 'https://www.instagram.com/_.tanishka._.singh',
@@ -164,7 +164,7 @@ const team = [
     name: 'Bhumi',
     role: 'Client Acquisition Team',
     initials: 'B',
-    photo: teamPhoto('Bhumi.webp'),
+    photo: teamPhoto('Bhumi.png'),
     photoPosition: '50% 62%',
     scale: 1.35,
     photoEnhance: 'strong',
@@ -176,7 +176,7 @@ const team = [
     name: 'Nikita Arora',
     role: 'Client Acquisition Team',
     initials: 'NA',
-    photo: teamPhoto('Nikita.webp'),
+    photo: teamPhoto('Nikita.png'),
     photoPosition: '50% 50%',
     scale: 1.05,
     linkedin: 'https://www.linkedin.com/in/nikita-arora-0b18b2385',
@@ -188,7 +188,7 @@ const team = [
     name: 'Prashansha Srivastava',
     role: 'Social Media',
     initials: 'PS',
-    photo: teamPhoto('prashansha-srivastava.webp'),
+    photo: teamPhoto('prashansha-srivastava.png'),
     photoPosition: '50% 35%',
     linkedin: 'https://www.linkedin.com/in/prashansha-srivastava-442a74379',
     instagram: '#',
@@ -198,7 +198,7 @@ const team = [
     name: 'Divyanshi',
     role: 'Social Media',
     initials: 'D',
-    photo: teamPhoto('divyanshi.webp'),
+    photo: teamPhoto('divyanshi.png'),
     photoPosition: '50% 35%',
     linkedin: 'https://www.linkedin.com/in/divyanshi-gupta-989245359',
     instagram: '#',
@@ -229,6 +229,11 @@ const teamSections = [
   },
 ];
 
+const getPhotoEnhanceClassName = (member) =>
+  member.photoEnhance === 'strong'
+    ? 'brightness-[1.05] contrast-[1.12] saturate-[1.08]'
+    : 'brightness-[1.03] contrast-[1.05] saturate-[1.06]';
+
 const GithubIcon = () => (
   <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="currentColor" aria-hidden="true">
     <path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.52 2.87 8.36 6.84 9.72.5.1.68-.22.68-.49v-1.9c-2.78.62-3.37-1.22-3.37-1.22-.45-1.19-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.9 1.56 2.35 1.11 2.92.85.09-.66.35-1.11.63-1.37-2.22-.26-4.55-1.14-4.55-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.32 9.32 0 0 1 12 6.98c.85 0 1.7.12 2.5.34 1.9-1.33 2.74-1.05 2.74-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.95.68 1.92v2.78c0 .27.18.59.69.49A10.15 10.15 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z" />
@@ -247,66 +252,41 @@ const InstagramIcon = () => (
   </svg>
 );
 
-const getPhotoEnhanceClassName = (member) =>
-  member.photoEnhance === 'strong'
-    ? 'brightness-[1.05] contrast-[1.12] saturate-[1.08]'
-    : 'brightness-[1.03] contrast-[1.05] saturate-[1.06]';
+const TeamMember = ({ member, index }) => (
+  <RevealOnScroll delay={(index % 3) * 0.06} className="w-full max-w-[320px]">
+    <figure className="mx-auto flex w-full max-w-[320px] flex-col items-center text-center">
+      <img
+        src={member.photo}
+        alt={member.name}
+        width="640"
+        height="480"
+        loading={index < 3 ? 'eager' : 'lazy'}
+        decoding="async"
+        fetchPriority={index < 3 ? 'high' : 'auto'}
+        className={`mx-auto aspect-[4/3] w-full object-contain object-center ${getPhotoEnhanceClassName(member)}`}
+      />
 
-const TeamCard = ({ member, index }) => (
-  <RevealOnScroll delay={(index % 4) * 0.06} className="flex w-full max-w-[320px] sm:w-[calc(50%-0.75rem)] lg:w-[calc(25%-1.125rem)]">
-    <article className="group flex h-full w-full flex-col overflow-hidden rounded-lg border border-white/[0.08] bg-[#0E0E0E]/85 shadow-[0_18px_50px_rgba(0,0,0,0.22)] transition-all duration-200 hover:-translate-y-1 hover:border-white/[0.16]">
-      <div className={`relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-gradient-to-br p-5 ${member.gradient}`}>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.24),transparent_32%),radial-gradient(circle_at_62%_46%,rgba(255,255,255,0.1),transparent_28%),linear-gradient(to_top,rgba(8,8,8,0.48),transparent_64%)]" />
-
-        <div className="relative z-10 rounded-full bg-white/[0.08] p-2 shadow-[0_22px_48px_rgba(0,0,0,0.34)] ring-1 ring-white/[0.2] transition-transform duration-300 group-hover:scale-[1.03]">
-          <div className="flex h-40 w-40 items-center justify-center overflow-hidden rounded-full border-2 border-white/70 bg-black/25 ring-[10px] ring-black/20 backdrop-blur-md sm:h-44 sm:w-44">
-            {member.photo ? (
-              <img
-                src={member.photo}
-                alt={member.name}
-                width="640"
-                height="640"
-                loading={index < 4 ? 'eager' : 'lazy'}
-                decoding="async"
-                fetchPriority={index < 4 ? 'high' : 'auto'}
-                className={`h-full w-full object-cover ${getPhotoEnhanceClassName(member)}`}
-                style={{
-                  objectPosition: member.photoPosition || 'center',
-                  transform: member.scale ? `scale(${member.scale})` : 'none',
-                }}
-              />
-            ) : (
-              <span className="font-syne text-[42px] font-[800] text-white sm:text-[48px]">
-                {member.initials}
-              </span>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div className="flex flex-1 flex-col p-6">
-        <p className="font-syne text-[20px] font-bold leading-tight text-white">{member.name}</p>
-        <p className="mt-2 min-h-[22px] font-sans text-[14px] text-text-secondary">{member.role}</p>
-
-        <div className="mt-auto flex items-center gap-3 pt-6">
+      <figcaption className="mt-4">
+        <p className="font-syne text-[20px] font-bold leading-tight text-white">{member.name.trim()}</p>
+        <div className="mt-3 flex items-center justify-center gap-3">
           {member.linkedin && (
             <a
               href={member.linkedin}
               target="_blank"
               rel="noreferrer"
-              aria-label={`${member.name} LinkedIn`}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.1] text-white/55 transition-colors duration-150 hover:border-white/[0.22] hover:text-white"
+              aria-label={`${member.name.trim()} LinkedIn`}
+              className="text-white/55 transition-colors duration-150 hover:text-white"
             >
               <LinkedinIcon />
             </a>
           )}
-          {member.instagram && (
+          {member.instagram && member.instagram !== '#' && (
             <a
               href={member.instagram}
               target="_blank"
               rel="noreferrer"
-              aria-label={`${member.name} Instagram`}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.1] text-white/55 transition-colors duration-150 hover:border-white/[0.22] hover:text-white"
+              aria-label={`${member.name.trim()} Instagram`}
+              className="text-white/55 transition-colors duration-150 hover:text-white"
             >
               <InstagramIcon />
             </a>
@@ -316,15 +296,15 @@ const TeamCard = ({ member, index }) => (
               href={member.github}
               target="_blank"
               rel="noreferrer"
-              aria-label={`${member.name} GitHub`}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.1] text-white/55 transition-colors duration-150 hover:border-white/[0.22] hover:text-white"
+              aria-label={`${member.name.trim()} GitHub`}
+              className="text-white/55 transition-colors duration-150 hover:text-white"
             >
               <GithubIcon />
             </a>
           )}
         </div>
-      </div>
-    </article>
+      </figcaption>
+    </figure>
   </RevealOnScroll>
 );
 
@@ -342,18 +322,18 @@ export default function Team() {
           </div>
         </RevealOnScroll>
 
-        <div className="space-y-14 md:space-y-18">
+        <div className="space-y-16 md:space-y-20">
           {teamSections.map((section) => (
             <section key={section.title}>
               <RevealOnScroll>
-                <h2 className="mb-6 text-center font-syne text-[24px] font-[800] leading-tight text-white md:text-[32px]">
+                <h2 className="mb-8 text-center font-syne text-[24px] font-[800] leading-tight text-white md:text-[32px]">
                   {section.title}
                 </h2>
               </RevealOnScroll>
 
-              <div className="flex flex-wrap justify-center gap-6">
+              <div className="mx-auto flex max-w-[1040px] flex-wrap justify-center gap-8">
                 {section.members.map((member) => (
-                  <TeamCard
+                  <TeamMember
                     key={member.name}
                     member={member}
                     index={team.findIndex((teamMember) => teamMember.name === member.name)}
