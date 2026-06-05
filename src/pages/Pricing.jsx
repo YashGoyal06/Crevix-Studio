@@ -6,7 +6,7 @@ import Layout from '../components/layout/Layout';
 import { useCart } from '../context/cartStore';
 import { useAuth } from '../context/authStore';
 import { supabase } from '../lib/supabaseClient';
-import { addOns, designServices, webPlans } from '../data/pricing';
+import { addOns, designServices, designPackages, webPlans } from '../data/pricing';
 
 const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
   const isWebPlan = plan.type === 'Website Plan';
@@ -146,20 +146,100 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
   );
 };
 
-const ServiceCard = ({ item, onAddToCart }) => (
-  <div className="rounded-[16px] p-6 text-center transition-all duration-200 hover:-translate-y-1 sm:p-8 md:p-10"
-    style={{ background: '#0E0E0E', border: '1px solid rgba(255,255,255,0.06)' }}>
-    <h3 className="font-syne font-bold text-[18px] text-white mb-3">{item.name}</h3>
-    <div className="font-syne font-[800] text-[28px] text-white mb-2 md:text-[32px]">{item.price}</div>
-    {item.unit && <p className="font-sans text-[13px] leading-[1.6] text-text-secondary">{item.unit}</p>}
-    <button
-      type="button"
-      onClick={() => onAddToCart(item)}
-      className="mt-6 w-full rounded-full border border-white/[0.1] py-3 text-center font-sans text-[14px] font-medium text-white/65 transition-colors duration-150 hover:border-white/[0.22] hover:text-white"
-    >
-      Add to Cart
-    </button>
-  </div>
+const ServiceCard = ({ item, onAddToCart, onBuyNow }) => (
+  <motion.div
+    whileHover={{ y: -6 }}
+    transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+    className="relative flex flex-col justify-between rounded-[20px] p-6 transition-all duration-300"
+    style={{ background: '#0A0A0A', border: '1px solid rgba(255,255,255,0.05)' }}
+  >
+    <div>
+      <h3 className="font-syne font-bold text-[17px] text-white mb-2">{item.name}</h3>
+      <p className="font-sans text-[13px] leading-[1.5] text-text-secondary mb-6">{item.unit}</p>
+    </div>
+    <div>
+      <div className="flex items-baseline gap-1.5 mb-5">
+        <span className="font-syne font-extrabold text-[22px] text-white">{item.price.replace('Starting from ', '')}</span>
+        <span className="font-sans text-[11px] text-white/30 uppercase tracking-wider font-semibold">Starting</span>
+      </div>
+      <div className="grid grid-cols-2 gap-2">
+        <button
+          type="button"
+          onClick={() => onAddToCart(item)}
+          className="rounded-full border border-white/[0.06] py-2.5 text-center font-sans text-[11px] font-medium text-white/60 transition-all duration-150 hover:border-white/[0.15] hover:text-white hover:bg-white/[0.02]"
+        >
+          Add to Cart
+        </button>
+        <button
+          type="button"
+          onClick={() => onBuyNow(item)}
+          className="rounded-full bg-white py-2.5 text-center font-sans text-[11px] font-bold text-[#080808] transition-opacity duration-150 hover:opacity-90"
+        >
+          Buy Now
+        </button>
+      </div>
+    </div>
+  </motion.div>
+);
+
+const PackageCard = ({ item, onBuyNow, onAddToCart }) => (
+  <motion.div
+    whileHover={{ y: -8 }}
+    transition={{ type: 'spring', stiffness: 220, damping: 18 }}
+    className="group relative flex flex-col rounded-[24px] p-8 md:p-10 transition-all duration-300"
+    style={{
+      background: 'linear-gradient(180deg, #111111 0%, #080808 100%)',
+      border: '1px solid rgba(255,255,255,0.05)',
+      boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
+    }}
+  >
+    <div className="absolute inset-0 rounded-[24px] bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none" />
+    
+    <div className="mb-8">
+      <div className="inline-block px-3 py-1 rounded-full text-[10px] font-sans tracking-widest uppercase text-white/40 border border-white/[0.08] mb-4">
+        {item.type}
+      </div>
+      <h3 className="font-syne font-bold text-[22px] text-white mb-2">{item.name}</h3>
+      <div className="flex items-baseline gap-2 mt-4">
+        <span className="font-syne text-[36px] font-[800] leading-none text-white">{item.price.split('/')[0].replace('Starting from ', '')}</span>
+        {item.price.includes('/month') && (
+          <span className="font-sans text-[13px] text-white/40">/ month</span>
+        )}
+        {!item.price.includes('/month') && (
+          <span className="font-sans text-[11px] text-white/30 uppercase tracking-wider font-semibold">Starting</span>
+        )}
+      </div>
+    </div>
+
+    <div className="flex-1 mb-8">
+      <p className="font-sans text-[12px] uppercase tracking-wider text-white/30 mb-4 font-semibold">Includes:</p>
+      <ul className="space-y-3">
+        {item.features.map((feature, i) => (
+          <li key={i} className="flex items-start gap-2.5 font-sans text-[14px] leading-relaxed text-white/80">
+            <span className="text-white/40 mt-[3px]">✦</span>
+            {feature}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div className="space-y-3">
+      <button
+        type="button"
+        onClick={() => onBuyNow(item)}
+        className="block w-full rounded-full bg-white py-3.5 text-center font-sans text-[14px] font-bold text-[#080808] transition-opacity duration-150 hover:opacity-90"
+      >
+        Get Started
+      </button>
+      <button
+        type="button"
+        onClick={() => onAddToCart(item)}
+        className="block w-full rounded-full border border-white/[0.08] py-3.5 text-center font-sans text-[14px] font-medium text-white/65 transition-all duration-150 hover:border-white/[0.18] hover:text-white"
+      >
+        Add to Cart
+      </button>
+    </div>
+  </motion.div>
 );
 
 export default function Pricing() {
@@ -276,13 +356,56 @@ export default function Pricing() {
       <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
         <RevealOnScroll>
           <div className="mb-10 text-center md:mb-12">
-            <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">Design Services</p>
-            <h2 className="font-syne text-[32px] font-bold leading-[1.08] text-white md:text-[44px]">Design Work That Supports The Launch.</h2>
+            <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">Individual Services</p>
+            <h2 className="font-syne text-[32px] font-bold leading-[1.08] text-white md:text-[44px]">Design Services</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {designServices.map((s, i) => (
-              <ServiceCard key={i} item={s} onAddToCart={handleAddToCart} />
+              <ServiceCard key={i} item={s} onAddToCart={handleAddToCart} onBuyNow={handleBuyNow} />
             ))}
+          </div>
+        </RevealOnScroll>
+      </section>
+
+      {/* Packages */}
+      <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
+        <RevealOnScroll>
+          <div className="mb-10 text-center md:mb-12">
+            <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">Packages</p>
+            <h2 className="font-syne text-[32px] font-bold leading-[1.08] text-white md:text-[44px]">Premium Design Packages</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {designPackages.map((pkg, i) => (
+              <PackageCard key={i} item={pkg} onBuyNow={handleBuyNow} onAddToCart={handleAddToCart} />
+            ))}
+          </div>
+        </RevealOnScroll>
+      </section>
+
+      {/* Custom Solutions */}
+      <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
+        <RevealOnScroll>
+          <div className="relative rounded-[28px] overflow-hidden p-8 md:p-14 text-center border border-white/[0.05]"
+            style={{
+              background: 'radial-gradient(ellipse at top, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 80%), #0A0A0A'
+            }}
+          >
+            <div className="max-w-[640px] mx-auto">
+              <div className="inline-block px-3 py-1 rounded-full text-[10px] font-sans tracking-widest uppercase text-white/40 border border-white/[0.08] mb-6">
+                Tailored Creative Solutions
+              </div>
+              <h2 className="font-syne text-[32px] font-bold leading-tight text-white mb-4 md:text-[42px]">Custom Solutions</h2>
+              <p className="font-sans text-[16px] leading-relaxed text-text-secondary mb-3 font-semibold">
+                Need something specific?
+              </p>
+              <p className="font-sans text-[15px] leading-relaxed text-text-secondary/70 mb-8 max-w-[500px] mx-auto">
+                We offer tailored creative solutions designed around your brand goals, campaign requirements, and business needs. Contact us for a custom quote.
+              </p>
+              <Link to="/contact" className="inline-flex items-center gap-2.5 rounded-full bg-white px-8 py-4 font-sans text-[15px] font-bold text-[#080808] transition-opacity duration-150 hover:opacity-90">
+                Request Custom Quote
+                <span>→</span>
+              </Link>
+            </div>
           </div>
         </RevealOnScroll>
       </section>

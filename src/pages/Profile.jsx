@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import Layout from '../components/layout/Layout';
 import { useAuth } from '../context/authStore';
 import { supabase } from '../lib/supabaseClient';
-import { webPlans, addOns, designServices } from '../data/pricing';
+import { webPlans, addOns, designServices, designPackages } from '../data/pricing';
 
 const emptyForm = {
   businessName: '',
@@ -238,7 +238,7 @@ export default function Profile() {
               </div>
             ) : (
               purchasedItems.map((item, index) => {
-                const allPlans = [...webPlans, ...addOns, ...designServices];
+                const allPlans = [...webPlans, ...addOns, ...designServices, ...designPackages];
                 const planDetails = allPlans.find(p => p.id === item.id) || { name: item.id, type: 'Custom Plan' };
                 
                 return (
