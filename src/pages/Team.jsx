@@ -194,6 +194,17 @@ const team = [
     instagram: 'https://www.instagram.com/nikkss__.20',
     gradient: 'from-[#06B6D4]/60 via-[#8B5CF6]/55 to-[#EC4899]/60',
   },
+  {
+    name: 'Mishti Singh',
+    role: 'PR & Client Approach',
+    initials: 'MS',
+    photo: teamPhoto('mishti.webp'),
+    photoPosition: '50% 50%',
+    linkedin: 'https://www.linkedin.com/in/mishti-singh-7b3a3b332',
+    instagram: 'https://www.instagram.com/mishtiiii_s?igsh=YzVzeXJmY2s2ZXcw',
+    github: 'https://github.com/Mishti-source',
+    gradient: 'from-[#F97316]/60 via-[#BE185D]/55 to-[#6D28D9]/60',
+  },
   // — Social Media —
   {
     name: 'Prashansha Srivastava',
@@ -232,7 +243,10 @@ const teamSections = [
   },
   {
     title: 'Client Acquisition Team',
-    members: team.filter((member) => member.role === 'Client Acquisition Team'),
+    members: team.filter(
+      (member) =>
+        member.role === 'Client Acquisition Team' || member.role === 'PR & Client Approach'
+    ),
   },
   {
     title: 'Social Media',
