@@ -335,7 +335,9 @@ export default function Pricing() {
       {/* Website Plans */}
       <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
         <RevealOnScroll>
-          <p className="mb-10 text-center font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:mb-14 md:text-[13px]">Website Packages</p>
+          <p className="mb-10 text-center font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:mb-14 md:text-[13px]">
+            Website Packages <span className="text-amber-400/90 font-medium block mt-1 normal-case font-sans text-[11px] tracking-normal">(Note: Domain is excluded from all plans)</span>
+          </p>
         </RevealOnScroll>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
           {webPlans.map((p, i) => (
