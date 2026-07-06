@@ -8,5 +8,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/create-order", payment_views.create_order, name="create_order_alias"),
     path("api/verify-payment", payment_views.verify_payment, name="verify_payment_alias"),
+    path("api/agreements/", include("agreements.urls")),
     path("api/payments/", include("payments.urls")),
 ]

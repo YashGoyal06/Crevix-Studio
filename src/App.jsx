@@ -18,6 +18,8 @@ const Contact   = lazy(() => import('./pages/Contact'));
 const Login     = lazy(() => import('./pages/Login'));
 const Profile   = lazy(() => import('./pages/Profile'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const AgreementCreatePage = lazy(() => import('./modules/agreements/AgreementCreatePage'));
+const AgreementPage = lazy(() => import('./modules/agreements/AgreementPage'));
 
 const PageFade = ({ children }) => (
   <motion.div
@@ -46,6 +48,8 @@ const AnimatedRoutes = () => {
         <Route path="/login"     element={<PageFade><Login /></PageFade>} />
         <Route path="/profile"   element={<PageFade><ProtectedRoute><Profile /></ProtectedRoute></PageFade>} />
         <Route path="/crevix-admin" element={<PageFade><AdminDashboard /></PageFade>} />
+        <Route path="/agreement/new" element={<AgreementCreatePage />} />
+        <Route path="/agreement/:token" element={<AgreementPage />} />
       </Routes>
     </AnimatePresence>
   );

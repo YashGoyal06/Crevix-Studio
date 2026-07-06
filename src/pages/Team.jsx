@@ -25,6 +25,7 @@ const team = [
     linkedin: 'https://www.linkedin.com/in/rajsachan/',
     github: 'https://github.com/rawwwj00',
     gradient: 'from-[#0EA5E9]/60 via-[#6D28D9]/55 to-[#14B8A6]/60',
+    isPoc: true,
   },
   {
     name: 'Kriti Tripathi',
@@ -38,17 +39,6 @@ const team = [
     gradient: 'from-[#0EA5E9]/60 via-[#6D28D9]/55 to-[#14B8A6]/60',
   },
   {
-    name: 'Manjiri  Gawali ',
-    role: 'Technical Department',
-    initials: 'MG',
-    photo: teamPhoto('Manjiri.webp'),
-    photoPosition: '50% 50%',
-    linkedin: 'https://www.linkedin.com/in/manjiri-gawali-89556a25b/',
-    github: 'https://github.com/ManjirimGawali',
-    instagram: 'https://www.instagram.com/manjiri.gawali/',
-    gradient: 'from-[#0EA5E9]/60 via-[#6D28D9]/55 to-[#14B8A6]/60',
-  },
-  {
     name: 'Yashi Pandey',
     role: 'Technical Department',
     initials: 'TP',
@@ -58,16 +48,7 @@ const team = [
     github: 'https://github.com/yaship6',
     instagram: 'https://instagram.com/yashi._.6',
     gradient: 'from-[#0EA5E9]/60 via-[#6D28D9]/55 to-[#14B8A6]/60',
-  },
-  {
-    name: 'Pranathi T R',
-    role: 'Technical Department',
-    initials: 'PTR',
-    photo: teamPhoto('pranathi.webp'),
-    photoPosition: '50% 50%',
-    linkedin: 'https://www.linkedin.com/in/pranathi-tr-152547278',
-    github: 'https://github.com/ptr25',
-    gradient: 'from-[#0EA5E9]/60 via-[#6D28D9]/55 to-[#14B8A6]/60',
+    isPoc: true,
   },
   {
     name: 'Vanshika Pal',
@@ -92,6 +73,18 @@ const team = [
     gradient: 'from-[#6D28D9]/65 via-[#0EA5E9]/45 to-[#BE185D]/60',
   },
   {
+    name: 'Archi Israni',
+    role: 'Graphic Designer',
+    initials: 'AI',
+    photo: teamPhoto('archi.webp'),
+    photoPosition: '50% 50%',
+    linkedin: 'https://www.linkedin.com/in/archi-israni',
+    instagram: 'https://www.instagram.com/archiayy/',
+    github: 'https://github.com/archiay',
+    gradient: 'from-[#6D28D9]/65 via-[#0EA5E9]/45 to-[#BE185D]/60',
+    isPoc: false,
+  },
+  {
     name: 'Pragalbha Padhy',
     role: 'Graphic Designer',
     initials: 'PP',
@@ -100,6 +93,7 @@ const team = [
     linkedin: 'https://www.linkedin.com/in/pragalbha-padhy-087bb6364',
     github: 'https://github.com/pragalbha25bai11493-ai',
     gradient: 'from-[#BE185D]/60 via-[#EA580C]/50 to-[#FACC15]/45',
+    isPoc: true,
   },
   {
     name: 'Shweta Gupta',
@@ -110,6 +104,7 @@ const team = [
     linkedin: 'https://www.linkedin.com/in/shw3tagupta/',
     instagram: 'https://www.instagram.com/shweta.zip/',
     gradient: 'from-[#8B5CF6]/60 via-[#D946EF]/55 to-[#FF007F]/60',
+    isPoc: true,
   },
   // — Client Acquisition —
   {
@@ -121,16 +116,7 @@ const team = [
     linkedin: 'https://www.linkedin.com/in/abhimanyu-manojawas-50687528b',
     instagram: 'https://www.instagram.com/manyu_elayath_',
     gradient: 'from-[#BE185D]/65 via-[#6D28D9]/55 to-[#F97316]/60',
-  },
-  {
-    name: 'Trisha Kapoor',
-    role: 'Client Acquisition Team',
-    initials: 'TK',
-    photo: teamPhoto('Trisha.webp'),
-    photoPosition: '50% 35%',
-    linkedin: 'https://www.linkedin.com/in/trisha-kapoor2412',
-    instagram: 'https://www.instagram.com/ttriishhaaa',
-    gradient: 'from-[#BE185D]/65 via-[#6D28D9]/55 to-[#F97316]/60',
+    isPoc: true,
   },
   {
     name: 'Riddhi Garg',
@@ -141,15 +127,7 @@ const team = [
     linkedin: 'https://www.linkedin.com/in/riddhi-garg-997834257',
     instagram: 'https://www.instagram.com/riddhigarg___/',
     gradient: 'from-[#BE185D]/65 via-[#6D28D9]/55 to-[#F97316]/60',
-  },
-  {
-    name: 'Tanishka Pandey',
-    role: 'Client Acquisition Team',
-    initials: 'TP',
-    photo: teamPhoto('tanishka-pandey.webp'),
-    photoPosition: '50% 50%',
-    instagram: 'https://www.instagram.com/tanishkayk',
-    gradient: 'from-[#BE185D]/65 via-[#6D28D9]/55 to-[#F97316]/60',
+    isPoc: true,
   },
   {
     name: 'Aditi Prakash',
@@ -169,18 +147,6 @@ const team = [
     photoPosition: '50% 35%',
     linkedin: 'https://www.linkedin.com/in/tanishka-singh-371851377',
     instagram: 'https://www.instagram.com/_.tanishka._.singh',
-    gradient: 'from-[#F97316]/60 via-[#BE185D]/55 to-[#6D28D9]/60',
-  },
-  {
-    name: 'Bhumi',
-    role: 'Client Acquisition Team',
-    initials: 'B',
-    photo: teamPhoto('Bhumi.webp'),
-    photoPosition: '50% 62%',
-    scale: 1.35,
-    photoEnhance: 'strong',
-    linkedin: 'https://www.linkedin.com/in/bhumi17',
-    instagram: 'https://www.instagram.com/bhuuumiiiiiii',
     gradient: 'from-[#F97316]/60 via-[#BE185D]/55 to-[#6D28D9]/60',
   },
   {
@@ -215,6 +181,7 @@ const team = [
     linkedin: 'https://www.linkedin.com/in/prashansha-srivastava-442a74379',
     instagram: '#',
     gradient: 'from-[#14B8A6]/60 via-[#0EA5E9]/55 to-[#6D28D9]/60',
+    isPoc: true,
   },
   {
     name: 'Divyanshi',
@@ -224,6 +191,16 @@ const team = [
     photoPosition: '50% 35%',
     linkedin: 'https://www.linkedin.com/in/divyanshi-gupta-989245359',
     instagram: '#',
+    gradient: 'from-[#EA580C]/60 via-[#BE185D]/55 to-[#14B8A6]/50',
+  },
+  {
+    name: 'Ragini Gupta',
+    role: 'Social Media',
+    initials: 'RG',
+    photo: teamPhoto('ragini.webp'),
+    photoPosition: '50% 50%',
+    linkedin: 'https://www.linkedin.com/in/ragini-gupta-6413253b3/',
+    instagram: 'https://www.instagram.com/ig.emorialplayz/',
     gradient: 'from-[#EA580C]/60 via-[#BE185D]/55 to-[#14B8A6]/50',
   },
 ];
@@ -278,13 +255,24 @@ const getPhotoEnhanceClassName = (member) =>
     : 'brightness-[1.03] contrast-[1.05] saturate-[1.06]';
 
 const TeamCard = ({ member, index }) => (
-  <RevealOnScroll delay={(index % 4) * 0.06} className="flex w-full max-w-[320px] sm:w-[calc(50%-0.75rem)] lg:w-[calc(25%-1.125rem)]">
-    <article className="group flex h-full w-full flex-col overflow-hidden rounded-lg border border-white/[0.08] bg-[#0E0E0E]/85 shadow-[0_18px_50px_rgba(0,0,0,0.22)] transition-all duration-200 hover:-translate-y-1 hover:border-white/[0.16]">
+  <RevealOnScroll delay={(index % 4) * 0.06} className="group relative flex w-full max-w-[290px]">
+    {/* Ambient Glow behind the card on hover */}
+    <div className={`absolute inset-0 -z-10 rounded-xl bg-gradient-to-br ${member.gradient} opacity-0 blur-2xl transition-all duration-500 group-hover:opacity-30`} />
+    
+    <article className="flex h-full w-full flex-col overflow-hidden rounded-xl border border-white/[0.08] bg-[#0A0A0A]/90 shadow-[0_24px_60px_rgba(0,0,0,0.35)] transition-all duration-300 hover:border-white/[0.18] hover:shadow-[0_28px_70px_rgba(0,0,0,0.55)]">
       <div className={`relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-gradient-to-br p-5 ${member.gradient}`}>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.24),transparent_32%),radial-gradient(circle_at_62%_46%,rgba(255,255,255,0.1),transparent_28%),linear-gradient(to_top,rgba(8,8,8,0.48),transparent_64%)]" />
 
+        {/* POC Badge */}
+        {member.isPoc && (
+          <div className="absolute right-3 top-3 z-20 flex items-center gap-1.5 rounded-full border border-white/[0.15] bg-black/60 px-2.5 py-0.75 text-[9px] font-bold uppercase tracking-wider text-[#FFFFFF] backdrop-blur-md shadow-[0_4px_12px_rgba(0,0,0,0.5)] ring-1 ring-white/10 transition-all duration-300 group-hover:border-white/30 group-hover:bg-white/15">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34D399] animate-pulse" />
+            POC
+          </div>
+        )}
+
         <div className="relative z-10 rounded-full bg-white/[0.08] p-2 shadow-[0_22px_48px_rgba(0,0,0,0.34)] ring-1 ring-white/[0.2] transition-transform duration-300 group-hover:scale-[1.03]">
-          <div className="flex h-40 w-40 items-center justify-center overflow-hidden rounded-full border-2 border-white/70 bg-black/25 ring-[10px] ring-black/20 backdrop-blur-md sm:h-44 sm:w-44">
+          <div className="flex h-36 w-36 items-center justify-center overflow-hidden rounded-full border-2 border-white/70 bg-black/25 ring-[10px] ring-black/20 backdrop-blur-md">
             {member.photo ? (
               <img
                 src={member.photo}
@@ -301,7 +289,7 @@ const TeamCard = ({ member, index }) => (
                 }}
               />
             ) : (
-              <span className="font-syne text-[42px] font-[800] text-white sm:text-[48px]">
+              <span className="font-syne text-[42px] font-[800] text-white">
                 {member.initials}
               </span>
             )}
@@ -310,17 +298,17 @@ const TeamCard = ({ member, index }) => (
       </div>
 
       <div className="flex flex-1 flex-col p-6">
-        <p className="font-syne text-[20px] font-bold leading-tight text-white">{member.name}</p>
-        <p className="mt-2 min-h-[22px] font-sans text-[14px] text-text-secondary">{member.role}</p>
+        <p className="font-syne text-[18px] font-bold leading-tight text-white transition-colors duration-200 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-white/80">{member.name}</p>
+        <p className="mt-2 min-h-[22px] font-sans text-[13px] text-text-secondary">{member.role}</p>
 
-        <div className="mt-auto flex items-center gap-3 pt-6">
+        <div className="mt-auto flex items-center gap-2.5 pt-5">
           {member.linkedin && (
             <a
               href={member.linkedin}
               target="_blank"
               rel="noreferrer"
               aria-label={`${member.name} LinkedIn`}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.1] text-white/55 transition-colors duration-150 hover:border-white/[0.22] hover:text-white"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.08] text-white/55 transition-all duration-155 hover:border-white/[0.25] hover:bg-white/[0.06] hover:text-white"
             >
               <LinkedinIcon />
             </a>
@@ -331,7 +319,7 @@ const TeamCard = ({ member, index }) => (
               target="_blank"
               rel="noreferrer"
               aria-label={`${member.name} Instagram`}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.1] text-white/55 transition-colors duration-150 hover:border-white/[0.22] hover:text-white"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.08] text-white/55 transition-all duration-155 hover:border-white/[0.25] hover:bg-white/[0.06] hover:text-white"
             >
               <InstagramIcon />
             </a>
@@ -342,7 +330,7 @@ const TeamCard = ({ member, index }) => (
               target="_blank"
               rel="noreferrer"
               aria-label={`${member.name} GitHub`}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.1] text-white/55 transition-colors duration-150 hover:border-white/[0.22] hover:text-white"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.08] text-white/55 transition-all duration-155 hover:border-white/[0.25] hover:bg-white/[0.06] hover:text-white"
             >
               <GithubIcon />
             </a>
@@ -371,12 +359,12 @@ export default function Team() {
           {teamSections.map((section) => (
             <section key={section.title}>
               <RevealOnScroll>
-                <h2 className="mb-6 text-center font-syne text-[24px] font-[800] leading-tight text-white md:text-[32px]">
+                <h2 className="mb-8 text-center font-syne text-[24px] font-[800] leading-tight text-white md:text-[32px]">
                   {section.title}
                 </h2>
               </RevealOnScroll>
 
-              <div className="flex flex-wrap justify-center gap-6">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center">
                 {section.members.map((member) => (
                   <TeamCard
                     key={member.name}
