@@ -223,22 +223,30 @@ const teamSections = [
   },
   {
     title: 'Technical Department',
-    members: team.filter((member) => member.role === 'Technical Department'),
+    members: team
+      .filter((member) => member.role === 'Technical Department')
+      .sort((a, b) => (b.isPoc ? 1 : 0) - (a.isPoc ? 1 : 0)),
   },
   {
     title: 'Graphic Designers',
-    members: team.filter((member) => member.role === 'Graphic Designer'),
+    members: team
+      .filter((member) => member.role === 'Graphic Designer')
+      .sort((a, b) => (b.isPoc ? 1 : 0) - (a.isPoc ? 1 : 0)),
   },
   {
     title: 'Client Acquisition Team',
-    members: team.filter(
-      (member) =>
-        member.role === 'Client Acquisition Team' || member.role === 'PR & Client Approach'
-    ),
+    members: team
+      .filter(
+        (member) =>
+          member.role === 'Client Acquisition Team' || member.role === 'PR & Client Approach'
+      )
+      .sort((a, b) => (b.isPoc ? 1 : 0) - (a.isPoc ? 1 : 0)),
   },
   {
     title: 'Social Media',
-    members: team.filter((member) => member.role === 'Social Media'),
+    members: team
+      .filter((member) => member.role === 'Social Media')
+      .sort((a, b) => (b.isPoc ? 1 : 0) - (a.isPoc ? 1 : 0)),
   },
 ];
 
