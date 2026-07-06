@@ -32,7 +32,7 @@ const team = [
     role: 'Technical Department',
     initials: 'KT',
     photo: teamPhoto('kriti.webp'),
-    photoPosition: '50% 50%',
+    photoPosition: '50% 12%',
     linkedin: 'https://www.linkedin.com/in/kriti-tripathi/',
     github: 'https://github.com/kriti2818',
     instagram: 'https://www.instagram.com/_kritayy',
@@ -172,16 +172,6 @@ const team = [
     github: 'https://github.com/Mishti-source',
     gradient: 'from-[#F97316]/60 via-[#BE185D]/55 to-[#6D28D9]/60',
   },
-  {
-    name: 'Angel Varman',
-    role: 'Client Acquisition Team',
-    initials: 'AV',
-    photo: teamPhoto('angel.webp'),
-    photoPosition: '50% 50%',
-    linkedin: 'https://www.linkedin.com/in/angel-verman-70363a39a?utm_source=share_via&utm_content=profile&utm_medium=member_android',
-    instagram: 'https://www.instagram.com/shr3kkiss4ngle/',
-    gradient: 'from-[#F97316]/60 via-[#BE185D]/55 to-[#6D28D9]/60',
-  },
   // — Social Media —
   {
     name: 'Prashansha Srivastava',
@@ -212,6 +202,16 @@ const team = [
     photoPosition: '50% 50%',
     linkedin: 'https://www.linkedin.com/in/ragini-gupta-6413253b3/',
     instagram: 'https://www.instagram.com/ig.emorialplayz/',
+    gradient: 'from-[#EA580C]/60 via-[#BE185D]/55 to-[#14B8A6]/50',
+  },
+  {
+    name: 'Angel Varman',
+    role: 'Social Media',
+    initials: 'AV',
+    photo: teamPhoto('angel.webp'),
+    photoPosition: '50% 50%',
+    linkedin: 'https://www.linkedin.com/in/angel-verman-70363a39a?utm_source=share_via&utm_content=profile&utm_medium=member_android',
+    instagram: 'https://www.instagram.com/shr3kkiss4ngle/',
     gradient: 'from-[#EA580C]/60 via-[#BE185D]/55 to-[#14B8A6]/50',
   },
 ];
