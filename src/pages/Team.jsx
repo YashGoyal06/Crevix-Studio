@@ -364,7 +364,7 @@ export default function Team() {
                 </h2>
               </RevealOnScroll>
 
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center">
+              <div className="flex flex-wrap justify-center gap-8">
                 {section.members.map((member) => (
                   <TeamCard
                     key={member.name}
