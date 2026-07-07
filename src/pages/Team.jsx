@@ -84,6 +84,28 @@ const team = [
     github: 'https://github.com/farhaandev',
     gradient: 'from-[#0EA5E9]/60 via-[#6D28D9]/55 to-[#14B8A6]/60',
   },
+  {
+    name: 'Tanisha Mathur',
+    role: 'Technical Department',
+    initials: 'TM',
+    photo: teamPhoto('tanisha.webp'),
+    photoPosition: '50% 50%',
+    linkedin: 'https://www.linkedin.com/in/tanisha-mathur-442658280',
+    instagram: 'https://www.instagram.com/tanisham._',
+    github: 'https://github.com/tanisham2',
+    gradient: 'from-[#0EA5E9]/60 via-[#6D28D9]/55 to-[#14B8A6]/60',
+  },
+  {
+    name: 'Alisha Saxena',
+    role: 'Technical Department',
+    initials: 'AS',
+    photo: teamPhoto('alisha.webp'),
+    photoPosition: '50% 50%',
+    linkedin: 'https://www.linkedin.com/in/alisha09/',
+    instagram: 'https://www.instagram.com/Draftsbyalisha',
+    github: 'https://github.com/alisha09',
+    gradient: 'from-[#0EA5E9]/60 via-[#6D28D9]/55 to-[#14B8A6]/60',
+  },
   // — Graphic Designers —
   {
     name: 'Anushka',
