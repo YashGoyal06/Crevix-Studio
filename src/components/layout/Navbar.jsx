@@ -95,8 +95,8 @@ export default function Navbar() {
               to="/cart"
               className={`relative inline-flex h-9 w-9 items-center justify-center rounded-full border transition-colors duration-150 ${
                 location.pathname === '/cart'
-                  ? 'border-white/40 text-white'
-                  : 'border-white/12 text-white/65 hover:border-white/30 hover:text-white'
+                  ? 'border-white/[0.35] text-white'
+                  : 'border-white/[0.06] text-white/65 hover:border-white/[0.35] hover:text-white'
               }`}
               aria-label="Cart"
             >
