@@ -29,8 +29,7 @@ export default function Hero() {
       onMouseLeave={handlePointerLeave}
       className="relative flex min-h-[calc(100svh-72px)] flex-col items-center justify-center overflow-hidden px-4 py-16 text-center sm:px-6 md:min-h-screen md:py-20"
     >
-      <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_18%_5%,rgba(120,84,255,0.28),transparent_34%),radial-gradient(circle_at_82%_15%,rgba(0,183,255,0.2),transparent_36%),radial-gradient(circle_at_50%_100%,rgba(80,80,180,0.18),transparent_46%)]" />
-      <div className="absolute inset-0 -z-20 bg-[linear-gradient(180deg,rgba(3,3,6,0.2),rgba(2,2,4,0.78)_62%,rgba(1,1,2,0.95))]" />
+      <div className="absolute inset-0 -z-20 bg-gradient-to-b from-transparent via-[#080808]/20 to-[#080808]/90" />
       <motion.div
         className="absolute inset-0 -z-10 opacity-80"
         style={{ background: dynamicGlow }}
