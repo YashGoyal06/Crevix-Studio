@@ -76,7 +76,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.6, ease }}
-          className="mt-8 flex w-full max-w-[340px] flex-col items-stretch gap-3 sm:mt-10 sm:max-w-none sm:flex-row sm:items-center sm:justify-center"
+          className="mt-8 flex w-full max-w-[340px] flex-col items-stretch gap-3 sm:mt-10 sm:max-w-none sm:flex-row sm:items-center sm:justify-center mx-auto"
         >
           <Link to="/portfolio" className="w-full sm:w-auto">
             <motion.button
