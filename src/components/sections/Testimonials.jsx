@@ -20,7 +20,7 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="mx-auto max-w-[1280px] px-4 py-20 sm:px-6 md:py-36">
+    <section className="mx-auto max-w-[1280px] px-4 py-14 sm:px-6 md:py-22">
       <RevealOnScroll>
         <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">What Clients Say</p>
         <h2 className="mb-10 font-syne text-[34px] font-bold leading-[1.05] text-white md:mb-20 md:text-[44px]">Words From Real Clients.</h2>

@@ -40,7 +40,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className="fixed top-4 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-2rem)] max-w-[1200px] h-[60px] flex items-center bg-[#080808]/70 backdrop-blur-md rounded-full border border-white/[0.08] shadow-[0_20px_50px_rgba(0,0,0,0.5)] px-6"
+        className="fixed top-4 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-2rem)] max-w-[1200px] h-[60px] flex items-center bg-[#09090B]/70 backdrop-blur-md rounded-full border border-white/[0.08] shadow-[0_20px_50px_rgba(0,0,0,0.5)] px-6"
       >
         <div className="w-full flex items-center justify-between">
           {/* Logo */}

@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        void:    '#080808',
+        void:    '#09090B',
         surface: '#0E0E0E',
         elevated:'#111111',
         border:  'rgba(255, 255, 255, 0.06)',

@@ -5,7 +5,7 @@ import { projects } from '../../data/projects';
 
 export default function FeaturedProjects() {
   return (
-    <section className="mx-auto max-w-[1280px] px-4 py-20 sm:px-6 md:py-36">
+    <section className="mx-auto max-w-[1280px] px-4 py-14 sm:px-6 md:py-22">
       <RevealOnScroll>
         <div className="mb-6 flex items-center gap-3">
           <span className="h-px w-8 bg-white/20" />

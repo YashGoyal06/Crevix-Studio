@@ -16,7 +16,7 @@ const WhyUs = () => {
   const marqueeItems = [...features, ...features];
 
   return (
-    <section id="why-us" className="relative py-24 overflow-hidden bg-transparent">
+    <section id="why-us" className="relative py-16 overflow-hidden bg-transparent">
       {/* Glow removed here to maintain seamless single-page flow */}
 
       {/* Section Header */}
