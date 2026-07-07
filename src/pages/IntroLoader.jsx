@@ -35,7 +35,7 @@ export default function IntroLoader({ onComplete }) {
           <div className="relative flex flex-col items-center select-none">
             {/* CREVIX */}
             <motion.div
-              className="font-syne font-[800] uppercase tracking-[0.25em] text-white leading-none"
+              className="font-brand font-[800] uppercase tracking-[0.25em] text-white leading-none"
               style={{ fontSize: 'clamp(52px, 8.5vw, 128px)' }}
               initial={{ opacity: 0, y: 28, filter: 'blur(6px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
@@ -46,7 +46,7 @@ export default function IntroLoader({ onComplete }) {
 
             {/* STUDIO */}
             <motion.div
-              className="font-syne font-[800] uppercase tracking-[0.25em] text-white leading-none mt-2"
+              className="font-brand font-[800] uppercase tracking-[0.25em] text-white leading-none mt-2"
               style={{ fontSize: 'clamp(52px, 8.5vw, 128px)' }}
               initial={{ opacity: 0, y: 28, filter: 'blur(6px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}

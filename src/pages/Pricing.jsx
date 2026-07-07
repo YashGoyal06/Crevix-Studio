@@ -327,7 +327,7 @@ export default function Pricing() {
               Prices Increase After May 15th
             </div>
           </div>
-          <h1 className="mb-4 font-syne text-[40px] font-[800] leading-[1.02] text-white md:text-[64px]">Honest Pricing.</h1>
+          <h1 className="mb-4 font-syne text-[40px] font-bold uppercase tracking-wider leading-[1.15] text-white md:text-[64px]">Honest Pricing.</h1>
           <p className="font-sans text-[16px] leading-[1.6] text-text-secondary md:text-[18px]">Websites, design support, and online ordering setup without hidden fees.</p>
         </RevealOnScroll>
       </section>

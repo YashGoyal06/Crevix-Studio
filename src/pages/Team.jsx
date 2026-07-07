@@ -57,6 +57,7 @@ const team = [
     initials: 'RJ',
     photo: teamPhoto('rishika.webp'),
     photoPosition: '50% 20%',
+    experience: 'Senior',
     linkedin: 'https://linkedin.com/in/rishika-jat',
     instagram: 'https://www.instagram.com/rishika_tada?igsh=YnEyb3lwNDB5Yzkw&utm_source=qr',
     github: 'https://github.com/Rishika-jat',
@@ -69,6 +70,7 @@ const team = [
     photo: teamPhoto('farhan.webp'),
     photoPosition: '50% 30%',
     scale: 1.05,
+    experience: 'Senior',
     linkedin: 'https://www.linkedin.com/in/farhaanmalik/',
     instagram: 'https://www.instagram.com/0xfarhaanmalik',
     github: 'https://github.com/farhaandev',
@@ -79,8 +81,8 @@ const team = [
     role: 'Technical Department',
     initials: 'TM',
     photo: teamPhoto('tanisha.webp'),
-    photoPosition: '50% 30%',
-    scale: 1.15,
+    photoPosition: '50% 25%',
+    scale: 1.55,
     linkedin: 'https://www.linkedin.com/in/tanisha-mathur-442658280',
     instagram: 'https://www.instagram.com/tanisham._',
     github: 'https://github.com/tanisham2',
@@ -92,6 +94,7 @@ const team = [
     initials: 'AS',
     photo: teamPhoto('alisha.webp'),
     photoPosition: '50% 50%',
+    experience: 'Senior',
     linkedin: 'https://www.linkedin.com/in/alisha09/',
     instagram: 'https://www.instagram.com/Draftsbyalisha',
     github: 'https://github.com/alisha09',
@@ -138,6 +141,7 @@ const team = [
     initials: 'SG',
     photo: teamPhoto('shweta.webp'),
     photoPosition: '50% 35%',
+    experience: 'Senior',
     linkedin: 'https://www.linkedin.com/in/shw3tagupta/',
     instagram: 'https://www.instagram.com/shweta.zip/',
     gradient: 'from-[#8B5CF6]/60 via-[#D946EF]/55 to-[#FF007F]/60',
@@ -311,59 +315,73 @@ const getPhotoEnhanceClassName = (member) =>
 
 const TeamCard = ({ member, index }) => (
   <RevealOnScroll delay={(index % 4) * 0.06} className="group relative flex w-full max-w-[290px]">
-    {/* Ambient Glow behind the card on hover */}
-    <div className={`absolute inset-0 -z-10 rounded-xl bg-gradient-to-br ${member.gradient} opacity-0 blur-2xl transition-all duration-500 group-hover:opacity-30`} />
+    {/* Ambient Glow behind the card (subtle on default, intensifies on hover) */}
+    <div className={`absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br ${member.gradient} opacity-[0.05] blur-2xl transition-all duration-500 group-hover:opacity-30 group-hover:scale-105`} />
     
-    <article className="flex h-full w-full flex-col overflow-hidden rounded-xl border border-white/[0.08] bg-[#0A0A0A]/90 shadow-[0_24px_60px_rgba(0,0,0,0.35)] transition-all duration-300 hover:border-white/[0.18] hover:shadow-[0_28px_70px_rgba(0,0,0,0.55)]">
-      <div className={`relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-gradient-to-br p-5 ${member.gradient}`}>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.24),transparent_32%),radial-gradient(circle_at_62%_46%,rgba(255,255,255,0.1),transparent_28%),linear-gradient(to_top,rgba(8,8,8,0.48),transparent_64%)]" />
-
+    <article className="flex h-full w-full flex-col overflow-hidden rounded-[24px] border border-white/[0.05] bg-[#0A0A0A]/40 backdrop-blur-md p-3 transition-all duration-500 hover:border-white/[0.12] hover:bg-[#0A0A0A]/75">
+      
+      {/* Inset Photo Frame */}
+      <div className="relative aspect-square w-full overflow-hidden rounded-[18px] bg-neutral-900/50">
+        {member.photo ? (
+          <img
+            src={member.photo}
+            alt={member.name}
+            width="640"
+            height="640"
+            loading={index < 4 ? 'eager' : 'lazy'}
+            decoding="async"
+            fetchPriority={index < 4 ? 'high' : 'auto'}
+            className={`h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 ${getPhotoEnhanceClassName(member)}`}
+            style={{
+              objectPosition: member.photoPosition || 'center',
+              transform: member.scale ? `scale(${member.scale})` : undefined,
+            }}
+          />
+        ) : (
+          <div className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${member.gradient} opacity-30`}>
+            <span className="font-syne text-[48px] font-extrabold text-white tracking-tight">
+              {member.initials}
+            </span>
+          </div>
+        )}
+        
+        {/* Subtle overlay gradient over the bottom of the photo */}
+        <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-black/60 to-transparent" />
+        
         {/* POC Badge */}
         {member.isPoc && (
-          <div className="absolute right-3 top-3 z-20 flex items-center gap-1.5 rounded-full border border-white/[0.15] bg-black/60 px-2.5 py-0.75 text-[9px] font-bold uppercase tracking-wider text-[#FFFFFF] backdrop-blur-md shadow-[0_4px_12px_rgba(0,0,0,0.5)] ring-1 ring-white/10 transition-all duration-300 group-hover:border-white/30 group-hover:bg-white/15">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34D399] animate-pulse" />
+          <div className="absolute right-2.5 top-2.5 z-20 flex items-center gap-1.5 rounded-full border border-white/[0.15] bg-black/70 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider text-white backdrop-blur-md shadow-lg ring-1 ring-white/10">
+            <span className="h-1.2 w-1.2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34D399] animate-pulse" />
             POC
           </div>
         )}
-
-        <div className="relative z-10 rounded-full bg-white/[0.08] p-2 shadow-[0_22px_48px_rgba(0,0,0,0.34)] ring-1 ring-white/[0.2] transition-transform duration-300 group-hover:scale-[1.03]">
-          <div className="flex h-36 w-36 items-center justify-center overflow-hidden rounded-full border-2 border-white/70 bg-black/25 ring-[10px] ring-black/20 backdrop-blur-md">
-            {member.photo ? (
-              <img
-                src={member.photo}
-                alt={member.name}
-                width="640"
-                height="640"
-                loading={index < 4 ? 'eager' : 'lazy'}
-                decoding="async"
-                fetchPriority={index < 4 ? 'high' : 'auto'}
-                className={`h-full w-full object-cover ${getPhotoEnhanceClassName(member)}`}
-                style={{
-                  objectPosition: member.photoPosition || 'center',
-                  transform: member.scale ? `scale(${member.scale})` : 'none',
-                }}
-              />
-            ) : (
-              <span className="font-syne text-[42px] font-[800] text-white">
-                {member.initials}
-              </span>
-            )}
-          </div>
-        </div>
       </div>
 
-      <div className="flex flex-1 flex-col p-6">
-        <p className="font-syne text-[18px] font-bold leading-tight text-white transition-colors duration-200 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-white/80">{member.name}</p>
-        <p className="mt-2 min-h-[22px] font-sans text-[13px] text-text-secondary">{member.role}</p>
+      {/* Card Details Block */}
+      <div className="flex flex-1 flex-col px-2.5 py-4">
+        <p className="font-syne text-[16px] font-bold leading-tight text-white transition-colors duration-200 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-white/80">
+          {member.name}
+        </p>
+        <div className="mt-1 flex items-center gap-1.5 font-sans text-[12px] font-medium text-text-secondary tracking-wide">
+          <span>{member.role}</span>
+          {member.experience && (
+            <>
+              <span className="h-1 w-1 rounded-full bg-white/20" />
+              <span className="text-[10px] font-semibold text-violet-400 bg-violet-500/10 border border-violet-500/20 px-1.5 py-0.25 rounded-md">
+                {member.experience}
+              </span>
+            </>
+          )}
+        </div>
 
-        <div className="mt-auto flex items-center gap-2.5 pt-5">
+        <div className="mt-4 flex items-center gap-2 pt-3 border-t border-white/[0.04]">
           {member.linkedin && (
             <a
               href={member.linkedin}
               target="_blank"
               rel="noreferrer"
               aria-label={`${member.name} LinkedIn`}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.08] text-white/55 transition-all duration-155 hover:border-white/[0.25] hover:bg-white/[0.06] hover:text-white"
+              className="flex h-7.5 w-7.5 items-center justify-center rounded-full border border-white/[0.05] text-white/45 transition-all duration-300 hover:scale-105 hover:border-white/[0.2] hover:bg-white/[0.06] hover:text-white"
             >
               <LinkedinIcon />
             </a>
@@ -374,7 +392,7 @@ const TeamCard = ({ member, index }) => (
               target="_blank"
               rel="noreferrer"
               aria-label={`${member.name} Instagram`}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.08] text-white/55 transition-all duration-155 hover:border-white/[0.25] hover:bg-white/[0.06] hover:text-white"
+              className="flex h-7.5 w-7.5 items-center justify-center rounded-full border border-white/[0.05] text-white/45 transition-all duration-300 hover:scale-105 hover:border-white/[0.2] hover:bg-white/[0.06] hover:text-white"
             >
               <InstagramIcon />
             </a>
@@ -385,7 +403,7 @@ const TeamCard = ({ member, index }) => (
               target="_blank"
               rel="noreferrer"
               aria-label={`${member.name} GitHub`}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.08] text-white/55 transition-all duration-155 hover:border-white/[0.25] hover:bg-white/[0.06] hover:text-white"
+              className="flex h-7.5 w-7.5 items-center justify-center rounded-full border border-white/[0.05] text-white/45 transition-all duration-300 hover:scale-105 hover:border-white/[0.2] hover:bg-white/[0.06] hover:text-white"
             >
               <GithubIcon />
             </a>
@@ -416,7 +434,9 @@ export default function Team() {
         <RevealOnScroll>
           <div className="mx-auto mb-12 max-w-[760px] text-center md:mb-20">
             <p className="mb-5 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:mb-6 md:text-[13px]">Our Team</p>
-            <h1 className="font-syne text-[40px] font-[800] leading-[1.02] text-white md:text-[64px]">Meet The People Behind Crevix.</h1>
+            <h1 className="font-syne text-[40px] font-bold uppercase tracking-wider leading-[1.15] text-white md:text-[64px]">
+              Meet The People <span className="bg-gradient-to-r from-violet-400 via-pink-400 to-amber-300 bg-clip-text text-transparent">Behind Crevix.</span>
+            </h1>
             <p className="mx-auto mt-6 max-w-[620px] font-sans text-[15px] leading-[1.75] text-text-secondary md:text-[17px]">
               A focused studio team across strategy, technology, design, PR, and social media.
             </p>

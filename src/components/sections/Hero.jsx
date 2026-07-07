@@ -50,7 +50,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.8, ease }}
-          className="mx-auto max-w-[min(100%,19rem)] font-syne text-[clamp(2rem,8vw,2.7rem)] font-[800] leading-[1.02] text-white sm:max-w-[22rem] sm:text-[clamp(2.3rem,6vw,2.95rem)] md:hidden"
+          className="mx-auto max-w-[min(100%,19rem)] font-syne text-[clamp(2rem,8vw,2.7rem)] font-bold uppercase tracking-wider leading-[1.15] text-white sm:max-w-[22rem] sm:text-[clamp(2.3rem,6vw,2.95rem)] md:hidden"
         >
           <span className="block">Digital</span>
           <span className="block text-gradient">Design</span>
@@ -61,7 +61,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.8, ease }}
-          className="mx-auto hidden max-w-[900px] font-syne text-[clamp(60px,5.2vw,84px)] font-[800] leading-[0.94] text-white md:block"
+          className="mx-auto hidden max-w-[900px] font-syne text-[clamp(60px,5.2vw,84px)] font-bold uppercase tracking-wider leading-[1.08] text-white md:block"
         >
           We Are A Digital
           <br />

@@ -21,9 +21,9 @@ export default {
         },
       },
       fontFamily: {
-        syne: ['Syne', 'sans-serif'],
-        'syne-mono': ['"Syne Mono"', 'monospace'],
-        sans: ['"DM Sans"', 'sans-serif'],
+        syne: ['Satoshi', 'sans-serif'],
+        brand: ['Syne', 'sans-serif'],
+        sans: ['Inter', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'monospace'],
       },
     },

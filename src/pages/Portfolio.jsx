@@ -43,7 +43,7 @@ export default function Portfolio() {
               </p>
               <span className="h-px w-8 bg-white/20" />
             </div>
-            <h1 className="font-syne text-[40px] font-[800] leading-[1.02] text-white md:text-[64px]">
+            <h1 className="font-syne text-[40px] font-bold uppercase tracking-wider leading-[1.15] text-white md:text-[64px]">
               Our Showcase.
             </h1>
             <p className="mx-auto mt-5 max-w-[550px] font-sans text-[15px] leading-[1.7] text-text-secondary">

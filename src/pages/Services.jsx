@@ -167,7 +167,7 @@ export default function Services() {
       <section className="mx-auto max-w-[1280px] px-4 pb-10 pt-20 text-center sm:px-6 md:pb-16 md:pt-28">
         <RevealOnScroll>
           <p className="mb-5 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:mb-6 md:text-[13px]">Our Capabilities</p>
-          <h1 className="mb-5 font-syne text-[40px] font-[800] leading-[1.02] text-white md:mb-6 md:text-[64px]">We Do Three Things.</h1>
+          <h1 className="mb-5 font-syne text-[40px] font-bold uppercase tracking-wider leading-[1.15] text-white md:mb-6 md:text-[64px]">We Do Three Things.</h1>
           <p className="font-sans text-[16px] leading-[1.6] text-text-secondary md:text-[18px]">And we do them better than anyone else.</p>
           <div className="w-[80px] h-[1px] bg-white/20 mx-auto mt-8" />
         </RevealOnScroll>

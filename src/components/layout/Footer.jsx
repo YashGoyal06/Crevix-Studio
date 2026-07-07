@@ -29,7 +29,7 @@ export default function Footer() {
                 className="w-16 h-16 object-contain" 
                 style={{ mixBlendMode: 'screen' }}
               />
-              <div className="font-syne font-[800] text-[18px] flex items-baseline gap-1.5">
+              <div className="font-brand font-[800] text-[18px] flex items-baseline gap-1.5">
                 <span className="text-white">CREVIX</span>
                 <span className="text-gradient">STUDIO</span>
               </div>
