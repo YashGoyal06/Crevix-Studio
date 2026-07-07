@@ -9,7 +9,7 @@ export default function Layout({ children }) {
       <AmbientBackground />
       <NoiseOverlay />
       <Navbar />
-      <main className="relative z-10 pt-[72px]">
+      <main className="relative z-10 pt-0">
         {children}
       </main>
       <div className="relative z-10">
