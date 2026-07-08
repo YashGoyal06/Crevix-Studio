@@ -100,6 +100,16 @@ const team = [
     github: 'https://github.com/alisha09',
     gradient: 'from-[#0EA5E9]/60 via-[#6D28D9]/55 to-[#14B8A6]/60',
   },
+  {
+    name: 'Sonali Saluja',
+    role: 'Technical Department',
+    initials: 'SS',
+    photo: teamPhoto('sonali.webp'),
+    photoPosition: '50% 50%',
+    linkedin: 'https://www.linkedin.com/in/sonali-saluja',
+    instagram: 'https://www.instagram.com/Sonalisaluja9005',
+    gradient: 'from-[#0EA5E9]/60 via-[#6D28D9]/55 to-[#14B8A6]/60',
+  },
   // — Graphic Designers —
   {
     name: 'Anushka',
