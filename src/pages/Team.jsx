@@ -147,6 +147,16 @@ const team = [
     gradient: 'from-[#8B5CF6]/60 via-[#D946EF]/55 to-[#FF007F]/60',
     isPoc: true,
   },
+  {
+    name: 'Sophia Verghese',
+    role: 'Graphic Designer',
+    initials: 'SV',
+    photo: teamPhoto('sophia.webp'),
+    photoPosition: '50% 30%',
+    linkedin: 'https://www.linkedin.com/in/sophia-verghese-30a814384/',
+    instagram: 'https://www.instagram.com/_sophia_verghese',
+    gradient: 'from-[#6D28D9]/65 via-[#0EA5E9]/45 to-[#BE185D]/60',
+  },
   // — Client Acquisition —
   {
     name: 'Abhimanyu Manojawas',
