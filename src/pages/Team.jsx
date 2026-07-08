@@ -152,7 +152,7 @@ const team = [
     role: 'Graphic Designer',
     initials: 'SV',
     photo: teamPhoto('sophia.webp'),
-    photoPosition: '50% 30%',
+    photoPosition: '50% 50%',
     linkedin: 'https://www.linkedin.com/in/sophia-verghese-30a814384/',
     instagram: 'https://www.instagram.com/_sophia_verghese',
     gradient: 'from-[#6D28D9]/65 via-[#0EA5E9]/45 to-[#BE185D]/60',
