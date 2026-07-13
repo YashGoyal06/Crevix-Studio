@@ -3,29 +3,101 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { RevealOnScroll } from '../hooks/useScrollReveal';
 import Layout from '../components/layout/Layout';
 
-const InputField = ({ label, type = 'text', name, value, onChange, error, placeholder, as: Tag = 'input', rows, children }) => (
+/* ── Palette ── */
+const C = {
+  deepForest: '#0D3B2E',
+  sage:       '#6F8A6E',
+  warmStone:  '#D8D2C4',
+  gold:       '#B88C3A',
+  charcoal:   '#2B2F2E',
+};
+
+/* ── Boxed input style with Deep Forest fill ── */
+const FormInput = ({ label, type = 'text', name, value, onChange, error, placeholder, rows }) => {
+  const Tag = rows ? 'textarea' : 'input';
+  return (
+    <div>
+      <label className="font-sans text-[11px] uppercase tracking-[0.2em] mb-2.5 block font-semibold" style={{ color: C.deepForest }}>{label}</label>
+      <Tag
+        type={type} name={name} value={value} onChange={onChange}
+        rows={rows} placeholder={placeholder}
+        className="w-full font-sans text-[15px] rounded-[12px] px-[18px] py-[14px] outline-none transition-all duration-200 resize-none placeholder-[#6F8A6E]"
+        style={{
+          color: C.warmStone,
+          background: C.deepForest,
+          border: error ? '1px solid rgba(239,68,68,0.7)' : 'none',
+        }}
+      />
+      <AnimatePresence>
+        {error && (
+          <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+            className="text-red-600 text-[12px] mt-1.5 font-sans font-semibold">
+            {error}
+          </motion.p>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+/* ── Select field ── */
+const FormSelect = ({ label, name, value, onChange, error, options, placeholder }) => (
   <div>
-    <label className="font-sans text-[11px] uppercase tracking-[0.15em] text-text-secondary mb-2 block">{label}</label>
-    <Tag
-      type={type} name={name} value={value} onChange={onChange}
-      rows={rows} placeholder={placeholder}
-      className={`w-full font-sans text-[15px] text-white placeholder-text-muted rounded-[12px] px-[18px] py-[14px] outline-none transition-all duration-150 resize-none ${
-        error
-          ? 'border border-red-500/40 bg-red-500/5'
-          : 'border border-white/[0.09] bg-transparent focus:border-white/[0.35]'
-      }`}
+    <label className="font-sans text-[11px] uppercase tracking-[0.2em] mb-2.5 block font-semibold" style={{ color: C.deepForest }}>{label}</label>
+    <select
+      name={name} value={value} onChange={onChange}
+      className="w-full font-sans text-[15px] rounded-[12px] px-[18px] py-[14px] outline-none transition-all duration-200 appearance-none cursor-pointer"
+      style={{
+        color: value ? C.warmStone : C.sage,
+        background: C.deepForest,
+        border: error ? '1px solid rgba(239,68,68,0.7)' : 'none',
+      }}
     >
-      {children}
-    </Tag>
+      <option value="" disabled style={{ background: C.deepForest, color: C.sage }}>{placeholder}</option>
+      {options.map((o) => (
+        <option key={o} value={o} style={{ background: C.deepForest, color: C.warmStone }}>{o}</option>
+      ))}
+    </select>
     <AnimatePresence>
       {error && (
         <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-          className="text-red-400 text-[12px] mt-1.5 font-sans">
+          className="text-red-600 text-[12px] mt-1.5 font-sans font-semibold">
           {error}
         </motion.p>
       )}
     </AnimatePresence>
   </div>
+);
+
+/* ── Contact info card row using Warm Stone (#D8D2C4) ── */
+const ContactCard = ({ icon, title, detail, href, target }) => (
+  <a
+    href={href}
+    target={target}
+    rel={target === '_blank' ? 'noreferrer' : undefined}
+    className="flex items-center gap-4 rounded-[14px] p-4 transition-all duration-250 group cursor-pointer"
+    style={{
+      background: C.warmStone,
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.background = 'rgba(216,210,196,0.85)';
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.background = C.warmStone;
+    }}
+  >
+    <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center"
+      style={{ background: C.deepForest, border: `1px solid rgba(216,210,196,0.2)` }}>
+      <span className="text-[16px]" style={{ color: C.warmStone }}>{icon}</span>
+    </div>
+    <div className="flex-1 min-w-0">
+      <p className="font-sans text-[12px] uppercase tracking-[0.12em] mb-0.5" style={{ color: C.deepForest }}>{title}</p>
+      <p className="text-[14px] truncate font-semibold font-sans" style={{ color: C.deepForest }}>{detail}</p>
+    </div>
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="flex-shrink-0 opacity-60 group-hover:opacity-100 transition-opacity duration-200" style={{ color: C.deepForest }}>
+      <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  </a>
 );
 
 export default function Contact() {
@@ -48,142 +120,145 @@ export default function Contact() {
     setErrors((err) => ({ ...err, [e.target.name]: '' }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length) { setErrors(errs); return; }
-    setStatus('loading');
 
-    try {
-      const payload = {
-        access_key: import.meta.env.VITE_WEB3FORMS_KEY,
-        subject: `[Crevix Studio] New query: ${form.type || 'Contact Form'}`,
-        from_name: form.name,
-        name: form.name,
-        email: form.email,
-        'Call Reason': form.type,
-        'Preferred Call Time': form.preferredTime || 'Not specified',
-        message: form.message,
-      };
-
-      const res = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await res.json();
-      if (data.success) {
-        setStatus('success');
-      } else {
-        console.error('Web3Forms error:', data);
-        setStatus('error');
-      }
-    } catch (err) {
-      console.error('Submission failed:', err);
-      setStatus('error');
-    }
+    const message = `Hi, I'd like to request an appointment.\n\nName: ${form.name}\nEmail: ${form.email}\nCall Reason: ${form.type || 'Not specified'}\nPreferred Time: ${form.preferredTime || 'Not specified'}\nQuery: ${form.message}`;
+    const url = `https://wa.me/917817833974?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
   };
 
   return (
     <Layout>
-      <section className="mx-auto max-w-[1280px] px-4 py-20 sm:px-6 md:py-28 lg:py-36">
-        <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[40%_55%] lg:gap-20">
-          {/* Left — Info */}
+      {/* ── Page background with gradient effect ── */}
+      <div style={{
+        position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none',
+        background: `linear-gradient(135deg, ${C.deepForest} 0%, ${C.sage} 50%, ${C.deepForest} 100%)`,
+      }} />
+
+      <section className="relative z-10 mx-auto max-w-[1280px] px-4 pt-32 pb-20 sm:px-6 md:pt-40 md:pb-28 lg:pt-48 lg:pb-36">
+
+        {/* ── Large watermark text ── */}
+        <div className="absolute top-10 left-0 right-0 flex justify-center pointer-events-none select-none overflow-hidden md:top-14 lg:top-16" aria-hidden="true">
+          <span className="font-syne font-[900] text-[100px] sm:text-[140px] md:text-[180px] lg:text-[220px] uppercase leading-none"
+            style={{
+              color: 'rgba(216,210,196,0.12)',
+              WebkitTextStroke: `1.5px rgba(13,59,46,0.15)`,
+              letterSpacing: '0.04em',
+            }}>
+            CONTACT
+          </span>
+        </div>
+
+        {/* Spacer to push content down below the watermark with slight overlap */}
+        <div className="h-12 sm:h-16 md:h-20 lg:h-24" />
+
+        <div className="relative grid grid-cols-1 items-start gap-10 lg:grid-cols-[42%_52%] lg:gap-16">
+          {/* ════════ Left — Info ════════ */}
           <div>
             <RevealOnScroll>
-              <p className="mb-5 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:mb-6 md:text-[13px]">Help & Query Call</p>
-              <h1 className="mb-5 font-syne text-[36px] font-bold leading-[1.08] text-white md:mb-6 md:text-[44px]">
-                Need Help Choosing The Right Option?
+              {/* Badge pill */}
+
+              <h1 className="mb-4 font-syne text-[38px] font-[800] leading-[1.06] md:text-[48px]" style={{ color: C.warmStone }}>
+                Get in touch
               </h1>
-              <p className="mb-8 font-sans text-[15px] leading-[1.75] text-text-secondary md:mb-12">
-                Book a quick query call for plan guidance, order help, custom requests, or general questions.
+              <p className="mb-10 font-sans text-[15px] leading-[1.75] max-w-[380px]" style={{ color: C.warmStone }}>
+                Have questions or ready to transform your business? Reach out and we'll get back to you promptly.
               </p>
             </RevealOnScroll>
 
+            {/* ── Contact info cards using C.warmStone ── */}
             <RevealOnScroll delay={0.08}>
-              <div className="mb-4 space-y-4 md:mb-12">
-                <a href="mailto:contact@crevix-studio.in" className="block font-sans text-[15px] text-text-secondary hover:text-white transition-colors duration-150">
-                  contact@crevix-studio.in
-                </a>
-                <a href="tel:+917817833974" className="block font-sans text-[15px] text-text-secondary hover:text-white transition-colors duration-150">
-                  +91 78178 33974
-                </a>
-                <a href="https://wa.me/919897422911" target="_blank" rel="noreferrer"
-                  className="block font-sans text-[15px] text-text-secondary hover:text-white transition-colors duration-150">
-                  Chat on WhatsApp →
-                </a>
-                <p className="font-sans text-[15px] text-text-muted pt-2">Delhi, India · Working Worldwide</p>
+              <div className="space-y-3">
+                <ContactCard
+                  icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg>}
+                  title="Email us"
+                  detail="contact@crevix-studio.in"
+                  href="mailto:contact@crevix-studio.in"
+                />
+                <ContactCard
+                  icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>}
+                  title="Call us"
+                  detail="+91 78178 33974"
+                  href="tel:+917817833974"
+                />
+                <ContactCard
+                  icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>}
+                  title="WhatsApp"
+                  detail="Chat with us →"
+                  href="https://wa.me/917817833974"
+                  target="_blank"
+                />
+                <ContactCard
+                  icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>}
+                  title="Our location"
+                  detail="Delhi, India · Working Worldwide"
+                  href="#"
+                />
               </div>
             </RevealOnScroll>
           </div>
 
-          {/* Right — Form */}
+          {/* ════════ Right — Form Container using C.sage ════════ */}
           <RevealOnScroll delay={0.12}>
-            <div className="rounded-[16px] p-5 sm:p-8 md:p-12"
-              style={{ background: '#0E0E0E', border: '1px solid rgba(255,255,255,0.09)' }}>
+            <div className="rounded-[20px] p-6 sm:p-8 md:p-10"
+              style={{
+                background: C.sage,
+                border: `1px solid rgba(13,59,46,0.15)`,
+                boxShadow: '0 30px 90px rgba(13,59,46,0.2)',
+              }}>
               <AnimatePresence mode="wait">
                 {status === 'success' ? (
-                  <motion.div
-                    key="success"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="flex flex-col items-center justify-center py-20 text-center"
-                  >
-                    <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white text-lg mb-6">
+                  <motion.div key="success" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+                    className="flex flex-col items-center justify-center py-20 text-center">
+                    <div className="w-14 h-14 rounded-full flex items-center justify-center text-xl mb-6"
+                      style={{ border: `1px solid ${C.deepForest}`, color: C.deepForest }}>
                       ✓
                     </div>
-                    <h3 className="font-syne font-bold text-[22px] text-white mb-3">Request received.</h3>
-                    <p className="font-sans text-[14px] text-text-secondary">We'll reach out soon to help with your query.</p>
+                    <h3 className="font-syne font-bold text-[22px] mb-3" style={{ color: C.deepForest }}>Request received.</h3>
+                    <p className="font-sans text-[14px]" style={{ color: C.deepForest }}>We'll reach out soon to help with your query.</p>
                   </motion.div>
                 ) : status === 'error' ? (
-                  <motion.div
-                    key="error"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="flex flex-col items-center justify-center py-20 text-center"
-                  >
-                    <div className="w-12 h-12 rounded-full border border-red-500/40 flex items-center justify-center text-red-400 text-lg mb-6">
+                  <motion.div key="error" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+                    className="flex flex-col items-center justify-center py-20 text-center">
+                    <div className="w-14 h-14 rounded-full border flex items-center justify-center text-red-700 text-xl mb-6"
+                      style={{ borderColor: 'rgba(239,68,68,0.5)', background: 'rgba(239,68,68,0.06)' }}>
                       ✕
                     </div>
-                    <h3 className="font-syne font-bold text-[22px] text-white mb-3">Something went wrong.</h3>
-                    <p className="font-sans text-[14px] text-text-secondary mb-6">Please try again or email us directly at contact@crevix-studio.in</p>
-                    <button
-                      onClick={() => setStatus('idle')}
-                      className="font-sans text-[13px] text-text-secondary hover:text-white underline underline-offset-4 transition-colors duration-150"
-                    >Try again →</button>
+                    <h3 className="font-syne font-bold text-[22px] mb-3" style={{ color: C.deepForest }}>Something went wrong.</h3>
+                    <p className="font-sans text-[14px] mb-6" style={{ color: C.deepForest }}>Please try again or email us directly.</p>
+                    <button onClick={() => setStatus('idle')}
+                      className="font-sans text-[13px] underline underline-offset-4 transition-colors duration-200"
+                      style={{ color: C.deepForest }}>
+                      Try again →
+                    </button>
                   </motion.div>
                 ) : (
-                  <motion.form key="form" onSubmit={handleSubmit} className="space-y-6">
-                    <InputField label="Full Name" name="name" value={form.name} onChange={handleChange} error={errors.name} placeholder="Jane Smith" />
-                    <InputField label="Email Address" type="email" name="email" value={form.email} onChange={handleChange} error={errors.email} placeholder="jane@company.com" />
-                    <InputField label="Call Reason" name="type" value={form.type} onChange={handleChange} error={errors.type} as="select">
-                      <option value="" disabled style={{ background: '#0E0E0E' }}>Select a reason…</option>
-                      {['Plan Guidance', 'Order / Payment Help', 'Custom Requirement', 'Existing Website Query', 'General Help'].map((o) => (
-                        <option key={o} value={o} style={{ background: '#0E0E0E' }}>{o}</option>
-                      ))}
-                    </InputField>
-                    <InputField label="Preferred Call Time" name="preferredTime" value={form.preferredTime} onChange={handleChange} as="select">
-                      <option value="" style={{ background: '#0E0E0E' }}>Select preferred time…</option>
-                      {['Morning', 'Afternoon', 'Evening', 'Anytime'].map((o) => (
-                        <option key={o} value={o} style={{ background: '#0E0E0E' }}>{o}</option>
-                      ))}
-                    </InputField>
-                    <InputField label="Your Query" name="message" value={form.message} onChange={handleChange} error={errors.message} placeholder="Tell us what you need help with..." as="textarea" rows={5} />
+                  <motion.form key="form" onSubmit={handleSubmit} className="space-y-7">
+                    <FormInput label="Name" name="name" value={form.name} onChange={handleChange} error={errors.name} placeholder="Jane Smith" />
+                    <FormInput label="Email" type="email" name="email" value={form.email} onChange={handleChange} error={errors.email} placeholder="jane@company.com" />
+                    <FormSelect label="Call Reason" name="type" value={form.type} onChange={handleChange} error={errors.type}
+                      placeholder="Select a reason…"
+                      options={['Plan Guidance', 'Order / Payment Help', 'Custom Requirement', 'Existing Website Query', 'General Help']} />
+                    <FormSelect label="Preferred Time" name="preferredTime" value={form.preferredTime} onChange={handleChange}
+                      placeholder="Select preferred time…"
+                      options={['Morning', 'Afternoon', 'Evening', 'Anytime']} />
+                    <FormInput label="Message" name="message" value={form.message} onChange={handleChange} error={errors.message} placeholder="Tell us what you need help with..." rows={4} />
 
                     <button
                       type="submit"
-                      disabled={status === 'loading'}
-                      className="w-full py-4 rounded-full bg-white text-[#080808] font-sans font-medium text-[15px] hover:bg-white/[0.88] transition-all duration-150 disabled:opacity-60 flex items-center justify-center gap-2"
+                      className="w-full py-4 rounded-full font-sans font-semibold text-[15px] transition-all duration-250 flex items-center justify-center gap-2 mt-2"
+                      style={{
+                        background: C.deepForest,
+                        color: C.warmStone,
+                        boxShadow: '0 4px 24px rgba(13,59,46,0.15)',
+                      }}
+                      onMouseEnter={(e) => { e.target.style.background = '#134e3e'; }}
+                      onMouseLeave={(e) => { e.target.style.background = C.deepForest; }}
                     >
-                      {status === 'loading' ? (
-                        <>
-                          <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeDasharray="40 60" />
-                          </svg>
-                          Sending…
-                        </>
-                      ) : 'Request a Call →'}
+                      Request an Appointment →
                     </button>
                   </motion.form>
                 )}

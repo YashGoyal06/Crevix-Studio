@@ -21,8 +21,8 @@ export default {
         },
       },
       fontFamily: {
-        syne: ['Satoshi', 'sans-serif'],
-        brand: ['Syne', 'sans-serif'],
+        syne: ['"Playfair Display"', 'serif'],
+        brand: ['"Playfair Display"', 'serif'],
         sans: ['Inter', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'monospace'],
       },

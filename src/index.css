@@ -40,6 +40,14 @@
 }
 
 @layer utilities {
+  body, input, select, textarea, button, a, .font-sans, .font-syne, .font-brand {
+    font-family: 'Playfair Display', serif !important;
+  }
+
+  .font-oswald {
+    font-family: 'Oswald', sans-serif !important;
+  }
+
   .text-gradient {
     background: var(--gradient);
     -webkit-background-clip: text;
@@ -49,6 +57,83 @@
 }
 
 @layer utilities {
+  @keyframes float-blob-one {
+    0% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(15vw, -10vh) scale(1.2); }
+    66% { transform: translate(-10vw, 15vh) scale(0.8); }
+    100% { transform: translate(0px, 0px) scale(1); }
+  }
+
+  @keyframes float-blob-two {
+    0% { transform: translate(0px, 0px) scale(1.1); }
+    50% { transform: translate(-20vw, 15vh) scale(0.85); }
+    100% { transform: translate(0px, 0px) scale(1.1); }
+  }
+
+  @keyframes float-blob-three {
+    0% { transform: translate(0px, 0px) scale(0.9); }
+    33% { transform: translate(-15vw, -15vh) scale(1.1); }
+    66% { transform: translate(15vw, 10vh) scale(0.95); }
+    100% { transform: translate(0px, 0px) scale(0.9); }
+  }
+
+  @keyframes rotate-bg {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .moving-green-bg {
+    position: fixed;
+    width: 160vw;
+    height: 160vh;
+    top: -30vh;
+    left: -30vw;
+    z-index: 1;
+    pointer-events: none;
+    background: #09221a;
+    overflow: hidden;
+    animation: rotate-bg 50s linear infinite;
+  }
+
+  .moving-green-bg::before,
+  .moving-green-bg::after,
+  .moving-green-bg .blob-3 {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.65;
+    mix-blend-mode: screen;
+  }
+
+  .moving-green-bg::before {
+    width: 60vw;
+    height: 60vw;
+    background: radial-gradient(circle, #6F8A6E 0%, transparent 70%);
+    top: -20%;
+    left: -10%;
+    animation: float-blob-one 22s infinite linear;
+  }
+
+  .moving-green-bg::after {
+    width: 70vw;
+    height: 70vw;
+    background: radial-gradient(circle, #205E4E 0%, transparent 70%);
+    bottom: -20%;
+    right: -10%;
+    animation: float-blob-two 28s infinite linear;
+  }
+
+  .moving-green-bg .blob-3 {
+    position: absolute;
+    width: 50vw;
+    height: 50vw;
+    background: radial-gradient(circle, #0D3B2E 0%, transparent 70%);
+    top: 30%;
+    left: 25%;
+    animation: float-blob-three 25s infinite linear;
+  }
+
   @keyframes custom-marquee {
     0% {
       transform: translateX(0);
@@ -111,5 +196,20 @@
   .light-sweep:hover::before {
     opacity: 1;
     transform: translateX(80%);
+  }
+
+  /* Override WebKit autofill default styling to match theme green */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    -webkit-text-fill-color: #D8D2C4 !important;
+    -webkit-box-shadow: 0 0 0px 1000px #0D3B2E inset !important;
+    transition: background-color 5000s ease-in-out 0s;
   }
 }

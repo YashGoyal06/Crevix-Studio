@@ -19,7 +19,7 @@ export default function IntroLoader({ onComplete }) {
       {phase !== 'done' && (
         <motion.div
           className="fixed inset-0 z-[9999] flex items-center justify-center"
-          style={{ background: '#080808' }}
+          style={{ background: '#0D3B2E' }}
           animate={{ opacity: phase === 'exit' ? 0 : 1 }}
           transition={{ duration: 0.7, ease: 'easeInOut' }}
           onAnimationComplete={() => { if (phase === 'exit') setPhase('done'); }}
@@ -35,8 +35,8 @@ export default function IntroLoader({ onComplete }) {
           <div className="relative flex flex-col items-center select-none">
             {/* CREVIX */}
             <motion.div
-              className="font-brand font-[800] uppercase tracking-[0.25em] text-white leading-none"
-              style={{ fontSize: 'clamp(52px, 8.5vw, 128px)' }}
+              className="uppercase tracking-[0.25em] text-[#D8D2C4] leading-none"
+              style={{ fontSize: 'clamp(52px, 8.5vw, 128px)', fontFamily: '"Playfair Display", serif', fontWeight: 800 }}
               initial={{ opacity: 0, y: 28, filter: 'blur(6px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               transition={{ delay: 0.3, duration: 0.9, ease }}
@@ -46,8 +46,8 @@ export default function IntroLoader({ onComplete }) {
 
             {/* STUDIO */}
             <motion.div
-              className="font-brand font-[800] uppercase tracking-[0.25em] text-white leading-none mt-2"
-              style={{ fontSize: 'clamp(52px, 8.5vw, 128px)' }}
+              className="uppercase tracking-[0.25em] text-[#D8D2C4] leading-none mt-2"
+              style={{ fontSize: 'clamp(52px, 8.5vw, 128px)', fontFamily: '"Playfair Display", serif', fontWeight: 800 }}
               initial={{ opacity: 0, y: 28, filter: 'blur(6px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               transition={{ delay: 0.7, duration: 0.9, ease }}
@@ -60,7 +60,7 @@ export default function IntroLoader({ onComplete }) {
               className="mt-6"
               style={{
                 height: 1,
-                background: 'rgba(255,255,255,0.25)',
+                background: 'rgba(216, 210, 196, 0.25)',
                 width: '100%',
               }}
               initial={{ scaleX: 0, transformOrigin: 'left' }}
