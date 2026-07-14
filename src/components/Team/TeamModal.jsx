@@ -103,6 +103,15 @@ export default function TeamModal({ member, onClose }) {
 
   const secondaryBadge = getSecondaryBadge();
 
+  const getBadgeStyles = (type) => {
+    if (!type) return '';
+    const t = type.toLowerCase();
+    if (t === 'poc' || t.includes('year') || t.includes('senior') || t.includes('lead') || t.includes('experience') || (member.level && member.level.toLowerCase() === t)) {
+      return 'text-brand-accent bg-brand-accent/10 border-brand-accent/20';
+    }
+    return 'text-brand-secondary bg-brand-secondary/10 border-brand-secondary/20';
+  };
+
   // Experience text formatter
   const getExperienceText = (exp) => {
     if (!exp || !exp.label) return '';
@@ -205,7 +214,7 @@ export default function TeamModal({ member, onClose }) {
     if (skillsList.length === 0) return null;
     return (
       <div className="flex flex-col gap-2.5">
-        <h3 className="font-syne text-[11px] font-bold uppercase tracking-widest text-violet-400">
+        <h3 className="font-syne text-[11px] font-bold uppercase tracking-widest text-brand-accent">
           Key Skills
         </h3>
         <div className="flex flex-wrap gap-1.5">
@@ -226,14 +235,14 @@ export default function TeamModal({ member, onClose }) {
     if (techStackList.length === 0) return null;
     return (
       <div className="flex flex-col gap-2.5">
-        <h3 className="font-syne text-[11px] font-bold uppercase tracking-widest text-violet-400">
+        <h3 className="font-syne text-[11px] font-bold uppercase tracking-widest text-brand-accent">
           Primary Tech Stack
         </h3>
         <div className="flex flex-wrap gap-1.5">
           {techStackList.map(tech => (
             <span
               key={tech}
-              className="font-sans text-[11px] font-semibold text-pink-400 bg-pink-500/5 border border-pink-500/10 px-2.5 py-1 rounded-full transition-colors duration-200 hover:bg-pink-500/10"
+              className="font-sans text-[11px] font-semibold text-brand-secondary bg-brand-secondary/40 border border-brand-secondary px-2.5 py-1 rounded-full transition-colors duration-200 hover:bg-brand-secondary/10"
             >
               {tech}
             </span>
@@ -332,7 +341,7 @@ export default function TeamModal({ member, onClose }) {
                         aria-label={`View photo ${idx + 1}`}
                         className={`relative aspect-square rounded-xl overflow-hidden bg-neutral-950 transition-all duration-200 border-2 ${
                           isActive
-                            ? 'border-violet-500 scale-[1.03] shadow-md shadow-violet-500/10'
+                            ? 'border-brand-accent scale-[1.03] shadow-md shadow-brand-accent/10'
                             : 'border-transparent opacity-60 hover:opacity-100 hover:border-white/15'
                         }`}
                       >
@@ -372,7 +381,7 @@ export default function TeamModal({ member, onClose }) {
                         aria-label={`View photo ${idx + 1}`}
                         className={`relative w-[68px] h-[68px] rounded-xl overflow-hidden bg-neutral-950 transition-all duration-200 border-2 ${
                           isActive
-                            ? 'border-violet-500 scale-[1.03] shadow-md shadow-violet-500/10'
+                            ? 'border-brand-accent scale-[1.03] shadow-md shadow-brand-accent/10'
                             : 'border-transparent opacity-60 hover:opacity-100 hover:border-white/15'
                         }`}
                       >
@@ -452,7 +461,7 @@ export default function TeamModal({ member, onClose }) {
                       {member.role}
                     </span>
                     {secondaryBadge && (
-                      <span className="font-sans text-[11px] font-semibold text-violet-400 bg-violet-500/10 border border-violet-500/20 px-2.5 py-0.75 rounded-md uppercase tracking-wider">
+                      <span className={`font-sans text-[11px] font-semibold border border-white/[0.08] px-2.5 py-0.75 rounded-md uppercase tracking-wider ${getBadgeStyles(secondaryBadge)}`}>
                         {secondaryBadge}
                       </span>
                     )}
@@ -460,21 +469,16 @@ export default function TeamModal({ member, onClose }) {
 
                   {/* Mobile Badges layout (Department first, then Role, then Level/POC) */}
                   <div className="flex md:hidden flex-wrap gap-2 items-center -mt-1.5">
-                    {member.department && (
-                      <span className="font-sans text-[11px] font-semibold text-violet-400 bg-violet-500/10 border border-violet-500/20 px-2.5 py-0.75 rounded-md uppercase tracking-wider">
-                        {member.department}
-                      </span>
-                    )}
                     <span className="font-sans text-[11px] font-bold text-neutral-400 bg-white/[0.04] border border-white/[0.08] px-2.5 py-0.75 rounded-md uppercase tracking-wider">
                       {member.role}
                     </span>
                     {member.level && (
-                      <span className="font-sans text-[11px] font-semibold text-violet-400 bg-violet-500/10 border border-violet-500/20 px-2.5 py-0.75 rounded-md uppercase tracking-wider">
+                      <span className={`font-sans text-[11px] font-semibold border border-brand-accent px-2.5 py-0.75 rounded-md uppercase tracking-wider ${getBadgeStyles(member.level)}`}>
                         {member.level}
                       </span>
                     )}
                     {!member.level && member.isPoc && (
-                      <span className="font-sans text-[11px] font-semibold text-violet-400 bg-violet-500/10 border border-violet-500/20 px-2.5 py-0.75 rounded-md uppercase tracking-wider">
+                      <span className={`font-sans text-[11px] font-semibold border border-brand-accent px-2.5 py-0.75 rounded-md uppercase tracking-wider ${getBadgeStyles('POC')}`}>
                         POC
                       </span>
                     )}
@@ -491,7 +495,7 @@ export default function TeamModal({ member, onClose }) {
 
               {/* 4. Professional Tagline */}
               {member.tagline && (
-                <p className="font-syne text-[14.5px] italic text-neutral-300 font-medium border-l-2 border-pink-500/70 pl-3.5 leading-relaxed">
+                <p className="font-syne text-[14.5px] italic text-neutral-300 font-medium border-l-2 border-brand-accent/70 pl-3.5 leading-relaxed">
                   "{member.tagline}"
                 </p>
               )}
@@ -505,8 +509,8 @@ export default function TeamModal({ member, onClose }) {
 
               {/* 6. Quote Block */}
               {member.quote && (
-                <blockquote className="relative p-4 py-3 pl-8 pr-3 md:p-5 md:py-4 md:pl-10 md:pr-4 rounded-xl bg-violet-500/[0.03] border-l-[3px] border-violet-500/70 italic text-[14.5px] text-neutral-200 leading-relaxed font-sans">
-                  <span className="absolute left-3.5 top-1.5 text-[32px] font-serif text-violet-500/40 select-none">“</span>
+                <blockquote className="relative p-4 py-3 pl-8 pr-3 md:p-5 md:py-4 md:pl-10 md:pr-4 rounded-xl bg-brand-accent/[0.03] border-l-[3px] border-brand-accent/5 italic text-[14.5px] text-neutral-200 leading-relaxed font-sans">
+                  <span className="absolute left-3.5 top-1.5 text-[32px] font-serif text-brand-accent/40 select-none">“</span>
                   {member.quote}
                 </blockquote>
               )}
@@ -524,7 +528,7 @@ export default function TeamModal({ member, onClose }) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
                   {member.funFact && (
                     <div className="p-4 rounded-xl bg-white/[0.015] border border-white/[0.04]">
-                      <h4 className="font-syne text-[11px] font-bold uppercase tracking-widest text-violet-400 mb-2">
+                      <h4 className="font-syne text-[11px] font-bold uppercase tracking-widest text-brand-accent mb-2">
                         Fun Fact
                       </h4>
                       <p className="font-sans text-[12.5px] text-neutral-300 leading-relaxed">
@@ -534,7 +538,7 @@ export default function TeamModal({ member, onClose }) {
                   )}
                   {member.hobbies && member.hobbies.length > 0 && (
                     <div className="p-4 rounded-xl bg-white/[0.015] border border-white/[0.04]">
-                      <h4 className="font-syne text-[11px] font-bold uppercase tracking-widest text-violet-400 mb-2.5">
+                      <h4 className="font-syne text-[11px] font-bold uppercase tracking-widest text-brand-accent mb-2.5">
                         Hobbies & Interests
                       </h4>
                       <div className="flex flex-wrap gap-1.5">
@@ -556,7 +560,7 @@ export default function TeamModal({ member, onClose }) {
             {((member.socials && (member.socials.github || member.socials.linkedin || member.socials.instagram || member.socials.portfolio)) ||
               (member.github || member.linkedin || member.instagram)) && (
               <div className="pt-4 border-t border-white/[0.05] mt-2 md:mt-0">
-                <h3 className="font-syne text-[11px] font-bold uppercase tracking-widest text-violet-400 mb-3">
+                <h3 className="font-syne text-[11px] font-bold uppercase tracking-widest text-brand-accent mb-3">
                   Connect
                 </h3>
                 <div className="flex items-center gap-3">

@@ -36,7 +36,7 @@ export default function ImageGallery({ member, index }) {
       {/* POC Badge */}
       {member.isPoc && (
         <div className="absolute right-2.5 top-2.5 z-20 flex items-center gap-1.5 rounded-full border border-white/[0.15] bg-black/70 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider text-white backdrop-blur-md shadow-lg ring-1 ring-white/10">
-          <span className="h-1.2 w-1.2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34D399] animate-pulse" />
+          <span className="h-1.2 w-1.2 rounded-full bg-brand-accent shadow-[0_0_8px_var(--color-accent)] animate-pulse" />
           POC
         </div>
       )}

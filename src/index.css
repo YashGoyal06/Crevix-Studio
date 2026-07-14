@@ -4,7 +4,68 @@
 
 @layer base {
   :root {
-    --gradient: linear-gradient(135deg, #6D28D9, #BE185D, #EA580C);
+    /* ========= Brand ========= */
+    --color-primary: #0D3B2E;
+    /* Deep Forest */
+    --color-secondary: #6F8A6E;
+    /* Sage Green */
+    --color-accent: #B88C3A;
+    /* Antique Gold */
+    --color-stone: #D8D2C4;
+    /* Warm Stone */
+    --color-charcoal: #2B2F2E;
+    /* Charcoal */
+
+    /* ========= Brand Variants ========= */
+    --color-primary-hover: #07251C;
+    --color-accent-hover: #9E742A;
+    --color-primary-hover: #145340;
+
+    --color-accent-hover: #C99A3F;
+    --color-text-secondary: #D8D2C4;
+    --color-text-muted: #A0A0A0;
+    --color-border: rgba(255, 255, 255, .08);
+    --shadow-lg: 0 20px 40px rgba(0, 0, 0, .35);
+
+    /* ========= Background ========= */
+    --color-background: #09090B;
+
+    /* ========= Surface ========= */
+    --color-surface: #0E0E0E;
+    --color-surface-2: #111111;
+
+    /* ========= Text ========= */
+    --color-text: #FFFFFF;
+    --color-text-secondary: #6B7280;
+    --color-text-muted: #374151;
+
+    /* ========= Border ========= */
+    --color-border: rgba(255, 255, 255, 0.06);
+
+    /* ========= Status ========= */
+    --color-success: #10B981;
+    --color-warning: #F59E0B;
+    --color-danger: #EF4444;
+
+    /* ========= Radius ========= */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+
+    /* ========= Shadow ========= */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+    /* ========= Transition ========= */
+    --transition-fast: 150ms ease;
+    --transition-normal: 200ms ease;
+    --transition-slow: 300ms ease;
+
+     /* ========= Legacy / Gradient ========= */
+     --gradient: linear-gradient(135deg, #6D28D9, #BE185D, #EA580C);
+    /* --gradient: linear-gradient(135deg, var(--color-primary), var(--color-secondary), var(--color-accent)); */
   }
 
   html {
