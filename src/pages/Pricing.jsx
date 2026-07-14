@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { RevealOnScroll } from '../hooks/useScrollReveal';
@@ -8,6 +8,32 @@ import { useAuth } from '../context/authStore';
 import { supabase } from '../lib/supabaseClient';
 import { addOns, designServices, designPackages, webPlans } from '../data/pricing';
 
+// Style Colors Configuration
+const COLORS = {
+  featuredBg: '#141414',
+  defaultBg: '#0E0E0E',
+  borderLight: 'rgba(255,255,255,0.06)',
+  white: '#FFFFFF',
+  serviceBg: '#0A0A0A',
+  serviceBorder: 'rgba(255,255,255,0.05)',
+  packageBgStart: '#111111',
+  packageBgEnd: '#080808',
+  radialStart: 'rgba(255,255,255,0.03)',
+  radialEnd: 'rgba(0,0,0,0)',
+};
+
+// Purchase status badge configurations
+const STATUS_BADGES = {
+  full: {
+    text: 'Plan Purchased',
+    classes: 'border-emerald-300/25 bg-emerald-400/10 text-emerald-200',
+  },
+  advance: {
+    text: 'Advance Given',
+    classes: 'border-amber-300/25 bg-amber-400/10 text-amber-200',
+  },
+};
+
 const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
   const isWebPlan = plan.type === 'Website Plan';
 
@@ -15,13 +41,11 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
     <motion.div
       whileHover={{ y: -8, rotateX: -3, rotateY: 3 }}
       transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-      className={`group relative flex flex-col rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1 sm:p-8 md:p-10 ${
-        plan.featured ? '' : ''
-      }`}
+      className="group relative flex flex-col rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1 sm:p-8 md:p-10"
       style={{
-        background: plan.featured ? '#141414' : '#0E0E0E',
-        border: plan.featured ? 'none' : '1px solid rgba(255,255,255,0.06)',
-        borderTop: plan.featured ? '1px solid #FFFFFF' : undefined,
+        background: plan.featured ? COLORS.featuredBg : COLORS.defaultBg,
+        border: plan.featured ? 'none' : `1px solid ${COLORS.borderLight}`,
+        borderTop: plan.featured ? `1px solid ${COLORS.white}` : undefined,
         boxShadow: plan.featured ? '0 24px 48px rgba(0,0,0,0.4)' : 'none',
       }}
       onMouseEnter={(e) => {
@@ -38,14 +62,10 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
           <span className="text-gradient">Most Popular</span>
         </div>
       )}
-      {purchaseStatus === 'full' && (
-        <div className="absolute right-4 top-4 rounded-full border border-emerald-300/25 bg-emerald-400/10 px-3 py-1 text-[11px] font-sans uppercase tracking-[0.1em] text-emerald-200">
-          Plan Purchased
-        </div>
-      )}
-      {purchaseStatus === 'advance' && (
-        <div className="absolute right-4 top-4 rounded-full border border-amber-300/25 bg-amber-400/10 px-3 py-1 text-[11px] font-sans uppercase tracking-[0.1em] text-amber-200">
-          Advance Given
+      
+      {STATUS_BADGES[purchaseStatus] && (
+        <div className={`absolute right-4 top-4 rounded-full border px-3 py-1 text-[11px] font-sans uppercase tracking-[0.1em] ${STATUS_BADGES[purchaseStatus].classes}`}>
+          {STATUS_BADGES[purchaseStatus].text}
         </div>
       )}
 
@@ -151,7 +171,7 @@ const ServiceCard = ({ item, onAddToCart, onBuyNow }) => (
     whileHover={{ y: -6 }}
     transition={{ type: 'spring', stiffness: 200, damping: 15 }}
     className="relative flex flex-col justify-between rounded-[20px] p-6 transition-all duration-300"
-    style={{ background: '#0A0A0A', border: '1px solid rgba(255,255,255,0.05)' }}
+    style={{ background: COLORS.serviceBg, border: `1px solid ${COLORS.serviceBorder}` }}
   >
     <div>
       <h3 className="font-syne font-bold text-[17px] text-white mb-2">{item.name}</h3>
@@ -188,8 +208,8 @@ const PackageCard = ({ item, onBuyNow, onAddToCart }) => (
     transition={{ type: 'spring', stiffness: 220, damping: 18 }}
     className="group relative flex flex-col rounded-[24px] p-8 md:p-10 transition-all duration-300"
     style={{
-      background: 'linear-gradient(180deg, #111111 0%, #080808 100%)',
-      border: '1px solid rgba(255,255,255,0.05)',
+      background: `linear-gradient(180deg, ${COLORS.packageBgStart} 0%, ${COLORS.packageBgEnd} 100%)`,
+      border: `1px solid ${COLORS.serviceBorder}`,
       boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
     }}
   >
@@ -242,6 +262,149 @@ const PackageCard = ({ item, onBuyNow, onAddToCart }) => (
   </motion.div>
 );
 
+// Logical Sections Components
+const PricingHeader = () => (
+  <section className="mx-auto max-w-[1280px] px-4 pb-8 pt-20 text-center sm:px-6 md:pb-12 md:pt-28">
+    <RevealOnScroll>
+      <div className="mb-6 flex items-center justify-center">
+        <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/20 bg-amber-500/10 px-4 py-1.5 font-sans text-[11px] font-bold uppercase tracking-widest text-amber-200">
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75"></span>
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-amber-500"></span>
+          </span>
+          Prices Increase After May 15th
+        </div>
+      </div>
+      <h1 className="mb-4 font-syne text-[40px] font-bold uppercase tracking-wider leading-[1.15] text-white md:text-[64px]">Honest Pricing.</h1>
+      <p className="font-sans text-[16px] leading-[1.6] text-text-secondary md:text-[18px]">Websites, design support, and online ordering setup without hidden fees.</p>
+    </RevealOnScroll>
+  </section>
+);
+
+const WebsitePlansSection = ({ plans, onBuyNow, onAddToCart, purchasedItems }) => (
+  <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
+    <RevealOnScroll>
+      <p className="mb-10 text-center font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:mb-14 md:text-[13px]">
+        Website Packages <span className="text-amber-400/90 font-medium block mt-1 normal-case font-sans text-[11px] tracking-normal">(Note: Domain is excluded from all plans)</span>
+      </p>
+    </RevealOnScroll>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+      {plans.map((p, i) => (
+        <RevealOnScroll key={i} delay={i * 0.08}>
+          <PricingCard
+            plan={p}
+            onBuyNow={onBuyNow}
+            onAddToCart={onAddToCart}
+            purchaseStatus={purchasedItems.find(item => item.id === p.id)?.status}
+          />
+        </RevealOnScroll>
+      ))}
+    </div>
+  </section>
+);
+
+const DesignServicesSection = ({ services, onAddToCart, onBuyNow }) => (
+  <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
+    <RevealOnScroll>
+      <div className="mb-10 text-center md:mb-12">
+        <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">Individual Services</p>
+        <h2 className="font-syne text-[32px] font-bold leading-[1.08] text-white md:text-[44px]">Design Services</h2>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {services.map((s, i) => (
+          <ServiceCard key={i} item={s} onAddToCart={onAddToCart} onBuyNow={onBuyNow} />
+        ))}
+      </div>
+    </RevealOnScroll>
+  </section>
+);
+
+const DesignPackagesSection = ({ packages, onBuyNow, onAddToCart }) => (
+  <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
+    <RevealOnScroll>
+      <div className="mb-10 text-center md:mb-12">
+        <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">Packages</p>
+        <h2 className="font-syne text-[32px] font-bold leading-[1.08] text-white md:text-[44px]">Premium Design Packages</h2>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {packages.map((pkg, i) => (
+          <PackageCard key={i} item={pkg} onBuyNow={onBuyNow} onAddToCart={onAddToCart} />
+        ))}
+      </div>
+    </RevealOnScroll>
+  </section>
+);
+
+const CustomSolutionsSection = () => (
+  <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
+    <RevealOnScroll>
+      <div className="relative rounded-[28px] overflow-hidden p-8 md:p-14 text-center border border-white/[0.05]"
+        style={{
+          background: `radial-gradient(ellipse at top, ${COLORS.radialStart} 0%, ${COLORS.radialEnd} 80%), ${COLORS.serviceBg}`
+        }}
+      >
+        <div className="max-w-[640px] mx-auto">
+          <div className="inline-block px-3 py-1 rounded-full text-[10px] font-sans tracking-widest uppercase text-white/40 border border-white/[0.08] mb-6">
+            Tailored Creative Solutions
+          </div>
+          <h2 className="font-syne text-[32px] font-bold leading-tight text-white mb-4 md:text-[42px]">Custom Solutions</h2>
+          <p className="font-sans text-[16px] leading-relaxed text-text-secondary mb-3 font-semibold">
+            Need something specific?
+          </p>
+          <p className="font-sans text-[15px] leading-relaxed text-text-secondary/70 mb-8 max-w-[500px] mx-auto">
+            We offer tailored creative solutions designed around your brand goals, campaign requirements, and business needs. Contact us for a custom quote.
+          </p>
+          <Link to="/contact" className="inline-flex items-center gap-2.5 rounded-full bg-white px-8 py-4 font-sans text-[15px] font-bold text-[#080808] transition-opacity duration-150 hover:opacity-90">
+            Request Custom Quote
+            <span>→</span>
+          </Link>
+        </div>
+      </div>
+    </RevealOnScroll>
+  </section>
+);
+
+const AddOnsSection = ({ addOnsList, onAddToCart }) => (
+  <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
+    <RevealOnScroll>
+      <div className="mb-10 text-center md:mb-12">
+        <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">Add-ons</p>
+        <h2 className="font-syne text-[32px] font-bold leading-[1.08] text-white md:text-[44px]">Upgrade Only What You Need.</h2>
+      </div>
+    </RevealOnScroll>
+
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      {addOnsList.map((item, i) => (
+        <RevealOnScroll key={item.name} delay={i * 0.04}>
+          <div className="h-full rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1"
+            style={{ background: COLORS.defaultBg, border: `1px solid ${COLORS.borderLight}` }}>
+            <p className="mb-3 font-syne text-[17px] font-bold leading-tight text-white">{item.name}</p>
+            <p className="font-sans text-[15px] text-text-secondary">{item.price}</p>
+            <button
+              type="button"
+              onClick={() => onAddToCart(item)}
+              className="mt-6 w-full rounded-full border border-white/[0.1] py-3 text-center font-sans text-[14px] font-medium text-white/65 transition-colors duration-150 hover:border-white/[0.22] hover:text-white"
+            >
+              Add to Cart
+            </button>
+          </div>
+        </RevealOnScroll>
+      ))}
+    </div>
+  </section>
+);
+
+const PricingFooterCTA = () => (
+  <RevealOnScroll>
+    <div className="px-4 py-14 pb-20 text-center md:py-20 md:pb-36">
+      <p className="font-sans text-[15px] text-text-secondary mb-3">Not sure which plan fits?</p>
+      <Link to="/contact" className="font-sans text-[16px] text-white/60 hover:text-white transition-colors duration-150">
+        Book a Free Strategy Call →
+      </Link>
+    </div>
+  </RevealOnScroll>
+);
+
 export default function Pricing() {
   const navigate = useNavigate();
   const { addItem } = useCart();
@@ -267,15 +430,6 @@ export default function Pricing() {
     loadPurchases();
     return () => { active = false; };
   }, [user?.id]);
-
-  const lastCheckout = useMemo(() => {
-    if (typeof window === 'undefined') return null;
-    try {
-      return JSON.parse(window.localStorage.getItem('crevix-last-checkout') || 'null');
-    } catch {
-      return null;
-    }
-  }, []);
 
   const showAddedToast = (name) => {
     setToast(`${name} added to cart`);
@@ -316,140 +470,35 @@ export default function Pricing() {
         </div>
       )}
 
-      <section className="mx-auto max-w-[1280px] px-4 pb-8 pt-20 text-center sm:px-6 md:pb-12 md:pt-28">
-        <RevealOnScroll>
-          <div className="mb-6 flex items-center justify-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/20 bg-amber-500/10 px-4 py-1.5 font-sans text-[11px] font-bold uppercase tracking-widest text-amber-200">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-amber-500"></span>
-              </span>
-              Prices Increase After May 15th
-            </div>
-          </div>
-          <h1 className="mb-4 font-syne text-[40px] font-bold uppercase tracking-wider leading-[1.15] text-white md:text-[64px]">Honest Pricing.</h1>
-          <p className="font-sans text-[16px] leading-[1.6] text-text-secondary md:text-[18px]">Websites, design support, and online ordering setup without hidden fees.</p>
-        </RevealOnScroll>
-      </section>
+      <PricingHeader />
 
-      {/* Website Plans */}
-      <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
-        <RevealOnScroll>
-          <p className="mb-10 text-center font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:mb-14 md:text-[13px]">
-            Website Packages <span className="text-amber-400/90 font-medium block mt-1 normal-case font-sans text-[11px] tracking-normal">(Note: Domain is excluded from all plans)</span>
-          </p>
-        </RevealOnScroll>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
-          {webPlans.map((p, i) => (
-            <RevealOnScroll key={i} delay={i * 0.08}>
-              <PricingCard
-                plan={p}
-                onBuyNow={handleBuyNow}
-                onAddToCart={handleAddToCart}
-                purchaseStatus={purchasedItems.find(item => item.id === p.id)?.status}
-              />
-            </RevealOnScroll>
-          ))}
-        </div>
-      </section>
+      <WebsitePlansSection 
+        plans={webPlans} 
+        onBuyNow={handleBuyNow} 
+        onAddToCart={handleAddToCart} 
+        purchasedItems={purchasedItems} 
+      />
 
+      <DesignServicesSection 
+        services={designServices} 
+        onAddToCart={handleAddToCart} 
+        onBuyNow={handleBuyNow} 
+      />
 
-      {/* Design Services */}
-      <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
-        <RevealOnScroll>
-          <div className="mb-10 text-center md:mb-12">
-            <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">Individual Services</p>
-            <h2 className="font-syne text-[32px] font-bold leading-[1.08] text-white md:text-[44px]">Design Services</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {designServices.map((s, i) => (
-              <ServiceCard key={i} item={s} onAddToCart={handleAddToCart} onBuyNow={handleBuyNow} />
-            ))}
-          </div>
-        </RevealOnScroll>
-      </section>
+      <DesignPackagesSection 
+        packages={designPackages} 
+        onBuyNow={handleBuyNow} 
+        onAddToCart={handleAddToCart} 
+      />
 
-      {/* Packages */}
-      <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
-        <RevealOnScroll>
-          <div className="mb-10 text-center md:mb-12">
-            <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">Packages</p>
-            <h2 className="font-syne text-[32px] font-bold leading-[1.08] text-white md:text-[44px]">Premium Design Packages</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {designPackages.map((pkg, i) => (
-              <PackageCard key={i} item={pkg} onBuyNow={handleBuyNow} onAddToCart={handleAddToCart} />
-            ))}
-          </div>
-        </RevealOnScroll>
-      </section>
+      <CustomSolutionsSection />
 
-      {/* Custom Solutions */}
-      <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
-        <RevealOnScroll>
-          <div className="relative rounded-[28px] overflow-hidden p-8 md:p-14 text-center border border-white/[0.05]"
-            style={{
-              background: 'radial-gradient(ellipse at top, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 80%), #0A0A0A'
-            }}
-          >
-            <div className="max-w-[640px] mx-auto">
-              <div className="inline-block px-3 py-1 rounded-full text-[10px] font-sans tracking-widest uppercase text-white/40 border border-white/[0.08] mb-6">
-                Tailored Creative Solutions
-              </div>
-              <h2 className="font-syne text-[32px] font-bold leading-tight text-white mb-4 md:text-[42px]">Custom Solutions</h2>
-              <p className="font-sans text-[16px] leading-relaxed text-text-secondary mb-3 font-semibold">
-                Need something specific?
-              </p>
-              <p className="font-sans text-[15px] leading-relaxed text-text-secondary/70 mb-8 max-w-[500px] mx-auto">
-                We offer tailored creative solutions designed around your brand goals, campaign requirements, and business needs. Contact us for a custom quote.
-              </p>
-              <Link to="/contact" className="inline-flex items-center gap-2.5 rounded-full bg-white px-8 py-4 font-sans text-[15px] font-bold text-[#080808] transition-opacity duration-150 hover:opacity-90">
-                Request Custom Quote
-                <span>→</span>
-              </Link>
-            </div>
-          </div>
-        </RevealOnScroll>
-      </section>
+      <AddOnsSection 
+        addOnsList={addOns} 
+        onAddToCart={handleAddToCart} 
+      />
 
-      {/* Add-ons */}
-      <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
-        <RevealOnScroll>
-          <div className="mb-10 text-center md:mb-12">
-            <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">Add-ons</p>
-            <h2 className="font-syne text-[32px] font-bold leading-[1.08] text-white md:text-[44px]">Upgrade Only What You Need.</h2>
-          </div>
-        </RevealOnScroll>
-
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {addOns.map((item, i) => (
-            <RevealOnScroll key={item.name} delay={i * 0.04}>
-              <div className="h-full rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1"
-                style={{ background: '#0E0E0E', border: '1px solid rgba(255,255,255,0.06)' }}>
-                <p className="mb-3 font-syne text-[17px] font-bold leading-tight text-white">{item.name}</p>
-                <p className="font-sans text-[15px] text-text-secondary">{item.price}</p>
-                <button
-                  type="button"
-                  onClick={() => handleAddToCart(item)}
-                  className="mt-6 w-full rounded-full border border-white/[0.1] py-3 text-center font-sans text-[14px] font-medium text-white/65 transition-colors duration-150 hover:border-white/[0.22] hover:text-white"
-                >
-                  Add to Cart
-                </button>
-              </div>
-            </RevealOnScroll>
-          ))}
-        </div>
-      </section>
-
-      {/* Footer CTA */}
-      <RevealOnScroll>
-        <div className="px-4 py-14 pb-20 text-center md:py-20 md:pb-36">
-          <p className="font-sans text-[15px] text-text-secondary mb-3">Not sure which plan fits?</p>
-          <Link to="/contact" className="font-sans text-[16px] text-white/60 hover:text-white transition-colors duration-150">
-            Book a Free Strategy Call →
-          </Link>
-        </div>
-      </RevealOnScroll>
+      <PricingFooterCTA />
     </Layout>
   );
 }
