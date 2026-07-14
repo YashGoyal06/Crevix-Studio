@@ -1,9 +1,13 @@
+import { useState } from 'react';
 import { RevealOnScroll } from '../hooks/useScrollReveal';
 import Layout from '../components/layout/Layout';
 import TeamGrid from '../components/Team/TeamGrid';
 import { teamSections } from '../data/teamData';
+import TeamModal from '../components/Team/TeamModal';
 
 export default function Team() {
+  const [selectedMember, setSelectedMember] = useState(null);
+
   return (
     <Layout>
       <section className="mx-auto max-w-[1280px] px-4 pb-20 pt-20 sm:px-6 md:pb-28 md:pt-28">
@@ -28,11 +32,15 @@ export default function Team() {
                 </h2>
               </RevealOnScroll>
 
-              <TeamGrid members={section.members} />
+              <TeamGrid members={section.members} onMemberClick={setSelectedMember} />
             </section>
           ))}
         </div>
       </section>
+
+      {selectedMember && (
+        <TeamModal key={selectedMember.id} member={selectedMember} onClose={() => setSelectedMember(null)} />
+      )}
     </Layout>
   );
 }

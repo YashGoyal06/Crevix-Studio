@@ -19,7 +19,10 @@ const InstagramIcon = () => (
 
 export default function SocialLinks({ member }) {
   return (
-    <div className="mt-4 flex items-center gap-2 pt-3 border-t border-white/[0.04]">
+    <div
+      onClick={(e) => e.stopPropagation()}
+      className="mt-4 flex items-center gap-2 pt-3 border-t border-white/[0.04]"
+    >
       {member.linkedin && (
         <a
           href={member.linkedin}

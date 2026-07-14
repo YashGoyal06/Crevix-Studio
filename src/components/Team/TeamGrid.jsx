@@ -14,14 +14,15 @@ const getGridClasses = (count) => {
   return 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 justify-items-center max-w-[1280px] mx-auto';
 };
 
-export default function TeamGrid({ members }) {
+export default function TeamGrid({ members, onMemberClick }) {
   return (
     <div className={getGridClasses(members.length)}>
       {members.map((member) => (
         <TeamCard
-          key={member.name}
+          key={member.id}
           member={member}
-          index={team.findIndex((teamMember) => teamMember.name === member.name)}
+          index={team.findIndex((teamMember) => teamMember.id === member.id)}
+          onOpenModal={onMemberClick}
         />
       ))}
     </div>
