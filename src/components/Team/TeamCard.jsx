@@ -23,7 +23,7 @@ export default function TeamCard({ member, index, onOpenModal }) {
         onKeyDown={handleKeyDown}
         tabIndex={0}
         aria-label={`View profile of ${member.name}, ${member.role}`}
-        className="flex h-full w-full flex-col overflow-hidden rounded-[24px] border border-white/[0.05] bg-[#0A0A0A]/40 backdrop-blur-md p-3 transition-all duration-500 hover:border-brand-accent/30 hover:bg-[#0A0A0A]/75 cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-accent/50"
+        className="team-card flex h-full w-full flex-col overflow-hidden rounded-[24px] border p-3 cursor-pointer"
       >
         
         {/* Inset Photo Frame */}

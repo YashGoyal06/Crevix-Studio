@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { RevealOnScroll } from '../hooks/useScrollReveal';
 import Layout from '../components/layout/Layout';
 import TeamGrid from '../components/Team/TeamGrid';
@@ -7,6 +7,13 @@ import TeamModal from '../components/Team/TeamModal';
 
 export default function Team() {
   const [selectedMember, setSelectedMember] = useState(null);
+
+  useEffect(() => {
+    document.body.classList.add('bg-forest-page');
+    return () => {
+      document.body.classList.remove('bg-forest-page');
+    };
+  }, []);
 
   return (
     <Layout>

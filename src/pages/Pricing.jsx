@@ -27,7 +27,7 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
     <motion.div
       whileHover={{ y: -8, rotateX: -3, rotateY: 3 }}
       transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-      className="group relative flex flex-col rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1 sm:p-8 md:p-10"
+      className="group relative flex flex-col rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1 sm:p-8 md:p-10 pricing-card-el"
       style={{
         background: 'var(--color-surface)',
         border: plan.featured ? '1px solid var(--color-accent)' : '1px solid var(--color-border)',
@@ -154,7 +154,7 @@ const ServiceCard = ({ item, onAddToCart, onBuyNow }) => (
   <motion.div
     whileHover={{ y: -6 }}
     transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-    className="relative flex flex-col justify-between rounded-[20px] p-6 transition-all duration-300 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] max-w-[320px]"
+    className="relative flex flex-col justify-between rounded-[20px] p-6 transition-all duration-300 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] max-w-[320px] pricing-card-el"
     style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
   >
     <div>
@@ -190,11 +190,11 @@ const PackageCard = ({ item, onBuyNow, onAddToCart }) => (
   <motion.div
     whileHover={{ y: -8 }}
     transition={{ type: 'spring', stiffness: 220, damping: 18 }}
-    className="group relative flex flex-col rounded-[24px] p-8 md:p-10 transition-all duration-300"
+    className="group relative flex flex-col rounded-[24px] p-8 md:p-10 transition-all duration-300 pricing-card-el"
     style={{
       background: 'var(--color-surface)',
       border: '1px solid var(--color-border)',
-      boxShadow: '0 20px 20px rgba(0,0,0,0.5)',
+      boxShadow: '0 5px 20px rgba(0, 0, 0, 0.38)',
     }}
   >
     <div className="mb-8">
@@ -358,7 +358,7 @@ const AddOnsSection = ({ addOnsList, onAddToCart }) => (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
       {addOnsList.map((item, i) => (
         <RevealOnScroll key={item.name} delay={i * 0.04}>
-          <div className="h-full rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1"
+          <div className="h-full rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1 pricing-card-el"
             style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
             <p className="mb-3 font-syne text-[16px] font-bold leading-tight text-[var(--color-text)]">{item.name}</p>
             <p className="font-sans text-[15px] text-text-secondary">{item.price}</p>
@@ -393,6 +393,13 @@ export default function Pricing() {
   const { isAuthenticated, user } = useAuth();
   const [toast, setToast] = useState('');
   const [purchasedItems, setPurchasedItems] = useState([]);
+
+  useEffect(() => {
+    document.body.classList.add('bg-forest-page');
+    return () => {
+      document.body.classList.remove('bg-forest-page');
+    };
+  }, []);
 
   useEffect(() => {
     if (!user?.id) return;

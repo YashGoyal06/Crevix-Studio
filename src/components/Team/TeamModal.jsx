@@ -279,7 +279,7 @@ export default function TeamModal({ member, onClose }) {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.97 }}
           transition={{ duration: 0.18, ease: 'easeOut' }}
-          className={`relative w-full max-w-[920px] bg-[#0A0A0A]/95 border border-white/[0.08] rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-y-auto md:overflow-hidden focus:outline-none z-10 ${
+          className={`team-modal-container relative w-full max-w-[920px] bg-[#0A0A0A]/95 border border-white/[0.08] rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-y-auto md:overflow-hidden focus:outline-none z-10 ${
             hasDetailedContent
               ? 'max-h-[90vh] md:h-[85vh] min-h-[60vh]'
               : 'max-h-[90vh] md:h-auto md:min-h-0'
@@ -300,13 +300,13 @@ export default function TeamModal({ member, onClose }) {
           <button
             onClick={onClose}
             aria-label="Close modal"
-            className="hidden md:flex absolute top-5 right-5 z-30 h-9.5 w-9.5 items-center justify-center rounded-full border border-white/[0.08] bg-black/60 text-white/50 transition-all duration-200 hover:border-white/20 hover:text-white hover:scale-105"
+            className="hidden md:flex absolute top-5 right-5 z-30 h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] bg-black/25 text-white/50 transition-all duration-200 hover:border-white/20 hover:text-white hover:scale-105"
           >
             <X className="h-[16px] w-[16px]" />
           </button>
 
           {/* DESKTOP LEFT COLUMN: Photo, Gallery, Skills & Tech Stack (40%) - EXACT ORIGINAL LAYOUT */}
-          <div className={`hidden md:flex w-full md:w-[40%] bg-[#0B0B0B]/80 p-6 flex-col justify-start border-b md:border-b-0 md:border-r border-white/[0.06] overflow-y-auto gap-6 shrink-0 ${
+          <div className={`team-modal-left-col hidden md:flex w-full md:w-[40%] bg-[#0B0B0B]/80 p-6 flex-col justify-start border-b md:border-b-0 md:border-r border-white/[0.06] overflow-y-auto gap-6 shrink-0 ${
             hasDetailedContent ? 'md:h-full' : 'md:h-auto'
           }`}>
             <div>
@@ -367,7 +367,7 @@ export default function TeamModal({ member, onClose }) {
           </div>
 
           {/* MOBILE LEFT COLUMN: Photo & Gallery (Side-by-Side) */}
-          <div className="block md:hidden w-full bg-[#0B0B0B]/80 p-5 border-b border-white/[0.06] shrink-0">
+          <div className="team-modal-left-col block md:hidden w-full bg-[#0B0B0B]/80 p-5 border-b border-white/[0.06] shrink-0">
             {thumbnails.length > 1 ? (
               <div className="flex flex-row gap-3 w-full">
                 {/* Left Side: Vertical stack of thumbnails */}
