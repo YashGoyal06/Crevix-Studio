@@ -39,6 +39,9 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
         if (!plan.featured) e.currentTarget.style.boxShadow = 'none';
       }}
     >
+      {/* Ambient Glow (intensifies on hover) */}
+      <div className="absolute inset-0 -z-10 rounded-[16px] bg-gradient-to-b from-brand-secondary/10 to-transparent opacity-0 blur-xl transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 pointer-events-none" />
+
       <div className="pointer-events-none absolute inset-0 rounded-[16px] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       {plan.featured && (
         <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-[11px] font-sans tracking-wider uppercase font-bold"
@@ -108,7 +111,7 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.99 }}
                   onClick={() => onBuyNow(plan, false)}
-                  className="block w-full rounded-full border border-[var(--color-secondary)]/30 text-white transition-colors duration-150 hover:bg-[var(--color-secondary)]/10 py-3.5 text-center font-sans text-[15px] font-medium"
+                  className="block w-full rounded-full border border-brand-secondary/30 text-white transition-colors duration-150 hover:bg-brand-secondary/10 py-3.5 text-center font-sans text-[15px] font-medium"
                 >
                   Pay Full Amount
                 </motion.button>
@@ -126,7 +129,7 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
               className={`block w-full rounded-full py-3.5 text-center font-sans text-[15px] font-medium transition-colors duration-150 ${
                 plan.featured
                   ? 'bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-[#080808] font-bold'
-                  : 'border border-[var(--color-border)] text-white hover:border-[var(--color-secondary)] hover:bg-[var(--color-secondary)]/10'
+                  : 'border border-border text-white hover:border-brand-secondary hover:bg-brand-secondary/10'
               }`}
             >
               <span className="inline-flex items-center gap-2">
@@ -137,7 +140,7 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
             <motion.button
               type="button"
               onClick={() => onAddToCart(plan)}
-              className="mt-3 block w-full rounded-full border border-[var(--color-border)] py-3.5 text-center font-sans text-[15px] font-medium text-[var(--color-text-secondary)] transition-colors duration-150 hover:border-[var(--color-secondary)]/30 hover:text-white"
+              className="mt-3 block w-full rounded-full border border-border py-3.5 text-center font-sans text-[15px] font-medium text-[var(--color-text-secondary)] transition-colors duration-150 hover:border-brand-secondary/30 hover:text-white"
               whileHover={{ y: -1 }}
               transition={{ duration: 0.2 }}
             >
@@ -154,9 +157,12 @@ const ServiceCard = ({ item, onAddToCart, onBuyNow }) => (
   <motion.div
     whileHover={{ y: -6 }}
     transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-    className="relative flex flex-col justify-between rounded-[20px] p-6 transition-all duration-300 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] max-w-[320px] pricing-card-el"
+    className="group relative flex flex-col justify-between rounded-[20px] p-6 transition-all duration-300 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] max-w-[320px] pricing-card-el"
     style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
   >
+    {/* Ambient Glow */}
+    <div className="absolute inset-0 -z-10 rounded-[20px] bg-gradient-to-b from-brand-secondary/10 to-transparent opacity-0 blur-xl transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 pointer-events-none" />
+
     <div>
       <h3 className="font-syne font-bold text-[17px] text-[var(--color-text)] mb-2">{item.name}</h3>
       <p className="font-sans text-[13px] leading-[1.5] text-text-secondary mb-6">{item.unit}</p>
@@ -170,7 +176,7 @@ const ServiceCard = ({ item, onAddToCart, onBuyNow }) => (
         <button
           type="button"
           onClick={() => onAddToCart(item)}
-          className="rounded-full border border-[var(--color-border)] py-2.5 text-center font-sans text-[11px] font-medium text-white transition-all duration-150 hover:border-white/[0.15] hover:text-[var(--color-text-secondary)] hover:bg-white/[0.02]"
+          className="rounded-full border border-border py-2.5 text-center font-sans text-[11px] font-medium text-white transition-all duration-150 hover:border-brand-secondary/30 hover:text-white hover:bg-brand-secondary/5"
         >
           Add to Cart
         </button>
@@ -197,6 +203,9 @@ const PackageCard = ({ item, onBuyNow, onAddToCart }) => (
       boxShadow: '0 5px 20px rgba(0, 0, 0, 0.38)',
     }}
   >
+    {/* Ambient Glow */}
+    <div className="absolute inset-0 -z-10 rounded-[24px] bg-gradient-to-b from-brand-secondary/10 to-transparent opacity-0 blur-2xl transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 pointer-events-none" />
+
     <div className="mb-8">
       <div className="inline-block px-3 py-1 rounded-full text-[10px] font-sans tracking-widest uppercase text-[var(--color-text-secondary)] border border-[var(--color-border)] mb-4">
         {item.type}
@@ -236,7 +245,7 @@ const PackageCard = ({ item, onBuyNow, onAddToCart }) => (
       <button
         type="button"
         onClick={() => onAddToCart(item)}
-        className="block w-full rounded-full border border-[var(--color-border)] py-3.5 text-center font-sans text-[14px] font-medium text-[var(--color-text-secondary)] transition-all duration-150 hover:border-[var(--color-secondary)]/30 hover:text-white"
+        className="block w-full rounded-full border border-border py-3.5 text-center font-sans text-[14px] font-medium text-[var(--color-text-secondary)] transition-all duration-150 hover:border-brand-secondary/30 hover:text-white"
       >
         Add to Cart
       </button>
@@ -358,14 +367,17 @@ const AddOnsSection = ({ addOnsList, onAddToCart }) => (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
       {addOnsList.map((item, i) => (
         <RevealOnScroll key={item.name} delay={i * 0.04}>
-          <div className="h-full rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1 pricing-card-el"
+          <div className="group relative h-full rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1 pricing-card-el"
             style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
+            {/* Ambient Glow */}
+            <div className="absolute inset-0 -z-10 rounded-[16px] bg-gradient-to-b from-brand-secondary/10 to-transparent opacity-0 blur-xl transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 pointer-events-none" />
+
             <p className="mb-3 font-syne text-[16px] font-bold leading-tight text-[var(--color-text)]">{item.name}</p>
             <p className="font-sans text-[15px] text-text-secondary">{item.price}</p>
             <button
               type="button"
               onClick={() => onAddToCart(item)}
-              className="mt-6 w-full rounded-full border border-[var(--color-border)] py-3 text-center font-sans text-[14px] font-medium text-[var(--color-text-secondary)] transition-colors duration-150 hover:border-[var(--color-secondary)]/30 hover:text-white"
+              className="mt-6 w-full rounded-full border border-border py-3 text-center font-sans text-[14px] font-medium text-[var(--color-text-secondary)] transition-colors duration-150 hover:border-brand-secondary/30 hover:text-white"
             >
               Add to Cart
             </button>
@@ -380,7 +392,7 @@ const PricingFooterCTA = () => (
   <RevealOnScroll>
     <div className="px-4 py-14 pb-20 text-center md:py-20 md:pb-36">
       <p className="font-sans text-[15px] text-text-secondary mb-3">Not sure which plan fits?</p>
-      <Link to="/contact" className="font-sans text-[16px] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors duration-150">
+      <Link to="/contact" className="font-sans font-semibold text-[16px] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors duration-150">
         Book a Free Strategy Call →
       </Link>
     </div>

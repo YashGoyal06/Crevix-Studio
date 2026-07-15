@@ -20,11 +20,12 @@ export default {
         accent: {
           violet: '#6D28D9', // Kept legacy hex directly for safety
         },
+        'sage-green': '#6F8A6E',
         // Global Design System Tokens
         brand: {
           primary: 'var(--color-primary)',
           'primary-hover': 'var(--color-primary-hover)',
-          secondary: 'var(--color-secondary)',
+          secondary: '#6F8A6E',
           accent: 'var(--color-accent)',
           'accent-hover': 'var(--color-accent-hover)',
           stone: 'var(--color-stone)',

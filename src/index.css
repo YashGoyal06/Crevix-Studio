@@ -5,7 +5,7 @@
 @layer base {
   :root {
     /* ========= Brand ========= */
-    --color-primary: #0D3B2E; 
+    --color-primary: #0D3B2E;
     /* Deep Forest */
     --color-secondary: #6F8A6E;
     /* Sage Green */
@@ -63,8 +63,8 @@
     --transition-normal: 200ms ease;
     --transition-slow: 300ms ease;
 
-     /* ========= Legacy / Gradient ========= */
-     --gradient: linear-gradient(135deg, #6D28D9, #BE185D, #EA580C);
+    /* ========= Legacy / Gradient ========= */
+    --gradient: linear-gradient(135deg, #6D28D9, #BE185D, #EA580C);
     /* --gradient: linear-gradient(135deg, var(--color-primary), var(--color-secondary), var(--color-accent)); */
   }
 
@@ -118,7 +118,7 @@
 
   body.bg-forest-page .team-card {
     background-color: #143E33 !important;
-    border-color: rgba(216, 210, 196, 0.12) !important;
+    border-color: #6F8A6E !important;
   }
 
   body.bg-forest-page .team-card:hover {

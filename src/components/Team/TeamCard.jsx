@@ -34,7 +34,7 @@ export default function TeamCard({ member, index, onOpenModal }) {
           <p className="font-syne text-[16px] font-bold leading-tight text-white transition-colors duration-200 group-hover:text-brand-accent">
             {member.name}
           </p>
-          <div className="mt-1 flex items-center gap-1.5 font-sans text-[12px] font-medium text-text-secondary tracking-wide">
+          <div className="mt-1 flex items-center gap-1.5 font-sans text-[12px] font-medium text-brand-secondary tracking-wide">
             <span>{member.role}</span>
             {member.level && (
               <>

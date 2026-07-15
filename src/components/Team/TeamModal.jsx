@@ -23,7 +23,7 @@ const InstagramIcon = () => (
 
 export default function TeamModal({ member, onClose }) {
   const modalRef = useRef(null);
-  
+
   // Set default featured image in state directly
   const [featuredImage, setFeaturedImage] = useState(() => {
     return member ? (member.profileImage || (member.gallery && member.gallery[0]) || member.photo || '') : '';
@@ -32,11 +32,11 @@ export default function TeamModal({ member, onClose }) {
   // Lock body scroll and trap/restore focus
   useEffect(() => {
     if (!member) return;
-    
+
     const previouslyFocused = document.activeElement;
     const originalStyle = window.getComputedStyle(document.body).overflow;
     document.body.style.overflow = 'hidden';
-    
+
     // Focus the modal for screen readers / keyboard navigation
     if (modalRef.current) {
       modalRef.current.focus();
@@ -125,11 +125,11 @@ export default function TeamModal({ member, onClose }) {
   // Helper to normalize and split skills or tech stack
   const getNormalizedList = (list) => {
     if (!list || !Array.isArray(list)) return [];
-    
+
     const normalizeTechOrSkill = (name) => {
       if (!name) return '';
       const clean = name.trim().toLowerCase().replace(/\s+/g, ' ');
-      
+
       const mapping = {
         'react': 'React.js',
         'reactjs': 'React.js',
@@ -242,7 +242,7 @@ export default function TeamModal({ member, onClose }) {
           {techStackList.map(tech => (
             <span
               key={tech}
-              className="font-sans text-[11px] font-semibold text-brand-secondary bg-brand-secondary/40 border border-brand-secondary px-2.5 py-1 rounded-full transition-colors duration-200 hover:bg-brand-secondary/10"
+              className="font-sans text-[11px] font-semibold text-neutral-200 bg-brand-secondary/10 border border-brand-secondary/30 px-2.5 py-1 rounded-full transition-all duration-200 hover:bg-brand-secondary/20 hover:text-white hover:border-brand-secondary/50"
             >
               {tech}
             </span>
@@ -279,11 +279,10 @@ export default function TeamModal({ member, onClose }) {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.97 }}
           transition={{ duration: 0.18, ease: 'easeOut' }}
-          className={`team-modal-container relative w-full max-w-[920px] bg-[#0A0A0A]/95 border border-white/[0.08] rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-y-auto md:overflow-hidden focus:outline-none z-10 ${
-            hasDetailedContent
+          className={`team-modal-container relative w-full max-w-[920px] bg-[#0A0A0A]/95 border border-white/[0.08] rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-y-auto md:overflow-hidden focus:outline-none z-10 ${hasDetailedContent
               ? 'max-h-[90vh] md:h-[85vh] min-h-[60vh]'
               : 'max-h-[90vh] md:h-auto md:min-h-0'
-          }`}
+            }`}
         >
           {/* Mobile Close Button (Sticky, does not consume vertical space) */}
           <div className="sticky top-0 right-0 z-30 flex justify-end w-full h-0 overflow-visible pointer-events-none md:hidden">
@@ -306,9 +305,8 @@ export default function TeamModal({ member, onClose }) {
           </button>
 
           {/* DESKTOP LEFT COLUMN: Photo, Gallery, Skills & Tech Stack (40%) - EXACT ORIGINAL LAYOUT */}
-          <div className={`team-modal-left-col hidden md:flex w-full md:w-[40%] bg-[#0B0B0B]/80 p-6 flex-col justify-start border-b md:border-b-0 md:border-r border-white/[0.06] overflow-y-auto gap-6 shrink-0 ${
-            hasDetailedContent ? 'md:h-full' : 'md:h-auto'
-          }`}>
+          <div className={`team-modal-left-col hidden md:flex w-full md:w-[40%] bg-[#0B0B0B]/80 p-6 flex-col justify-start border-b md:border-b-0 md:border-r border-white/[0.06] overflow-y-auto gap-6 shrink-0 ${hasDetailedContent ? 'md:h-full' : 'md:h-auto'
+            }`}>
             <div>
               {/* Featured image display frame */}
               <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-neutral-900/50 mb-5 border border-white/[0.04]">
@@ -339,11 +337,10 @@ export default function TeamModal({ member, onClose }) {
                         key={imgUrl}
                         onClick={() => setFeaturedImage(imgUrl)}
                         aria-label={`View photo ${idx + 1}`}
-                        className={`relative aspect-square rounded-xl overflow-hidden bg-neutral-950 transition-all duration-200 border-2 ${
-                          isActive
+                        className={`relative aspect-square rounded-xl overflow-hidden bg-neutral-950 transition-all duration-200 border-2 ${isActive
                             ? 'border-brand-accent scale-[1.03] shadow-md shadow-brand-accent/10'
                             : 'border-transparent opacity-60 hover:opacity-100 hover:border-white/15'
-                        }`}
+                          }`}
                       >
                         <img
                           src={imgUrl}
@@ -379,11 +376,10 @@ export default function TeamModal({ member, onClose }) {
                         key={`mobile-thumb-${imgUrl}`}
                         onClick={() => setFeaturedImage(imgUrl)}
                         aria-label={`View photo ${idx + 1}`}
-                        className={`relative w-[68px] h-[68px] rounded-xl overflow-hidden bg-neutral-950 transition-all duration-200 border-2 ${
-                          isActive
+                        className={`relative w-[68px] h-[68px] rounded-xl overflow-hidden bg-neutral-950 transition-all duration-200 border-2 ${isActive
                             ? 'border-brand-accent scale-[1.03] shadow-md shadow-brand-accent/10'
                             : 'border-transparent opacity-60 hover:opacity-100 hover:border-white/15'
-                        }`}
+                          }`}
                       >
                         <img
                           src={imgUrl}
@@ -437,12 +433,11 @@ export default function TeamModal({ member, onClose }) {
           </div>
 
           {/* RIGHT COLUMN: Details Scroll Box (60%) */}
-          <div className={`w-full md:w-[60%] px-5 pb-6 pt-4 sm:p-8 overflow-y-visible md:overflow-y-auto flex flex-col select-text ${
-            hasDetailedContent
+          <div className={`w-full md:w-[60%] px-5 pb-6 pt-4 sm:p-8 overflow-y-visible md:overflow-y-auto flex flex-col select-text ${hasDetailedContent
               ? 'justify-between md:h-full min-h-[320px] sm:min-h-[400px]'
               : 'justify-center md:h-auto md:min-h-0 gap-6'
-          }`}>
-            
+            }`}>
+
             {/* Profile Info Details Group */}
             <div className="flex flex-col gap-4 md:gap-6 w-full">
               {/* 1. Name */}
@@ -559,65 +554,65 @@ export default function TeamModal({ member, onClose }) {
 
             {((member.socials && (member.socials.github || member.socials.linkedin || member.socials.instagram || member.socials.portfolio)) ||
               (member.github || member.linkedin || member.instagram)) && (
-              <div className="pt-4 border-t border-white/[0.05] mt-2 md:mt-0">
-                <h3 className="font-syne text-[11px] font-bold uppercase tracking-widest text-brand-accent mb-3">
-                  Connect
-                </h3>
-                <div className="flex items-center gap-3">
-                  {/* LinkedIn */}
-                  {(member.socials?.linkedin || member.linkedin) && (
-                    <a
-                      href={member.socials?.linkedin || member.linkedin}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={`${member.name} LinkedIn`}
-                      className="flex h-11 w-11 md:h-9.5 md:w-9.5 items-center justify-center rounded-full border border-white/[0.05] bg-white/[0.02] text-white/50 transition-all duration-300 hover:scale-105 hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
-                    >
-                      <LinkedinIcon />
-                    </a>
-                  )}
+                <div className="pt-4 border-t border-white/[0.05] mt-2 md:mt-0">
+                  <h3 className="font-syne text-[11px] font-bold uppercase tracking-widest text-brand-accent mb-3">
+                    Connect
+                  </h3>
+                  <div className="flex items-center gap-3">
+                    {/* LinkedIn */}
+                    {(member.socials?.linkedin || member.linkedin) && (
+                      <a
+                        href={member.socials?.linkedin || member.linkedin}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={`${member.name} LinkedIn`}
+                        className="flex h-11 w-11 md:h-9.5 md:w-9.5 items-center justify-center rounded-full border border-sage-green/30 bg-sage-green/[0.02] text-sage-green/70 transition-all duration-300 hover:scale-105 hover:border-sage-green hover:bg-sage-green/10 hover:text-sage-green"
+                      >
+                        <LinkedinIcon />
+                      </a>
+                    )}
 
-                  {/* GitHub */}
-                  {(member.socials?.github || member.github) && (
-                    <a
-                      href={member.socials?.github || member.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={`${member.name} GitHub`}
-                      className="flex h-11 w-11 md:h-9.5 md:w-9.5 items-center justify-center rounded-full border border-white/[0.05] bg-white/[0.02] text-white/50 transition-all duration-300 hover:scale-105 hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
-                    >
-                      <GithubIcon />
-                    </a>
-                  )}
+                    {/* GitHub */}
+                    {(member.socials?.github || member.github) && (
+                      <a
+                        href={member.socials?.github || member.github}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={`${member.name} GitHub`}
+                        className="flex h-11 w-11 md:h-9.5 md:w-9.5 items-center justify-center rounded-full border border-sage-green/30 bg-sage-green/[0.02] text-sage-green/70 transition-all duration-300 hover:scale-105 hover:border-sage-green hover:bg-sage-green/10 hover:text-sage-green"
+                      >
+                        <GithubIcon />
+                      </a>
+                    )}
 
-                  {/* Instagram */}
-                  {(member.socials?.instagram || member.instagram) && (
-                    <a
-                      href={member.socials?.instagram || member.instagram}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={`${member.name} Instagram`}
-                      className="flex h-11 w-11 md:h-9.5 md:w-9.5 items-center justify-center rounded-full border border-white/[0.05] bg-white/[0.02] text-white/50 transition-all duration-300 hover:scale-105 hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
-                    >
-                      <InstagramIcon />
-                    </a>
-                  )}
+                    {/* Instagram */}
+                    {(member.socials?.instagram || member.instagram) && (
+                      <a
+                        href={member.socials?.instagram || member.instagram}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={`${member.name} Instagram`}
+                        className="flex h-11 w-11 md:h-9.5 md:w-9.5 items-center justify-center rounded-full border border-sage-green/30 bg-sage-green/[0.02] text-sage-green/70 transition-all duration-300 hover:scale-105 hover:border-sage-green hover:bg-sage-green/10 hover:text-sage-green"
+                      >
+                        <InstagramIcon />
+                      </a>
+                    )}
 
-                  {/* Portfolio */}
-                  {member.socials?.portfolio && (
-                    <a
-                      href={member.socials.portfolio}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={`${member.name} Portfolio`}
-                      className="flex h-11 w-11 md:h-9.5 md:w-9.5 items-center justify-center rounded-full border border-white/[0.05] bg-white/[0.02] text-white/50 transition-all duration-300 hover:scale-105 hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
-                    >
-                      <Globe className="h-[18px] w-[18px] md:h-[16px] md:w-[16px]" />
-                    </a>
-                  )}
+                    {/* Portfolio */}
+                    {member.socials?.portfolio && (
+                      <a
+                        href={member.socials.portfolio}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={`${member.name} Portfolio`}
+                        className="flex h-11 w-11 md:h-9.5 md:w-9.5 items-center justify-center rounded-full border border-sage-green/30 bg-sage-green/[0.02] text-sage-green/70 transition-all duration-300 hover:scale-105 hover:border-sage-green hover:bg-sage-green/10 hover:text-sage-green"
+                      >
+                        <Globe className="h-[18px] w-[18px] md:h-[16px] md:w-[16px]" />
+                      </a>
+                    )}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
           </div>
         </motion.div>
       </div>
