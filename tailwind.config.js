@@ -7,18 +7,34 @@ export default {
   theme: {
     extend: {
       colors: {
-        void:    '#09090B',
-        surface: '#0E0E0E',
-        elevated:'#111111',
-        border:  'rgba(255, 255, 255, 0.06)',
+        // Backwards compatibility mapping (resolves to exact same color values via CSS variables)
+        void: 'var(--color-background)',
+        surface: 'var(--color-surface)',
+        elevated: 'var(--color-surface-2)',
+        border: 'var(--color-border)',
         text: {
-          primary:   '#FFFFFF',
-          secondary: '#6B7280',
-          muted:     '#374151',
+          primary: 'var(--color-text)',
+          secondary: 'var(--color-text-secondary)',
+          muted: 'var(--color-text-muted)',
         },
         accent: {
-          violet: '#6D28D9',
+          violet: '#6D28D9', // Kept legacy hex directly for safety
         },
+        'sage-green': '#6F8A6E',
+        // Global Design System Tokens
+        brand: {
+          primary: 'var(--color-primary)',
+          'primary-hover': 'var(--color-primary-hover)',
+          secondary: '#6F8A6E',
+          accent: 'var(--color-accent)',
+          'accent-hover': 'var(--color-accent-hover)',
+          stone: 'var(--color-stone)',
+          charcoal: 'var(--color-charcoal)',
+        },
+        // Status Colors
+        success: 'var(--color-success)',
+        warning: 'var(--color-warning)',
+        danger: 'var(--color-danger)',
       },
       fontFamily: {
         syne: ['"Playfair Display"', 'serif'],
