@@ -8,10 +8,10 @@ import Aurora from '../components/ui/Aurora';
 /* ── Palette ── */
 const C = {
   deepForest: '#0D3B2E',
-  sage:       '#6F8A6E',
-  warmStone:  '#D8D2C4',
-  gold:       '#B88C3A',
-  charcoal:   '#2B2F2E',
+  sage: '#6F8A6E',
+  warmStone: '#D8D2C4',
+  gold: '#B88C3A',
+  charcoal: '#2B2F2E',
 };
 
 export default function Cart() {
@@ -27,10 +27,10 @@ export default function Cart() {
     <Layout>
       {/* ── Page background with WebGL Aurora (moving green waves) ── */}
       <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', background: '#09221a' }}>
-        <Aurora colorStops={['#0D3B2E', '#6F8A6E', '#0D3B2E']} amplitude={1.2} blend={0.6} speed={0.8} />
+        <Aurora colorStops={['#0D3B2E', '#6F8A6E', '#0D3B2E']} amplitude={4.0} blend={0.6} speed={0.8} />
       </div>
 
-      <section className="relative z-10 mx-auto max-w-[980px] px-4 pb-20 pt-20 sm:px-6 md:pb-28 md:pt-28">
+      <section className="relative z-10 mx-auto max-w-[1280px] px-4 pb-32 pt-28 sm:px-6 md:pb-48 md:pt-40 min-h-[75vh] flex flex-col justify-center">
         <RevealOnScroll>
           <div className="mb-10 text-center md:mb-14">
             <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] md:text-[13px]" style={{ color: C.sage }}>Cart</p>

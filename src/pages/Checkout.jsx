@@ -13,6 +13,7 @@ import {
 } from '../lib/payments';
 import Layout from '../components/layout/Layout';
 import { supabase } from '../lib/supabaseClient';
+import Aurora from '../components/ui/Aurora';
 
 const initialForm = {
   name: '',
@@ -139,7 +140,7 @@ export default function Checkout() {
                   const { error: upsertError } = await supabase
                     .from('purchased_plans')
                     .upsert(itemsToUpsert, { onConflict: 'user_id, plan_id' });
-                  
+
                   if (upsertError) {
                     console.error('Supabase upsert error:', upsertError);
                   }
@@ -174,48 +175,52 @@ export default function Checkout() {
 
   return (
     <Layout>
-      <section className="mx-auto max-w-[1120px] px-4 pb-20 pt-20 sm:px-6 md:pb-28 md:pt-28">
+      <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', background: '#09221a' }}>
+        <Aurora colorStops={['#0D3B2E', '#6F8A6E', '#0D3B2E']} amplitude={4.0} blend={0.6} speed={0.8} />
+      </div>
+
+      <section className="relative z-10 mx-auto max-w-[1120px] px-4 pb-20 pt-20 sm:px-6 md:pb-28 md:pt-28">
         <RevealOnScroll>
           <div className="mb-10 text-center md:mb-14">
-            <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">Checkout</p>
-            <h1 className="font-syne text-[40px] font-[800] leading-[1.02] text-white md:text-[64px]">Complete Your Order.</h1>
+            <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-[#6F8A6E] md:text-[13px]">Checkout</p>
+            <h1 className="font-syne text-[40px] font-[800] leading-[1.02] text-[#0D3B2E] md:text-[64px]">Complete Your Order.</h1>
           </div>
         </RevealOnScroll>
 
         {showSuccess ? (
           <div className="mx-auto max-w-[800px]">
             <RevealOnScroll>
-              <div className="rounded-[32px] border border-white/10 bg-white/[0.02] p-8 md:p-16 text-center backdrop-blur-xl">
+              <div className="rounded-[32px] border border-[rgba(13,59,46,0.1)] bg-[#D8D2C4] p-8 md:p-16 text-center shadow-xl">
                 <div className="mb-8 flex justify-center">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400">
+                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-800">
                     <svg className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
                 </div>
-                <h2 className="mb-4 font-syne text-3xl font-bold text-white md:text-4xl">Payment Successful!</h2>
-                <p className="mb-10 font-sans text-white/50 text-lg">
+                <h2 className="mb-4 font-syne text-3xl font-bold text-[#0D3B2E] md:text-4xl">Payment Successful!</h2>
+                <p className="mb-10 font-sans text-[#0D3B2E]/70 text-lg">
                   Welcome to the studio. Your project is now officially in our pipeline.
                 </p>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-                  <button 
+                  <button
                     onClick={() => {
                       const lastCheckout = JSON.parse(localStorage.getItem('crevix-last-checkout') || '{}');
                       generateInvoice(lastCheckout);
                     }}
-                    className="flex items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-6 py-5 font-sans font-bold text-white transition-all hover:bg-white/10"
+                    className="flex items-center justify-center gap-3 rounded-2xl border border-[#0D3B2E]/10 bg-[#0D3B2E]/5 px-6 py-5 font-sans font-bold text-[#0D3B2E] transition-all hover:bg-[#0D3B2E]/10"
                   >
                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                     Download Invoice
                   </button>
-                  <a 
+                  <a
                     href={`https://wa.me/917318304955?text=Hi Crevix! I just made a payment for my project. Can we discuss the next steps?`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-3 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-6 py-5 font-sans font-bold text-emerald-400 transition-all hover:bg-emerald-500/20"
+                    className="flex items-center justify-center gap-3 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-6 py-5 font-sans font-bold text-emerald-800 transition-all hover:bg-emerald-500/20"
                   >
                     <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.246 2.248 3.484 5.232 3.484 8.412-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.309 1.656zm6.224-3.82l.303.18c1.397.83 3.013 1.269 4.657 1.27h.006c5.566 0 10.096-4.53 10.098-10.098.001-2.697-1.051-5.234-2.961-7.145s-4.448-2.963-7.146-2.963c-5.568 0-10.097 4.53-10.1 10.099-.001 1.774.463 3.509 1.34 5.025l.197.339-1.01 3.689 3.776-.991z" />
@@ -225,7 +230,7 @@ export default function Checkout() {
                 </div>
 
                 <div className="mt-12">
-                  <Link to="/" className="text-white/40 hover:text-white transition-colors font-sans text-sm underline underline-offset-8">
+                  <Link to="/" className="text-[#0D3B2E]/50 hover:text-[#0D3B2E] transition-colors font-sans text-sm underline underline-offset-8">
                     Return to Home
                   </Link>
                 </div>
@@ -234,118 +239,118 @@ export default function Checkout() {
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-          <RevealOnScroll>
-            <aside className="rounded-[16px] border border-white/[0.08] bg-[#0E0E0E]/85 p-5 sm:p-8">
-              <p className="mb-6 font-syne text-[22px] font-bold text-white">Order Summary</p>
+            <RevealOnScroll>
+              <aside className="rounded-[16px] border border-[rgba(13,59,46,0.15)] bg-[#D8D2C4] p-5 sm:p-8 text-[#0D3B2E]" style={{ boxShadow: '0 24px 80px rgba(0,0,0,0.2)' }}>
+                <p className="mb-6 font-syne text-[22px] font-bold text-[#0D3B2E]">Order Summary</p>
 
-              {checkoutItems.length ? (
-                <div className="space-y-4">
-                  {checkoutItems.map((item, index) => (
-                    <div key={item.cartId || `${item.id}-${index}`} className="rounded-[14px] border border-white/[0.06] bg-white/[0.025] p-4">
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <p className="font-syne text-[17px] font-bold text-white">{item.name}</p>
-                          <p className="mt-1 font-sans text-[13px] text-text-secondary">
-                            {item.type} 
-                            {isAdvance && !isRemaining && <span className="text-white/40 ml-1 text-[11px] uppercase tracking-wider">(Advance)</span>}
-                            {isRemaining && <span className="text-white/40 ml-1 text-[11px] uppercase tracking-wider">(Remaining)</span>}
+                {checkoutItems.length ? (
+                  <div className="space-y-4">
+                    {checkoutItems.map((item, index) => (
+                      <div key={item.cartId || `${item.id}-${index}`} className="rounded-[14px] border border-[rgba(13,59,46,0.12)] bg-[rgba(13,59,46,0.05)] p-4">
+                        <div className="flex items-start justify-between gap-4">
+                          <div>
+                            <p className="font-syne text-[17px] font-bold text-[#0D3B2E]">{item.name}</p>
+                            <p className="mt-1 font-sans text-[13px] text-[#6F8A6E]">
+                              {item.type}
+                              {isAdvance && !isRemaining && <span className="text-[#0D3B2E]/40 ml-1 text-[11px] uppercase tracking-wider">(Advance)</span>}
+                              {isRemaining && <span className="text-[#0D3B2E]/40 ml-1 text-[11px] uppercase tracking-wider">(Remaining)</span>}
+                            </p>
+                          </div>
+                          <p className="shrink-0 font-sans text-[14px] text-[#0D3B2E] font-semibold">
+                            {formatCurrency(isRemaining ? (item.remainingPrice || item.amount) : (isAdvance ? (item.advancePrice || item.amount) : (item.fullPrice || item.amount)))}
                           </p>
                         </div>
-                        <p className="shrink-0 font-sans text-[14px] text-white">
-                          {formatCurrency(isRemaining ? (item.remainingPrice || item.amount) : (isAdvance ? (item.advancePrice || item.amount) : (item.fullPrice || item.amount)))}
-                        </p>
+                        {item.features && (
+                          <ul className="mt-4 space-y-2">
+                            {item.features.slice(0, 4).map((feature) => (
+                              <li key={feature} className="flex gap-2 font-sans text-[12px] leading-[1.45] text-[#6F8A6E]">
+                                <span className="text-[#0D3B2E]/25">✓</span>
+                                {feature}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
                       </div>
-                      {item.features && (
-                        <ul className="mt-4 space-y-2">
-                          {item.features.slice(0, 4).map((feature) => (
-                            <li key={feature} className="flex gap-2 font-sans text-[12px] leading-[1.45] text-text-secondary">
-                              <span className="text-white/25">✓</span>
-                              {feature}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
+                    ))}
+
+                    <div className="flex items-center justify-between border-t border-[rgba(13,59,46,0.15)] pt-6">
+                      <p className="font-sans text-[14px] text-[#6F8A6E]">Total</p>
+                      <p className="font-syne text-[30px] font-[800] text-[#0D3B2E]">{formatCurrency(total)}</p>
                     </div>
-                  ))}
-
-                  <div className="flex items-center justify-between border-t border-white/[0.06] pt-6">
-                    <p className="font-sans text-[14px] text-text-secondary">Total</p>
-                    <p className="font-syne text-[30px] font-[800] text-white">{formatCurrency(total)}</p>
                   </div>
+                ) : (
+                  <div className="py-10 text-center">
+                    <p className="font-sans text-[15px] text-[#6F8A6E]">No items selected.</p>
+                    <Link to="/pricing" className="mt-5 inline-block rounded-full bg-[#0D3B2E] px-6 py-3 font-sans text-[14px] font-medium text-[#D8D2C4]">
+                      Choose a Plan
+                    </Link>
+                  </div>
+                )}
+              </aside>
+            </RevealOnScroll>
+
+            <RevealOnScroll delay={0.08}>
+              <form onSubmit={proceedToPayment} className="rounded-[16px] border border-[rgba(13,59,46,0.15)] bg-[#D8D2C4] p-5 sm:p-8 text-[#0D3B2E]" style={{ boxShadow: '0 24px 80px rgba(0,0,0,0.2)' }}>
+                <p className="mb-6 font-syne text-[22px] font-bold text-[#0D3B2E]">Your Details</p>
+
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                  <label className="block">
+                    <span className="mb-2 block font-sans text-[11px] uppercase tracking-[0.15em] text-[#0D3B2E] font-semibold">Name</span>
+                    <input
+                      name="name"
+                      value={form.name}
+                      onChange={handleChange}
+                      className="w-full rounded-[12px] border border-[rgba(13,59,46,0.15)] bg-[rgba(13,59,46,0.05)] px-[18px] py-[14px] font-sans text-[15px] text-[#0D3B2E] outline-none transition-colors duration-150 placeholder:text-[#6F8A6E]/70 focus:border-[#0D3B2E]/35"
+                      placeholder="Your name"
+                    />
+                  </label>
+                  <label className="block">
+                    <span className="mb-2 block font-sans text-[11px] uppercase tracking-[0.15em] text-[#0D3B2E] font-semibold">Email</span>
+                    <input
+                      name="email"
+                      type="email"
+                      value={form.email}
+                      onChange={handleChange}
+                      className="w-full rounded-[12px] border border-[rgba(13,59,46,0.15)] bg-[rgba(13,59,46,0.05)] px-[18px] py-[14px] font-sans text-[15px] text-[#0D3B2E] outline-none transition-colors duration-150 placeholder:text-[#6F8A6E]/70 focus:border-[#0D3B2E]/35"
+                      placeholder="you@company.com"
+                    />
+                  </label>
+                  <label className="block">
+                    <span className="mb-2 block font-sans text-[11px] uppercase tracking-[0.15em] text-[#0D3B2E] font-semibold">Phone</span>
+                    <input
+                      name="phone"
+                      value={form.phone}
+                      onChange={handleChange}
+                      className="w-full rounded-[12px] border border-[rgba(13,59,46,0.15)] bg-[rgba(13,59,46,0.05)] px-[18px] py-[14px] font-sans text-[15px] text-[#0D3B2E] outline-none transition-colors duration-150 placeholder:text-[#6F8A6E]/70 focus:border-[#0D3B2E]/35"
+                      placeholder="+91 99999 99999"
+                    />
+                  </label>
+                  <label className="block">
+                    <span className="mb-2 block font-sans text-[11px] uppercase tracking-[0.15em] text-[#0D3B2E] font-semibold">Business Name</span>
+                    <input
+                      name="businessName"
+                      value={form.businessName}
+                      onChange={handleChange}
+                      className="w-full rounded-[12px] border border-[rgba(13,59,46,0.15)] bg-[rgba(13,59,46,0.05)] px-[18px] py-[14px] font-sans text-[15px] text-[#0D3B2E] outline-none transition-colors duration-150 placeholder:text-[#6F8A6E]/70 focus:border-[#0D3B2E]/35"
+                      placeholder="Optional"
+                    />
+                  </label>
                 </div>
-              ) : (
-                <div className="py-10 text-center">
-                  <p className="font-sans text-[15px] text-text-secondary">No items selected.</p>
-                  <Link to="/pricing" className="mt-5 inline-block rounded-full bg-white px-6 py-3 font-sans text-[14px] font-medium text-[#080808]">
-                    Choose a Plan
-                  </Link>
-                </div>
-              )}
-            </aside>
-          </RevealOnScroll>
 
-          <RevealOnScroll delay={0.08}>
-            <form onSubmit={proceedToPayment} className="rounded-[16px] border border-white/[0.08] bg-[#0E0E0E]/85 p-5 sm:p-8">
-              <p className="mb-6 font-syne text-[22px] font-bold text-white">Your Details</p>
+                {error && <p className="mt-5 font-sans text-[13px] text-red-600 font-semibold">{error}</p>}
 
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                <label className="block">
-                  <span className="mb-2 block font-sans text-[11px] uppercase tracking-[0.15em] text-text-secondary">Name</span>
-                  <input
-                    name="name"
-                    value={form.name}
-                    onChange={handleChange}
-                    className="w-full rounded-[12px] border border-white/[0.09] bg-transparent px-[18px] py-[14px] font-sans text-[15px] text-white outline-none transition-colors duration-150 placeholder:text-text-muted focus:border-white/[0.35]"
-                    placeholder="Your name"
-                  />
-                </label>
-                <label className="block">
-                  <span className="mb-2 block font-sans text-[11px] uppercase tracking-[0.15em] text-text-secondary">Email</span>
-                  <input
-                    name="email"
-                    type="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    className="w-full rounded-[12px] border border-white/[0.09] bg-transparent px-[18px] py-[14px] font-sans text-[15px] text-white outline-none transition-colors duration-150 placeholder:text-text-muted focus:border-white/[0.35]"
-                    placeholder="you@company.com"
-                  />
-                </label>
-                <label className="block">
-                  <span className="mb-2 block font-sans text-[11px] uppercase tracking-[0.15em] text-text-secondary">Phone</span>
-                  <input
-                    name="phone"
-                    value={form.phone}
-                    onChange={handleChange}
-                    className="w-full rounded-[12px] border border-white/[0.09] bg-transparent px-[18px] py-[14px] font-sans text-[15px] text-white outline-none transition-colors duration-150 placeholder:text-text-muted focus:border-white/[0.35]"
-                    placeholder="+91 99999 99999"
-                  />
-                </label>
-                <label className="block">
-                  <span className="mb-2 block font-sans text-[11px] uppercase tracking-[0.15em] text-text-secondary">Business Name</span>
-                  <input
-                    name="businessName"
-                    value={form.businessName}
-                    onChange={handleChange}
-                    className="w-full rounded-[12px] border border-white/[0.09] bg-transparent px-[18px] py-[14px] font-sans text-[15px] text-white outline-none transition-colors duration-150 placeholder:text-text-muted focus:border-white/[0.35]"
-                    placeholder="Optional"
-                  />
-                </label>
-              </div>
-
-              {error && <p className="mt-5 font-sans text-[13px] text-red-400">{error}</p>}
-
-              <button
-                type="submit"
-                disabled={!checkoutItems.length || processing}
-                className="mt-8 w-full rounded-full bg-white px-6 py-4 text-center font-sans text-[15px] font-medium text-[#080808] transition-opacity duration-150 hover:opacity-85 disabled:cursor-not-allowed disabled:opacity-35"
-              >
-                {processing ? 'Opening Payment...' : 'Proceed to Payment →'}
-              </button>
-              <p className="mt-4 text-center font-sans text-[12px] leading-[1.6] text-text-muted">
-                A secure Razorpay checkout popup will open for UPI/cards/netbanking.
-              </p>
-            </form>
-          </RevealOnScroll>
+                <button
+                  type="submit"
+                  disabled={!checkoutItems.length || processing}
+                  className="mt-8 w-full rounded-full bg-[#0D3B2E] px-6 py-4 text-center font-sans text-[15px] font-bold text-[#D8D2C4] transition-opacity duration-150 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-35"
+                >
+                  {processing ? 'Opening Payment...' : 'Proceed to Payment →'}
+                </button>
+                <p className="mt-4 text-center font-sans text-[12px] leading-[1.6] text-[#6F8A6E]">
+                  A secure Razorpay checkout popup will open for UPI/cards/netbanking.
+                </p>
+              </form>
+            </RevealOnScroll>
           </div>
         )}
       </section>

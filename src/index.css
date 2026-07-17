@@ -170,7 +170,16 @@
 }
 
 @layer utilities {
-  body, input, select, textarea, button, a, .font-sans, .font-syne, .font-brand {
+
+  body,
+  input,
+  select,
+  textarea,
+  button,
+  a,
+  .font-sans,
+  .font-syne,
+  .font-brand {
     font-family: 'Playfair Display', serif !important;
   }
 
@@ -188,28 +197,63 @@
 
 @layer utilities {
   @keyframes float-blob-one {
-    0% { transform: translate(0px, 0px) scale(1); }
-    33% { transform: translate(15vw, -10vh) scale(1.2); }
-    66% { transform: translate(-10vw, 15vh) scale(0.8); }
-    100% { transform: translate(0px, 0px) scale(1); }
+    0% {
+      transform: translate(0px, 0px) scale(1);
+    }
+
+    33% {
+      transform: translate(15vw, -10vh) scale(1.2);
+    }
+
+    66% {
+      transform: translate(-10vw, 15vh) scale(0.8);
+    }
+
+    100% {
+      transform: translate(0px, 0px) scale(1);
+    }
   }
 
   @keyframes float-blob-two {
-    0% { transform: translate(0px, 0px) scale(1.1); }
-    50% { transform: translate(-20vw, 15vh) scale(0.85); }
-    100% { transform: translate(0px, 0px) scale(1.1); }
+    0% {
+      transform: translate(0px, 0px) scale(1.1);
+    }
+
+    50% {
+      transform: translate(-20vw, 15vh) scale(0.85);
+    }
+
+    100% {
+      transform: translate(0px, 0px) scale(1.1);
+    }
   }
 
   @keyframes float-blob-three {
-    0% { transform: translate(0px, 0px) scale(0.9); }
-    33% { transform: translate(-15vw, -15vh) scale(1.1); }
-    66% { transform: translate(15vw, 10vh) scale(0.95); }
-    100% { transform: translate(0px, 0px) scale(0.9); }
+    0% {
+      transform: translate(0px, 0px) scale(0.9);
+    }
+
+    33% {
+      transform: translate(-15vw, -15vh) scale(1.1);
+    }
+
+    66% {
+      transform: translate(15vw, 10vh) scale(0.95);
+    }
+
+    100% {
+      transform: translate(0px, 0px) scale(0.9);
+    }
   }
 
   @keyframes rotate-bg {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
   }
 
   .moving-green-bg {
@@ -331,7 +375,7 @@
 
   /* Override WebKit autofill default styling to match theme green */
   input:-webkit-autofill,
-  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
   textarea:-webkit-autofill,
   textarea:-webkit-autofill:hover,

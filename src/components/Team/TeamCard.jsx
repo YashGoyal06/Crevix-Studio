@@ -17,7 +17,7 @@ export default function TeamCard({ member, index, onOpenModal }) {
     <RevealOnScroll delay={(index % 4) * 0.06} className="group relative flex w-full max-w-[290px]">
       {/* Ambient Glow behind the card (subtle on default, intensifies on hover) */}
       <div className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-brand-secondary via-brand-accent to-brand-stone opacity-[0.05] blur-2xl transition-all duration-500 group-hover:opacity-20 group-hover:scale-105" />
-      
+
       <article
         onClick={() => onOpenModal?.(member)}
         onKeyDown={handleKeyDown}
@@ -25,7 +25,7 @@ export default function TeamCard({ member, index, onOpenModal }) {
         aria-label={`View profile of ${member.name}, ${member.role}`}
         className="team-card flex h-full w-full flex-col overflow-hidden rounded-[24px] border p-3 cursor-pointer"
       >
-        
+
         {/* Inset Photo Frame */}
         <ImageGallery member={member} index={index} />
 

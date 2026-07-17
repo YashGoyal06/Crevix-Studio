@@ -17,7 +17,13 @@ export default function Team() {
 
   return (
     <Layout>
-      <section className="mx-auto max-w-[1280px] px-4 pb-20 pt-24 sm:px-6 md:pb-28 md:pt-28">
+      {/* ── Page background with gradient effect ── */}
+      <div style={{
+        position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none',
+        background: 'linear-gradient(135deg, #0D3B2E 0%, #6F8A6E 50%, #0D3B2E 100%)',
+      }} />
+
+      <section className="relative z-10 mx-auto max-w-[1280px] px-4 pb-20 pt-24 sm:px-6 md:pb-28 md:pt-28">
         <RevealOnScroll>
           <div className="mx-auto mb-12 max-w-[760px] text-center md:mb-20">
             <p className="mb-5 font-sans text-[12px] uppercase tracking-[0.15em] text-brand-accent md:mb-6 md:text-[13px]">Our Team</p>

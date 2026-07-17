@@ -7,16 +7,16 @@ import { CartProvider } from './context/CartContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import GoogleAnalytics from './components/ui/GoogleAnalytics';
 
-const Home      = lazy(() => import('./pages/Home'));
-const Services  = lazy(() => import('./pages/Services'));
+const Home = lazy(() => import('./pages/Home'));
+const Services = lazy(() => import('./pages/Services'));
 const Portfolio = lazy(() => import('./pages/Portfolio'));
-const Team      = lazy(() => import('./pages/Team'));
-const Pricing   = lazy(() => import('./pages/Pricing'));
-const Cart      = lazy(() => import('./pages/Cart'));
-const Checkout  = lazy(() => import('./pages/Checkout'));
-const Contact   = lazy(() => import('./pages/Contact'));
-const Login     = lazy(() => import('./pages/Login'));
-const Profile   = lazy(() => import('./pages/Profile'));
+const Team = lazy(() => import('./pages/Team'));
+const Pricing = lazy(() => import('./pages/Pricing'));
+const Cart = lazy(() => import('./pages/Cart'));
+const Checkout = lazy(() => import('./pages/Checkout'));
+const Contact = lazy(() => import('./pages/Contact'));
+const Login = lazy(() => import('./pages/Login'));
+const Profile = lazy(() => import('./pages/Profile'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 const AgreementCreatePage = lazy(() => import('./modules/agreements/AgreementCreatePage'));
 const AgreementPage = lazy(() => import('./modules/agreements/AgreementPage'));
@@ -37,16 +37,16 @@ const AnimatedRoutes = () => {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/"          element={<PageFade><Home /></PageFade>} />
-        <Route path="/services"  element={<PageFade><Services /></PageFade>} />
+        <Route path="/" element={<PageFade><Home /></PageFade>} />
+        <Route path="/services" element={<PageFade><Services /></PageFade>} />
         <Route path="/portfolio" element={<PageFade><Portfolio /></PageFade>} />
-        <Route path="/team"      element={<PageFade><Team /></PageFade>} />
-        <Route path="/pricing"   element={<PageFade><Pricing /></PageFade>} />
-        <Route path="/cart"      element={<PageFade><Cart /></PageFade>} />
-        <Route path="/checkout"  element={<PageFade><ProtectedRoute><Checkout /></ProtectedRoute></PageFade>} />
-        <Route path="/contact"   element={<PageFade><Contact /></PageFade>} />
-        <Route path="/login"     element={<PageFade><Login /></PageFade>} />
-        <Route path="/profile"   element={<PageFade><ProtectedRoute><Profile /></ProtectedRoute></PageFade>} />
+        <Route path="/team" element={<PageFade><Team /></PageFade>} />
+        <Route path="/pricing" element={<PageFade><Pricing /></PageFade>} />
+        <Route path="/cart" element={<PageFade><Cart /></PageFade>} />
+        <Route path="/checkout" element={<PageFade><ProtectedRoute><Checkout /></ProtectedRoute></PageFade>} />
+        <Route path="/contact" element={<PageFade><Contact /></PageFade>} />
+        <Route path="/login" element={<PageFade><Login /></PageFade>} />
+        <Route path="/profile" element={<PageFade><ProtectedRoute><Profile /></ProtectedRoute></PageFade>} />
         <Route path="/crevix-admin" element={<PageFade><AdminDashboard /></PageFade>} />
         <Route path="/agreement/new" element={<AgreementCreatePage />} />
         <Route path="/agreement/:token" element={<AgreementPage />} />

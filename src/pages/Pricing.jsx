@@ -27,7 +27,7 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
     <motion.div
       whileHover={{ y: -8, rotateX: -3, rotateY: 3 }}
       transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-      className="group relative flex flex-col rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1 sm:p-8 md:p-10 pricing-card-el"
+      className="group relative flex flex-col rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1 sm:p-8 md:p-10 pricing-card-el w-full max-w-[360px]"
       style={{
         background: 'var(--color-surface)',
         border: plan.featured ? '1px solid var(--color-accent)' : '1px solid var(--color-border)',
@@ -196,7 +196,7 @@ const PackageCard = ({ item, onBuyNow, onAddToCart }) => (
   <motion.div
     whileHover={{ y: -8 }}
     transition={{ type: 'spring', stiffness: 220, damping: 18 }}
-    className="group relative flex flex-col rounded-[24px] p-8 md:p-10 transition-all duration-300 pricing-card-el"
+    className="group relative flex flex-col rounded-[24px] p-8 md:p-10 transition-all duration-300 pricing-card-el w-full max-w-[360px]"
     style={{
       background: 'var(--color-surface)',
       border: '1px solid var(--color-border)',
@@ -255,7 +255,7 @@ const PackageCard = ({ item, onBuyNow, onAddToCart }) => (
 
 // Logical Sections Components
 const PricingHeader = () => (
-  <section className="mx-auto max-w-[1280px] px-4 pb-8 pt-20 text-center sm:px-6 md:pb-12 md:pt-28">
+  <section className="relative z-10 mx-auto max-w-[1280px] px-4 pb-8 pt-20 text-center sm:px-6 md:pb-12 md:pt-28">
     <RevealOnScroll>
       <div className="mb-6 flex items-center justify-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 px-4 py-1.5 font-sans text-[11px] font-bold uppercase tracking-widest text-[var(--color-accent)]">
@@ -273,15 +273,15 @@ const PricingHeader = () => (
 );
 
 const WebsitePlansSection = ({ plans, onBuyNow, onAddToCart, purchasedItems }) => (
-  <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
+  <section className="relative z-10 mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
     <RevealOnScroll>
       <p className="mb-10 text-center font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:mb-14 md:text-[13px]">
         Website Packages <span className="text-[var(--color-accent)] font-medium block mt-1 normal-case font-sans text-[11px] tracking-normal">(Note: Domain is excluded from all plans)</span>
       </p>
     </RevealOnScroll>
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+    <div className="flex flex-wrap justify-center gap-6 items-start">
       {plans.map((p, i) => (
-        <RevealOnScroll key={i} delay={i * 0.08}>
+        <RevealOnScroll key={i} delay={i * 0.08} className="flex w-full max-w-[360px]">
           <PricingCard
             plan={p}
             onBuyNow={onBuyNow}
@@ -311,15 +311,17 @@ const DesignServicesSection = ({ services, onAddToCart, onBuyNow }) => (
 );
 
 const DesignPackagesSection = ({ packages, onBuyNow, onAddToCart }) => (
-  <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
+  <section className="relative z-10 mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
     <RevealOnScroll>
       <div className="mb-10 text-center md:mb-12">
         <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">Packages</p>
         <h2 className="font-syne text-[32px] font-bold leading-[1.08] text-[var(--color-text)] md:text-[44px]">Premium Design Packages</h2>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="flex flex-wrap justify-center gap-8">
         {packages.map((pkg, i) => (
-          <PackageCard key={i} item={pkg} onBuyNow={onBuyNow} onAddToCart={onAddToCart} />
+          <RevealOnScroll key={i} delay={i * 0.08} className="flex w-full max-w-[360px]">
+            <PackageCard item={pkg} onBuyNow={onBuyNow} onAddToCart={onAddToCart} />
+          </RevealOnScroll>
         ))}
       </div>
     </RevealOnScroll>
@@ -327,7 +329,7 @@ const DesignPackagesSection = ({ packages, onBuyNow, onAddToCart }) => (
 );
 
 const CustomSolutionsSection = () => (
-  <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
+  <section className="relative z-10 mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
     <RevealOnScroll>
       <div className="relative rounded-[28px] overflow-hidden p-8 md:p-14 text-center border border-[var(--color-border)]"
         style={{
@@ -356,7 +358,7 @@ const CustomSolutionsSection = () => (
 );
 
 const AddOnsSection = ({ addOnsList, onAddToCart }) => (
-  <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
+  <section className="relative z-10 mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
     <RevealOnScroll>
       <div className="mb-10 text-center md:mb-12">
         <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">Add-ons</p>
@@ -364,10 +366,10 @@ const AddOnsSection = ({ addOnsList, onAddToCart }) => (
       </div>
     </RevealOnScroll>
 
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+    <div className="flex flex-wrap justify-center gap-4">
       {addOnsList.map((item, i) => (
-        <RevealOnScroll key={item.name} delay={i * 0.04}>
-          <div className="group relative h-full rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1 pricing-card-el"
+        <RevealOnScroll key={item.name} delay={i * 0.04} className="flex w-full max-w-[240px]">
+          <div className="group relative h-full w-full rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1 pricing-card-el"
             style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
             {/* Ambient Glow */}
             <div className="absolute inset-0 -z-10 rounded-[16px] bg-gradient-to-b from-brand-secondary/10 to-transparent opacity-0 blur-xl transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 pointer-events-none" />
@@ -465,6 +467,12 @@ export default function Pricing() {
 
   return (
     <Layout>
+      {/* ── Page background with gradient effect ── */}
+      <div style={{
+        position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none',
+        background: 'linear-gradient(135deg, #0D3B2E 0%, #6F8A6E 50%, #0D3B2E 100%)',
+      }} />
+
       {toast && (
         <div className="fixed right-4 top-24 z-[120] rounded-full border border-[var(--color-border)] bg-[#111111]/95 px-5 py-3 font-sans text-[14px] text-white shadow-2xl backdrop-blur-md">
           {toast}
