@@ -20,12 +20,20 @@ const serviceData = [
     flip: true,
   },
   {
-    title: 'Branding & Creative',
+    title: 'Brand Identity and Design',
     desc1: 'Your brand is your first impression, your last memory, and everything in between. We build identities that are distinct, consistent, and built to scale across every medium.',
     desc2: 'From logo marks to full brand guidelines — we create visual languages that speak before you say a word.',
     features: ['Logo design & brand mark', 'Full brand guidelines document', 'Typography & color systems', 'Social media kit & templates', 'Brand strategy & positioning'],
     visual: 'brand',
     flip: false,
+  },
+    {
+    title: 'Social Media Handling',
+    desc1: 'Social media is where your brand lives in real time. We manage the calendar, the content, and the conversation — turning followers into a community that actually engages with what you post.',
+    desc2: 'From platform strategy to daily execution, we keep your presence consistent, on-brand, and built for growth across every channel that matters.',
+    features: ['Content calendar & scheduling', 'Platform-specific creative (Instagram, LinkedIn, X)', 'Community management & engagement', 'Analytics & performance reporting', 'Paid social campaign support'],
+    visual: 'web',
+    flip: true,
   },
 ];
 
@@ -146,8 +154,9 @@ const ServiceSection = ({ svc, index }) => (
       </RevealOnScroll>
 
       <RevealOnScroll delay={0.24}>
-        <Link to="/contact" className="font-sans text-[15px] text-white/60 hover:text-white transition-colors duration-150">
+       <Link to="/contact" className="group inline-flex items-center gap-1.5 font-sans text-[15px] text-white/60 transition-colors duration-300 ease-out hover:text-white">
           Start This Project →
+          <span className="transition-transform duration-300 ease-out group-hover:translate-x-1">→</span>
         </Link>
       </RevealOnScroll>
     </div>
@@ -185,10 +194,9 @@ export default function Services() {
               style={{ background: '#0E0E0E', border: '1px solid rgba(255,255,255,0.06)' }}>
               <h2 className="mb-4 font-syne text-[28px] font-bold leading-[1.12] text-white md:text-[36px]">Ready to build something exceptional?</h2>
               <p className="mb-8 font-sans text-[15px] leading-[1.6] text-text-secondary md:mb-10 md:text-[16px]">Start with a free 30-minute consultation.</p>
-              <Link to="/contact" className="block sm:inline-block">
-                <button className="w-full rounded-full bg-white px-8 py-4 font-sans text-[15px] font-medium text-[#080808] transition-opacity duration-150 hover:opacity-85 sm:w-auto sm:px-10">
-                  Book a Free Call
-                </button>
+              <Link to="/contact" className="group inline-flex items-center gap-1.5 font-sans text-[15px] text-white/60 transition-colors duration-300 ease-out hover:text-white">
+                Book a Free Call →
+                <span className="transition-transform duration-300 ease-out group-hover:translate-x-1">→</span>
               </Link>
             </div>
           </RevealOnScroll>
