@@ -1,11 +1,10 @@
 import Layout from '../components/layout/Layout';
 import Meta from '../components/ui/Meta';
-import Hero from '../components/sections/Hero';
-import ServicesGrid from '../components/sections/ServicesGrid';
+import HeroNew from '../components/sections/HeroNew';
+import ServicesNew  from '../components/sections/ServicesNew';
 import FeaturedProjects from '../components/sections/FeaturedProjects';
-import WhyUs from '../components/sections/WhyUs';
+import WhyUsNew from '../components/sections/WhyUsNew';
 import Testimonials from '../components/sections/Testimonials';
-
 export default function Home() {
   return (
     <Layout>
@@ -13,10 +12,10 @@ export default function Home() {
         title="Premium Digital Studio" 
         description="Crevix Studio builds world-class digital experiences, SaaS dashboards, and authentic brand identities for elite clients."
       />
-      <Hero />
-      <ServicesGrid />
+      <HeroNew />
+      <ServicesNew />
       <FeaturedProjects />
-      <WhyUs />
+      <WhyUsNew />
       <Testimonials />
     </Layout>
   );

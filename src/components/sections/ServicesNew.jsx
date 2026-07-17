@@ -75,10 +75,7 @@ export default function ServicesNew() {
           className="flex items-center gap-4"
         >
           <span className="h-px w-10 bg-[#C89A42]/60" />
-          <p
-            style={{ fontFamily: "'Oswald', sans-serif" }}
-            className="uppercase tracking-[0.35em] text-xs font-medium text-[#C89A42]"
-          >
+          <p className="uppercase tracking-[0.35em] text-xs text-[#C89A42]">
             What We Do
           </p>
         </motion.div>
@@ -90,8 +87,8 @@ export default function ServicesNew() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: .1 }}
-          style={{ fontFamily: "'Playfair Display', serif" }}
-          className="mt-8 max-w-4xl bg-gradient-to-b from-[#F2EDE1] to-[#C9C1AE] bg-clip-text font-semibold italic leading-[0.98] text-transparent
+          style={{ fontFamily: "'Fraunces', serif" }}
+          className="mt-8 max-w-4xl bg-gradient-to-b from-[#F2EDE1] to-[#C9C1AE] bg-clip-text font-medium italic leading-[0.98] text-transparent
           text-5xl
           md:text-7xl"
         >
@@ -147,8 +144,8 @@ export default function ServicesNew() {
               {/* Title */}
 
               <h3
-                style={{ fontFamily: "'Playfair Display', serif" }}
-                className="relative mt-10 text-3xl font-semibold text-[#E8E2D6]"
+                style={{ fontFamily: "'Fraunces', serif" }}
+                className="relative mt-10 text-3xl font-medium text-[#E8E2D6]"
               >
                 {service.title}
               </h3>
@@ -177,10 +174,7 @@ export default function ServicesNew() {
                 group-hover:translate-y-0
               "
               >
-                <span
-                  style={{ fontFamily: "'Oswald', sans-serif" }}
-                  className="tracking-widest uppercase text-xs font-medium"
-                >
+                <span className="tracking-widest uppercase text-xs">
                   Explore
                 </span>
 
