@@ -49,7 +49,7 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
           Most Popular
         </div>
       )}
-      
+
       {STATUS_BADGES[purchaseStatus] && (
         <div className={`absolute right-4 top-4 rounded-full border px-3 py-1 text-[11px] font-sans uppercase tracking-[0.1em] ${STATUS_BADGES[purchaseStatus].classes}`}>
           {STATUS_BADGES[purchaseStatus].text}
@@ -126,11 +126,10 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
             <motion.button
               type="button"
               onClick={() => onBuyNow(plan)}
-              className={`block w-full rounded-full py-3.5 text-center font-sans text-[15px] font-medium transition-colors duration-150 ${
-                plan.featured
-                  ? 'bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-[#080808] font-bold'
-                  : 'border border-border text-white hover:border-brand-secondary hover:bg-brand-secondary/10'
-              }`}
+              className={`block w-full rounded-full py-3.5 text-center font-sans text-[15px] font-medium transition-colors duration-150 ${plan.featured
+                ? 'bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-[#080808] font-bold'
+                : 'border border-border text-white hover:border-brand-secondary hover:bg-brand-secondary/10'
+                }`}
             >
               <span className="inline-flex items-center gap-2">
                 {purchaseStatus === 'full' ? 'Renew Plan' : 'Buy Now'}
@@ -257,15 +256,9 @@ const PackageCard = ({ item, onBuyNow, onAddToCart }) => (
 const PricingHeader = () => (
   <section className="relative z-10 mx-auto max-w-[1280px] px-4 pb-8 pt-20 text-center sm:px-6 md:pb-12 md:pt-28">
     <RevealOnScroll>
-      <div className="mb-6 flex items-center justify-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/10 px-4 py-1.5 font-sans text-[11px] font-bold uppercase tracking-widest text-[var(--color-accent)]">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-accent-hover)] opacity-75"></span>
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-accent)]"></span>
-          </span>
-          Prices Increase After May 15th
-        </div>
-      </div>
+
+
+
       <h1 className="mb-4 font-syne text-[40px] font-bold uppercase tracking-wider leading-[1.15] text-[var(--color-text)] md:text-[64px]">Honest Pricing.</h1>
       <p className="font-sans text-[16px] leading-[1.6] text-text-secondary md:text-[18px]">Websites, design support, and online ordering setup without hidden fees.</p>
     </RevealOnScroll>
@@ -418,18 +411,18 @@ export default function Pricing() {
   useEffect(() => {
     if (!user?.id) return;
     let active = true;
-    
+
     const loadPurchases = async () => {
       const { data, error } = await supabase
         .from('purchased_plans')
         .select('plan_id, status')
         .eq('user_id', user.id);
-        
+
       if (active && data) {
         setPurchasedItems(data.map(item => ({ id: item.plan_id, status: item.status })));
       }
     };
-    
+
     loadPurchases();
     return () => { active = false; };
   }, [user?.id]);
@@ -481,30 +474,30 @@ export default function Pricing() {
 
       <PricingHeader />
 
-      <WebsitePlansSection 
-        plans={webPlans} 
-        onBuyNow={handleBuyNow} 
-        onAddToCart={handleAddToCart} 
-        purchasedItems={purchasedItems} 
+      <WebsitePlansSection
+        plans={webPlans}
+        onBuyNow={handleBuyNow}
+        onAddToCart={handleAddToCart}
+        purchasedItems={purchasedItems}
       />
 
-      <DesignServicesSection 
-        services={designServices} 
-        onAddToCart={handleAddToCart} 
-        onBuyNow={handleBuyNow} 
+      <DesignServicesSection
+        services={designServices}
+        onAddToCart={handleAddToCart}
+        onBuyNow={handleBuyNow}
       />
 
-      <DesignPackagesSection 
-        packages={designPackages} 
-        onBuyNow={handleBuyNow} 
-        onAddToCart={handleAddToCart} 
+      <DesignPackagesSection
+        packages={designPackages}
+        onBuyNow={handleBuyNow}
+        onAddToCart={handleAddToCart}
       />
 
       <CustomSolutionsSection />
 
-      <AddOnsSection 
-        addOnsList={addOns} 
-        onAddToCart={handleAddToCart} 
+      <AddOnsSection
+        addOnsList={addOns}
+        onAddToCart={handleAddToCart}
       />
 
       <PricingFooterCTA />

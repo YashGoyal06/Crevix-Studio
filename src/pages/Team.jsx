@@ -26,7 +26,7 @@ export default function Team() {
       <section className="relative z-10 mx-auto max-w-[1280px] px-4 pb-20 pt-24 sm:px-6 md:pb-28 md:pt-28">
         <RevealOnScroll>
           <div className="mx-auto mb-12 max-w-[760px] text-center md:mb-20">
-            <p className="mb-5 font-sans text-[12px] uppercase tracking-[0.15em] text-brand-accent md:mb-6 md:text-[13px]">Our Team</p>
+
             <h1 className="font-syne text-[40px] font-bold uppercase tracking-wider leading-[1.15] text-white md:text-[64px]">
               Meet The People <span className="bg-gradient-to-r from-brand-secondary via-brand-accent to-brand-stone bg-clip-text text-transparent">Behind Crevix.</span>
             </h1>
