@@ -1,48 +1,153 @@
-import { RevealOnScroll } from '../../hooks/useScrollReveal';
+import { RevealOnScroll } from "../../hooks/useScrollReveal";
 
 const testimonials = [
   {
-    quote: 'Crevix rebuilt our entire digital presence. What they delivered was miles beyond what we imagined possible.',
-    name: 'Aryan Mehta',
-    role: 'CEO at Luminary Co.',
+    quote:
+      "Crevix rebuilt our entire digital presence. What they delivered was miles beyond what we imagined possible.",
+    name: "Aryan Mehta",
+    role: "CEO at Luminary Co.",
   },
   {
-    quote: 'The team understood our vision instantly. Delivered ahead of schedule with insane quality. Recommend 100%.',
-    name: 'Sofia Reyes',
-    role: 'Head of Product, Vault',
+    quote:
+      "The team understood our vision instantly. Delivered ahead of schedule with insane quality. Recommend 100%.",
+    name: "Sofia Reyes",
+    role: "Head of Product, Vault",
   },
   {
-    quote: 'We went from invisible to industry-recognized in 90 days. Crevix is genuinely in a different league.',
-    name: 'James Okafor',
-    role: 'Founder, Orion Architecture',
+    quote:
+      "We went from invisible to industry-recognized in 90 days. Crevix is genuinely in a different league.",
+    name: "James Okafor",
+    role: "Founder, Orion Architecture",
   },
 ];
 
 export default function Testimonials() {
   return (
-    <section className="mx-auto max-w-[1280px] px-4 py-14 sm:px-6 md:py-22">
-      <RevealOnScroll>
-        <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">What Clients Say</p>
-        <h2 className="mb-10 font-syne text-[34px] font-bold leading-[1.05] text-white md:mb-20 md:text-[44px]">Words From Real Clients.</h2>
-      </RevealOnScroll>
+    <section className="relative py-24 overflow-hidden bg-transparent">
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {testimonials.map((t, i) => (
-          <RevealOnScroll key={i} delay={i * 0.08}>
-            <div className="flex h-full flex-col rounded-[16px] border-l-2 border-white/[0.15] p-6 sm:p-8 md:p-10"
-              style={{ background: '#0E0E0E' }}>
-              {/* Stars at top */}
-              <div className="text-white/30 text-sm mb-6 tracking-wider">★★★★★</div>
+      {/* subtle background glow */}
 
-              <p className="font-sans text-[15px] text-[#C9C9C9] leading-[1.8] flex-1 mb-8">{t.quote}</p>
+      <div className="absolute inset-0 pointer-events-none">
+        <div
+          className="absolute left-1/2 top-0 h-[500px] w-[500px] -translate-x-1/2 rounded-full blur-[140px]"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(184,140,58,.08), transparent 70%)",
+          }}
+        />
+      </div>
 
-              <div>
-                <p className="font-syne font-bold text-[14px] text-white">{t.name}</p>
-                <p className="font-sans text-[12px] text-text-secondary mt-1">{t.role}</p>
+      <div className="relative mx-auto max-w-[1280px] px-6">
+
+        <RevealOnScroll>
+
+          <p
+            className="
+            mb-4
+            uppercase
+            tracking-[0.35em]
+            text-[13px]
+            text-[#B88C3A]"
+          >
+            WHAT CLIENTS SAY
+          </p>
+
+          <h2
+            className="
+            mb-16
+            text-5xl
+            md:text-6xl
+            font-black
+            leading-none
+            text-[#F5F1E8]"
+          >
+            Words From
+            <br />
+            Real Clients.
+          </h2>
+
+        </RevealOnScroll>
+
+        <div className="grid gap-8 md:grid-cols-3">
+
+          {testimonials.map((t, i) => (
+            <RevealOnScroll key={i} delay={i * 0.1}>
+
+              <div
+                className="
+                h-full
+                rounded-[28px]
+                border
+                border-[#B88C3A]/20
+                bg-[#12382F]/55
+                backdrop-blur-xl
+                p-10
+
+                transition-all
+                duration-500
+
+                hover:-translate-y-2
+                hover:border-[#B88C3A]/50
+                hover:shadow-[0_0_60px_rgba(184,140,58,.12)]
+                "
+              >
+
+                {/* stars */}
+
+                <div
+                  className="
+                  mb-8
+                  text-[#B88C3A]
+                  tracking-[6px]
+                  text-sm"
+                >
+                  ★★★★★
+                </div>
+
+                {/* quote */}
+
+                <p
+                  className="
+                  text-[#D8D2C4]
+                  text-lg
+                  leading-9
+                  flex-1
+                  mb-10"
+                >
+                  {t.quote}
+                </p>
+
+                {/* divider */}
+
+                <div className="mb-6 h-px w-16 bg-[#B88C3A]/40" />
+
+                {/* author */}
+
+                <h3
+                  className="
+                  text-[#F5F1E8]
+                  font-semibold
+                  text-lg"
+                >
+                  {t.name}
+                </h3>
+
+                <p
+                  className="
+                  mt-2
+                  text-[#D8D2C4]/60
+                  text-sm"
+                >
+                  {t.role}
+                </p>
+
               </div>
-            </div>
-          </RevealOnScroll>
-        ))}
+
+            </RevealOnScroll>
+          ))}
+
+        </div>
+
       </div>
     </section>
   );
