@@ -29,7 +29,7 @@ export default function SocialLinks({ member }) {
           target="_blank"
           rel="noreferrer"
           aria-label={`${member.name} LinkedIn`}
-          className="flex h-8 w-8 items-center justify-center rounded-full border border-brand-secondary/15 text-brand-secondary/40 transition-all duration-300 hover:scale-105 hover:border-brand-secondary/50 hover:bg-brand-secondary/5 hover:text-brand-secondary/80"
+          className="flex h-8 w-8 items-center justify-center rounded-full border border-brand-secondary/15 text-brand-secondary transition-all duration-300 hover:scale-105 hover:border-brand-secondary/50 hover:bg-brand-secondary/5 hover:text-brand-secondary/80"
         >
           <LinkedinIcon />
         </a>
@@ -40,7 +40,7 @@ export default function SocialLinks({ member }) {
           target="_blank"
           rel="noreferrer"
           aria-label={`${member.name} Instagram`}
-          className="flex h-8 w-8 items-center justify-center rounded-full border border-brand-secondary/15 text-brand-secondary/40 transition-all duration-300 hover:scale-105 hover:border-brand-secondary/50 hover:bg-brand-secondary/5 hover:text-brand-secondary/80"
+          className="flex h-8 w-8 items-center justify-center rounded-full border border-brand-secondary/15 text-brand-secondary transition-all duration-300 hover:scale-105 hover:border-brand-secondary/50 hover:bg-brand-secondary/5 hover:text-brand-secondary/80"
         >
           <InstagramIcon />
         </a>
@@ -51,7 +51,7 @@ export default function SocialLinks({ member }) {
           target="_blank"
           rel="noreferrer"
           aria-label={`${member.name} GitHub`}
-          className="flex h-8 w-8 items-center justify-center rounded-full border border-brand-secondary/15 text-brand-secondary/40 transition-all duration-300 hover:scale-105 hover:border-brand-secondary/50 hover:bg-brand-secondary/5 hover:text-brand-secondary/80"
+          className="flex h-8 w-8 items-center justify-center rounded-full border border-brand-secondary/15 text-brand-secondary transition-all duration-300 hover:scale-105 hover:border-brand-secondary/50 hover:bg-brand-secondary/5 hover:text-brand-secondary/80"
         >
           <GithubIcon />
         </a>
