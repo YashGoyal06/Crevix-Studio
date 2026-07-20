@@ -214,14 +214,14 @@ export default function TeamModal({ member, onClose }) {
     if (skillsList.length === 0) return null;
     return (
       <div className="flex flex-col gap-2.5">
-        <h3 className="font-syne text-[11px] font-bold uppercase tracking-widest text-brand-accent">
+        <h3 className="font-syne text-[10.5px] font-bold uppercase tracking-widest text-brand-accent">
           Key Skills
         </h3>
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap gap-2">
           {skillsList.map(skill => (
             <span
               key={skill}
-              className="font-sans text-[11px] font-medium text-white bg-white/[0.03] border border-white/[0.06] px-2.5 py-1 rounded-full transition-colors duration-200 hover:bg-white/[0.06]"
+              className="font-sans text-[11px] font-medium text-[#D8D2C4]/80 bg-white/[0.02] border border-white/[0.05] px-3 py-1 rounded-md transition-colors duration-200 hover:text-white hover:bg-white/[0.05]"
             >
               {skill}
             </span>
@@ -235,14 +235,14 @@ export default function TeamModal({ member, onClose }) {
     if (techStackList.length === 0) return null;
     return (
       <div className="flex flex-col gap-2.5">
-        <h3 className="font-syne text-[11px] font-bold uppercase tracking-widest text-brand-accent">
+        <h3 className="font-syne text-[10.5px] font-bold uppercase tracking-widest text-brand-accent">
           Primary Tech Stack
         </h3>
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap gap-2">
           {techStackList.map(tech => (
             <span
               key={tech}
-              className="font-sans text-[11px] font-semibold text-neutral-200 bg-brand-secondary/10 border border-brand-secondary/30 px-2.5 py-1 rounded-full transition-all duration-200 hover:bg-brand-secondary/20 hover:text-white hover:border-brand-secondary/50"
+              className="font-sans text-[11px] font-medium text-[#D8D2C4]/80 bg-[#6F8A6E]/5 border border-[#6F8A6E]/20 px-3 py-1 rounded-md transition-colors duration-200 hover:text-white hover:bg-[#6F8A6E]/15 hover:border-[#6F8A6E]/40"
             >
               {tech}
             </span>
@@ -305,7 +305,7 @@ export default function TeamModal({ member, onClose }) {
           </button>
 
           {/* DESKTOP LEFT COLUMN: Photo, Gallery, Skills & Tech Stack (40%) - EXACT ORIGINAL LAYOUT */}
-          <div className={`team-modal-left-col hidden md:flex w-full md:w-[40%] bg-[#0B0B0B]/80 p-6 flex-col justify-start border-b md:border-b-0 md:border-r border-white/[0.06] overflow-y-auto gap-6 shrink-0 ${hasDetailedContent ? 'md:h-full' : 'md:h-auto'
+          <div className={`team-modal-left-col hidden md:flex w-full md:w-[40%] bg-[#0B0B0B]/40 p-8 flex-col justify-start border-b md:border-b-0 md:border-r border-white/[0.06] overflow-y-auto gap-7 shrink-0 ${hasDetailedContent ? 'md:h-full' : 'md:h-auto'
             }`}>
             <div>
               {/* Featured image display frame */}
@@ -339,7 +339,7 @@ export default function TeamModal({ member, onClose }) {
                         aria-label={`View photo ${idx + 1}`}
                         className={`relative aspect-square rounded-xl overflow-hidden bg-neutral-950 transition-all duration-200 border-2 ${isActive
                             ? 'border-brand-accent scale-[1.03] shadow-md shadow-brand-accent/10'
-                            : 'border-transparent opacity-60 hover:opacity-100 hover:border-white/15'
+                            : 'border-transparent opacity-40 hover:opacity-100 hover:border-white/15'
                           }`}
                       >
                         <img
@@ -364,7 +364,7 @@ export default function TeamModal({ member, onClose }) {
           </div>
 
           {/* MOBILE LEFT COLUMN: Photo & Gallery (Side-by-Side) */}
-          <div className="team-modal-left-col block md:hidden w-full bg-[#0B0B0B]/80 p-5 border-b border-white/[0.06] shrink-0">
+          <div className="team-modal-left-col block md:hidden w-full bg-[#0B0B0B]/40 p-6 border-b border-white/[0.06] shrink-0">
             {thumbnails.length > 1 ? (
               <div className="flex flex-row gap-3 w-full">
                 {/* Left Side: Vertical stack of thumbnails */}
@@ -378,7 +378,7 @@ export default function TeamModal({ member, onClose }) {
                         aria-label={`View photo ${idx + 1}`}
                         className={`relative w-[68px] h-[68px] rounded-xl overflow-hidden bg-neutral-950 transition-all duration-200 border-2 ${isActive
                             ? 'border-brand-accent scale-[1.03] shadow-md shadow-brand-accent/10'
-                            : 'border-transparent opacity-60 hover:opacity-100 hover:border-white/15'
+                            : 'border-transparent opacity-40 hover:opacity-100 hover:border-white/15'
                           }`}
                       >
                         <img
@@ -433,86 +433,63 @@ export default function TeamModal({ member, onClose }) {
           </div>
 
           {/* RIGHT COLUMN: Details Scroll Box (60%) */}
-          <div className={`w-full md:w-[60%] px-5 pb-6 pt-4 sm:p-8 overflow-y-visible md:overflow-y-auto flex flex-col select-text ${hasDetailedContent
+          <div className={`w-full md:w-[60%] px-6 pb-8 pt-6 sm:px-10 sm:py-9 overflow-y-visible md:overflow-y-auto flex flex-col select-text ${hasDetailedContent
               ? 'justify-between md:h-full min-h-[320px] sm:min-h-[400px]'
               : 'justify-center md:h-auto md:min-h-0 gap-6'
             }`}>
 
             {/* Profile Info Details Group */}
-            <div className="flex flex-col gap-4 md:gap-6 w-full">
-              {/* 1. Name */}
-              <div>
-                <h2 id="modal-member-name" className="font-syne text-[24px] sm:text-[32px] font-bold text-white uppercase tracking-wide leading-tight">
+            <div className="flex flex-col gap-6 md:gap-7 w-full">
+              {/* Hero Section: 1. Name & Badges */}
+              <div className="flex flex-col gap-3">
+                <h2 id="modal-member-name" className="font-syne text-[28px] sm:text-[38px] font-bold text-white tracking-wider leading-[1.1]">
                   {member.name}
                 </h2>
-              </div>
-
-              {/* 2. Badges (Department & Role/Level) */}
-              {member.role && (
-                <>
-                  {/* Desktop Badges layout */}
-                  <div className="hidden md:flex flex-wrap gap-2 items-center -mt-2">
-                    <span className="font-sans text-[11px] font-bold text-neutral-400 bg-white/[0.04] border border-white/[0.08] px-2.5 py-0.75 rounded-md uppercase tracking-wider">
-                      {member.role}
+                
+                <div className="flex flex-wrap gap-2 items-center">
+                  <span className="font-sans text-[11px] font-bold text-[#D8D2C4] bg-[#6F8A6E]/10 border border-[#6F8A6E]/20 px-2.5 py-1 rounded-md uppercase tracking-wider">
+                    {member.department ? `${member.department} Team` : member.role}
+                  </span>
+                  {secondaryBadge && (
+                    <span className={`font-sans text-[11px] font-semibold border border-white/[0.08] px-2.5 py-1 rounded-md uppercase tracking-wider ${getBadgeStyles(secondaryBadge)}`}>
+                      {secondaryBadge}
                     </span>
-                    {secondaryBadge && (
-                      <span className={`font-sans text-[11px] font-semibold border border-white/[0.08] px-2.5 py-0.75 rounded-md uppercase tracking-wider ${getBadgeStyles(secondaryBadge)}`}>
-                        {secondaryBadge}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Mobile Badges layout (Department first, then Role, then Level/POC) */}
-                  <div className="flex md:hidden flex-wrap gap-2 items-center -mt-1.5">
-                    <span className="font-sans text-[11px] font-bold text-neutral-400 bg-white/[0.04] border border-white/[0.08] px-2.5 py-0.75 rounded-md uppercase tracking-wider">
-                      {member.role}
+                  )}
+                  {experienceText && (
+                    <span className="font-sans text-[11px] font-medium text-neutral-400 bg-white/[0.03] border border-white/[0.06] px-2.5 py-1 rounded-md uppercase tracking-wider">
+                      {experienceText}
                     </span>
-                    {member.level && (
-                      <span className={`font-sans text-[11px] font-semibold border border-brand-accent px-2.5 py-0.75 rounded-md uppercase tracking-wider ${getBadgeStyles(member.level)}`}>
-                        {member.level}
-                      </span>
-                    )}
-                    {!member.level && member.isPoc && (
-                      <span className={`font-sans text-[11px] font-semibold border border-brand-accent px-2.5 py-0.75 rounded-md uppercase tracking-wider ${getBadgeStyles('POC')}`}>
-                        POC
-                      </span>
-                    )}
-                  </div>
-                </>
-              )}
-
-              {/* 3. Experience */}
-              {experienceText && (
-                <div className="text-[12.5px] font-sans font-medium text-text-secondary -mt-1 md:-mt-2">
-                  {experienceText}
+                  )}
                 </div>
-              )}
+              </div>
 
               {/* 4. Professional Tagline */}
               {member.tagline && (
-                <p className="font-syne text-[14.5px] italic text-neutral-300 font-medium border-l-2 border-brand-accent/70 pl-3.5 leading-relaxed">
-                  "{member.tagline}"
-                </p>
+                <div className="pt-1">
+                  <p className="font-syne text-[15.5px] sm:text-[17px] italic text-[#D8D2C4]/95 font-medium border-l-2 border-brand-accent pl-4 leading-[1.6]">
+                    "{member.tagline}"
+                  </p>
+                </div>
               )}
 
               {/* 5. Biography */}
               {member.bio && (
-                <p className="font-sans text-[13.5px] text-text-secondary leading-[1.8] font-normal max-w-[65ch] whitespace-pre-line">
+                <p className="font-sans text-[14px] text-neutral-400 leading-[1.8] font-normal max-w-[65ch] whitespace-pre-line pt-1">
                   {member.bio}
                 </p>
               )}
 
               {/* 6. Quote Block */}
               {member.quote && (
-                <blockquote className="relative p-4 py-3 pl-8 pr-3 md:p-5 md:py-4 md:pl-10 md:pr-4 rounded-xl bg-brand-accent/[0.03] border-l-[3px] border-brand-accent/5 italic text-[14.5px] text-neutral-200 leading-relaxed font-sans">
-                  <span className="absolute left-3.5 top-1.5 text-[32px] font-serif text-brand-accent/40 select-none">“</span>
-                  {member.quote}
+                <blockquote className="relative p-6 pl-12 pr-4 rounded-xl bg-[#0D3B2E]/10 border-l-[3px] border-brand-accent/30 italic text-[15px] text-[#D8D2C4]/90 leading-relaxed font-sans shadow-sm">
+                  <span className="absolute left-4 top-2.5 text-[48px] font-serif text-brand-accent/25 select-none leading-none">“</span>
+                  <p className="relative z-10">{member.quote}</p>
                 </blockquote>
               )}
 
               {/* 7. Skills & Tech Stack (Mobile-only - Reordered below Quote) */}
               {(skillsList.length > 0 || techStackList.length > 0) && (
-                <div className="flex md:hidden flex-col gap-5 pt-3 border-t border-white/[0.05]">
+                <div className="flex md:hidden flex-col gap-6 pt-5 border-t border-white/[0.05]">
                   {renderSkills()}
                   {renderTechStack()}
                 </div>
@@ -520,27 +497,27 @@ export default function TeamModal({ member, onClose }) {
 
               {/* 8. Fun Fact & Hobbies Panel */}
               {(member.funFact || (member.hobbies && member.hobbies.length > 0)) && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2 pb-2">
                   {member.funFact && (
-                    <div className="p-4 rounded-xl bg-white/[0.015] border border-white/[0.04]">
-                      <h4 className="font-syne text-[11px] font-bold uppercase tracking-widest text-brand-accent mb-2">
+                    <div className="p-4 rounded-[18px] bg-white/[0.01] border border-white/[0.04] flex flex-col gap-2.5">
+                      <h4 className="font-syne text-[10.5px] font-bold uppercase tracking-widest text-brand-accent">
                         Fun Fact
                       </h4>
-                      <p className="font-sans text-[12.5px] text-neutral-300 leading-relaxed">
+                      <p className="font-sans text-[13px] text-neutral-300 leading-relaxed">
                         {member.funFact}
                       </p>
                     </div>
                   )}
                   {member.hobbies && member.hobbies.length > 0 && (
-                    <div className="p-4 rounded-xl bg-white/[0.015] border border-white/[0.04]">
-                      <h4 className="font-syne text-[11px] font-bold uppercase tracking-widest text-brand-accent mb-2.5">
+                    <div className="p-4 rounded-[18px] bg-white/[0.01] border border-white/[0.04] flex flex-col gap-3">
+                      <h4 className="font-syne text-[10.5px] font-bold uppercase tracking-widest text-brand-accent">
                         Hobbies & Interests
                       </h4>
-                      <div className="flex flex-wrap gap-1.5">
+                      <div className="flex flex-wrap gap-2">
                         {member.hobbies.map(hobby => (
                           <span
                             key={hobby}
-                            className="font-sans text-[11px] font-medium text-neutral-300 bg-white/[0.04] border border-white/[0.06] px-2 py-0.5 rounded-md"
+                            className="font-sans text-[11px] font-medium text-neutral-300 bg-white/[0.03] border border-white/[0.06] px-2.5 py-0.75 rounded-md"
                           >
                             {hobby}
                           </span>
@@ -554,11 +531,11 @@ export default function TeamModal({ member, onClose }) {
 
             {((member.socials && (member.socials.github || member.socials.linkedin || member.socials.instagram || member.socials.portfolio)) ||
               (member.github || member.linkedin || member.instagram)) && (
-                <div className="pt-4 border-t border-white/[0.05] mt-2 md:mt-0">
-                  <h3 className="font-syne text-[11px] font-bold uppercase tracking-widest text-brand-accent mb-3">
+                <div className="pt-6 border-t border-white/[0.05] mt-4 flex flex-col gap-3">
+                  <h3 className="font-syne text-[10.5px] font-bold uppercase tracking-widest text-brand-accent">
                     Connect
                   </h3>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2.5">
                     {/* LinkedIn */}
                     {(member.socials?.linkedin || member.linkedin) && (
                       <a
@@ -566,7 +543,7 @@ export default function TeamModal({ member, onClose }) {
                         target="_blank"
                         rel="noreferrer"
                         aria-label={`${member.name} LinkedIn`}
-                        className="flex h-11 w-11 md:h-9.5 md:w-9.5 items-center justify-center rounded-full border border-sage-green/30 bg-sage-green/[0.02] text-sage-green/70 transition-all duration-300 hover:scale-105 hover:border-sage-green hover:bg-sage-green/10 hover:text-sage-green"
+                        className="flex h-9 w-9 items-center justify-center rounded-full bg-white/[0.03] border border-white/[0.06] text-neutral-300 opacity-60 transition-all duration-200 hover:scale-105 hover:opacity-100 hover:border-brand-accent/50 hover:bg-brand-accent/5 hover:text-brand-accent"
                       >
                         <LinkedinIcon />
                       </a>
@@ -579,7 +556,7 @@ export default function TeamModal({ member, onClose }) {
                         target="_blank"
                         rel="noreferrer"
                         aria-label={`${member.name} GitHub`}
-                        className="flex h-11 w-11 md:h-9.5 md:w-9.5 items-center justify-center rounded-full border border-sage-green/30 bg-sage-green/[0.02] text-sage-green/70 transition-all duration-300 hover:scale-105 hover:border-sage-green hover:bg-sage-green/10 hover:text-sage-green"
+                        className="flex h-9 w-9 items-center justify-center rounded-full bg-white/[0.03] border border-white/[0.06] text-neutral-300 opacity-60 transition-all duration-200 hover:scale-105 hover:opacity-100 hover:border-brand-accent/50 hover:bg-brand-accent/5 hover:text-brand-accent"
                       >
                         <GithubIcon />
                       </a>
@@ -592,7 +569,7 @@ export default function TeamModal({ member, onClose }) {
                         target="_blank"
                         rel="noreferrer"
                         aria-label={`${member.name} Instagram`}
-                        className="flex h-11 w-11 md:h-9.5 md:w-9.5 items-center justify-center rounded-full border border-sage-green/30 bg-sage-green/[0.02] text-sage-green/70 transition-all duration-300 hover:scale-105 hover:border-sage-green hover:bg-sage-green/10 hover:text-sage-green"
+                        className="flex h-9 w-9 items-center justify-center rounded-full bg-white/[0.03] border border-white/[0.06] text-neutral-300 opacity-60 transition-all duration-200 hover:scale-105 hover:opacity-100 hover:border-brand-accent/50 hover:bg-brand-accent/5 hover:text-brand-accent"
                       >
                         <InstagramIcon />
                       </a>
@@ -605,9 +582,9 @@ export default function TeamModal({ member, onClose }) {
                         target="_blank"
                         rel="noreferrer"
                         aria-label={`${member.name} Portfolio`}
-                        className="flex h-11 w-11 md:h-9.5 md:w-9.5 items-center justify-center rounded-full border border-sage-green/30 bg-sage-green/[0.02] text-sage-green/70 transition-all duration-300 hover:scale-105 hover:border-sage-green hover:bg-sage-green/10 hover:text-sage-green"
+                        className="flex h-9 w-9 items-center justify-center rounded-full bg-white/[0.03] border border-white/[0.06] text-neutral-300 opacity-60 transition-all duration-200 hover:scale-105 hover:opacity-100 hover:border-brand-accent/50 hover:bg-brand-accent/5 hover:text-brand-accent"
                       >
-                        <Globe className="h-[18px] w-[18px] md:h-[16px] md:w-[16px]" />
+                        <Globe className="h-[15px] w-[15px]" />
                       </a>
                     )}
                   </div>

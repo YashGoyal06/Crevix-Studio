@@ -107,13 +107,12 @@
 
   .team-card:hover {
     background-color: rgba(10, 10, 10, 0.75);
-    border-color: rgba(184, 140, 58, 0.3);
+    border-color: rgb(184, 140, 58);
   }
 
   .team-card:focus,
   .team-card:focus-visible {
     outline: none !important;
-    box-shadow: 0 0 0 1.5px var(--color-accent) !important;
   }
 
   body.bg-forest-page .team-card {
@@ -123,7 +122,7 @@
 
   body.bg-forest-page .team-card:hover {
     background-color: #1A4A3D !important;
-    border-color: rgba(216, 210, 196, 0.12) !important;
+    border-color: rgba(184, 140, 58, 0.712) !important;
   }
 
   /* Team Modal Layout overrides */

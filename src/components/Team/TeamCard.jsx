@@ -1,6 +1,5 @@
 import { RevealOnScroll } from '../../hooks/useScrollReveal';
 import ImageGallery from './ImageGallery';
-import SocialLinks from './SocialLinks';
 
 export default function TeamCard({ member, index, onOpenModal }) {
   const handleKeyDown = (e) => {
@@ -23,7 +22,7 @@ export default function TeamCard({ member, index, onOpenModal }) {
         onKeyDown={handleKeyDown}
         tabIndex={0}
         aria-label={`View profile of ${member.name}, ${member.role}`}
-        className="team-card flex h-full w-full flex-col overflow-hidden rounded-[24px] border p-3 cursor-pointer"
+        className="team-card flex h-full w-full flex-col overflow-hidden rounded-[24px] border pt-3 px-3"
       >
         
         {/* Inset Photo Frame */}
@@ -34,7 +33,7 @@ export default function TeamCard({ member, index, onOpenModal }) {
           <p className="font-syne text-[16px] font-bold leading-tight text-white transition-colors duration-200 group-hover:text-brand-accent">
             {member.name}
           </p>
-          <div className="mt-1 flex items-center gap-1.5 font-sans text-[12px] font-medium text-brand-secondary tracking-wide">
+          <div className="mt-1 pb-3 flex items-center gap-1.5 font-sans text-[12px] font-medium text-text-muted tracking-wide">
             <span>{member.role}</span>
             {member.level && (
               <>
@@ -46,7 +45,11 @@ export default function TeamCard({ member, index, onOpenModal }) {
             )}
           </div>
 
-          <SocialLinks member={member} />
+          {/* View Profile CTA with hover accent */}
+          <div className="mt-auto pt-4 border-t border-brand-secondary/30 flex items-center text-brand-stone group-hover:text-brand-accent transition-colors duration-300 font-sans text-[11px] font-semibold tracking-wider uppercase cursor-pointer">
+            <span>View Profile</span>
+            <span className="opacity-0 ml-5 -translate-x-1.5 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">→</span>
+          </div>
         </div>
       </article>
     </RevealOnScroll>
