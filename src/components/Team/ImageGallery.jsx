@@ -11,8 +11,8 @@ export default function ImageGallery({ member, index }) {
         <img
           src={member.photo}
           alt={member.name}
-          width="640"
-          height="640"
+          width="500"
+          height="500"
           loading={index < 4 ? 'eager' : 'lazy'}
           decoding="async"
           fetchPriority={index < 4 ? 'high' : 'auto'}

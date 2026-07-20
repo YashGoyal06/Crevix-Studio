@@ -521,58 +521,6 @@ const rawTeam = [
     "github": "https://github.com/anushkaa-star"
   },
   {
-    "id": "archi-israni",
-    "slug": "archi-israni",
-    "name": "Archi Israni",
-    "role": "Graphic Designer",
-    "department": "Design",
-    "level": "",
-    "experience": {
-      "years": 2,
-      "label": "2 Years"
-    },
-    "tagline": "From \"what if?\" to \"here it is",
-    "bio": "Hi, I'm Archi, a CSE student who loves creating things. I've been involved with the design teams of clubs at my university, taking on design leadership roles along the way. I believe great work comes from thoughtful details, intentional choices, and a genuine love for creating.",
-    "profileImage": "",
-    "gallery": [
-      "/team/team-images/archi-israni/Archi1.png",
-      "/team/team-images/archi-israni/Archi2.jpg",
-      "/team/team-images/archi-israni/Archi3.jpg",
-      "/team/team-images/archi-israni/Archi4.jpg"
-    ],
-    "skills": [
-      "Visual Design",
-      "UI/UX Design",
-      "Brand Identity",
-      "Interactive Interfaces",
-      "Design & Frontend"
-    ],
-    "techStack": [],
-    "organization": "Vit bhopal",
-    "city": "Ahmedabad",
-    "socials": {
-      "github": "https://github.com/archiay",
-      "linkedin": "https://www.linkedin.com/in/archi-israni",
-      "instagram": "https://Archiayy",
-      "portfolio": ""
-    },
-    "quote": "Everything you can imagine is real",
-    "funFact": "I run on coffee and spontaneous ideas.",
-    "hobbies": [
-      "Gaming",
-      "Reading"
-    ],
-    "consent": true,
-    "initials": "AI",
-    "photo": "/team/archi.webp",
-    "photoPosition": "50% 50%",
-    "gradient": "from-brand-secondary/60 via-brand-accent/55 to-brand-stone/50",
-    "isPoc": false,
-    "linkedin": "https://www.linkedin.com/in/archi-israni",
-    "instagram": "https://Archiayy",
-    "github": "https://github.com/archiay"
-  },
-  {
     "id": "pragalbha-padhy",
     "slug": "pragalbha-padhy",
     "name": "Pragalbha Padhy",
