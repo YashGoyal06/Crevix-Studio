@@ -1,15 +1,16 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { RevealOnScroll } from '../hooks/useScrollReveal';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
+import { RevealOnScroll, Magnetic, Parallax } from '../hooks/useScrollReveal';
 import Layout from '../components/layout/Layout';
 
 /* ── Palette ── */
 const C = {
   deepForest: '#0D3B2E',
-  sage:       '#6F8A6E',
-  warmStone:  '#D8D2C4',
-  gold:       '#B88C3A',
-  charcoal:   '#2B2F2E',
+  sage: '#6F8A6E',
+  warmStone: '#D8D2C4',
+  gold: '#B88C3A',
+  charcoal: '#2B2F2E',
 };
 
 /* ── Boxed input style with Deep Forest fill ── */
@@ -75,7 +76,7 @@ const ContactCard = ({ icon, title, detail, href, target }) => (
     href={href}
     target={target}
     rel={target === '_blank' ? 'noreferrer' : undefined}
-    className="flex items-center gap-4 rounded-[14px] p-4 transition-all duration-250 group cursor-pointer"
+    className="flex items-center gap-4 rounded-[14px] p-4 transition-colors duration-250 group cursor-pointer hover-bob"
     style={{
       background: C.warmStone,
     }}
@@ -92,10 +93,10 @@ const ContactCard = ({ icon, title, detail, href, target }) => (
     </div>
     <div className="flex-1 min-w-0">
       <p className="font-sans text-[12px] uppercase tracking-[0.12em] mb-0.5" style={{ color: C.deepForest }}>{title}</p>
-      <p className="text-[14px] truncate font-semibold font-sans" style={{ color: C.deepForest }}>{detail}</p>
+      <p className="text-[14px] truncate font-semibold font-sans font-normal-numbers" style={{ color: C.deepForest }}>{detail}</p>
     </div>
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="flex-shrink-0 opacity-60 group-hover:opacity-100 transition-opacity duration-200" style={{ color: C.deepForest }}>
-      <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   </a>
 );
@@ -105,12 +106,36 @@ export default function Contact() {
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState('idle');
 
+  const mouseX = useMotionValue(0.5);
+  const mouseY = useMotionValue(0.5);
+
+  const glowX = useTransform(mouseX, [0, 1], ["30%", "70%"]);
+  const glowY = useTransform(mouseY, [0, 1], ["18%", "55%"]);
+
+  useEffect(() => {
+    const handleMove = (e) => {
+      mouseX.set(e.clientX / window.innerWidth);
+      mouseY.set(e.clientY / window.innerHeight);
+    };
+    window.addEventListener('mousemove', handleMove);
+    return () => window.removeEventListener('mousemove', handleMove);
+  }, [mouseX, mouseY]);
+
+  useEffect(() => {
+    document.body.classList.add('bg-forest-page');
+    document.documentElement.classList.add('bg-forest-page');
+    return () => {
+      document.body.classList.remove('bg-forest-page');
+      document.documentElement.classList.remove('bg-forest-page');
+    };
+  }, []);
+
   const validate = () => {
     const e = {};
-    if (!form.name.trim())    e.name    = 'Full name is required.';
-    if (!form.email.trim())   e.email   = 'Email address is required.';
+    if (!form.name.trim()) e.name = 'Full name is required.';
+    if (!form.email.trim()) e.email = 'Email address is required.';
     else if (!/\S+@\S+\.\S+/.test(form.email)) e.email = 'Please enter a valid email.';
-    if (!form.type)           e.type    = 'Please select a call reason.';
+    if (!form.type) e.type = 'Please select a call reason.';
     if (!form.message.trim()) e.message = 'A message is required.';
     return e;
   };
@@ -133,24 +158,88 @@ export default function Contact() {
   return (
     <Layout>
       {/* ── Page background with gradient effect ── */}
-      <div style={{
-        position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none',
-        background: `linear-gradient(135deg, ${C.deepForest} 0%, ${C.sage} 50%, ${C.deepForest} 100%)`,
-      }} />
+      {/* ── Page background with premium animated aurora effect ── */}
+      {createPortal(
+        <div className="aurora-bg">
+          {/* Animated gradient blobs */}
+          <div className="aurora-bg__blob aurora-bg__blob--1" />
+          <div className="aurora-bg__blob aurora-bg__blob--2" />
+          <div className="aurora-bg__blob aurora-bg__blob--3" />
+
+          {/* Mouse cursor spotlight */}
+          <motion.div
+            className="pointer-events-none absolute h-[850px] w-[850px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[180px]"
+            animate={{
+              scale: [1, 1.08, 1],
+              opacity: [0.7, 1, 0.7],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            style={{
+              left: glowX,
+              top: glowY,
+              background:
+                "radial-gradient(circle, rgba(198,154,69,.20), transparent 70%)",
+            }}
+          />
+
+          {/* Vignette */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(circle at center, transparent 35%, rgba(0,0,0,.55) 100%)",
+            }}
+          />
+
+          {/* Grid overlay */}
+          <div
+            className="absolute inset-0 opacity-[0.045]"
+            style={{
+              backgroundImage: `
+                linear-gradient(rgba(255,255,255,.10) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.10) 1px, transparent 1px)
+              `,
+              backgroundSize: "90px 90px",
+            }}
+          />
+
+          {/* Grain overlay */}
+          <div
+            className="absolute inset-0 opacity-[0.03] mix-blend-soft-light"
+            style={{
+              backgroundImage:
+                "radial-gradient(rgba(255,255,255,.6) .6px, transparent .6px)",
+              backgroundSize: "18px 18px",
+            }}
+          />
+        </div>,
+        document.body
+      )}
 
       <section className="relative z-10 mx-auto max-w-[1280px] px-4 pt-32 pb-20 sm:px-6 md:pt-40 md:pb-28 lg:pt-48 lg:pb-36">
 
         {/* ── Large watermark text ── */}
-        <div className="absolute top-10 left-0 right-0 flex justify-center pointer-events-none select-none overflow-hidden md:top-14 lg:top-16" aria-hidden="true">
-          <span className="font-syne font-[900] text-[100px] sm:text-[140px] md:text-[180px] lg:text-[220px] uppercase leading-none"
-            style={{
-              color: 'rgba(216,210,196,0.12)',
-              WebkitTextStroke: `1.5px rgba(13,59,46,0.15)`,
-              letterSpacing: '0.04em',
-            }}>
-            CONTACT
-          </span>
-        </div>
+        <Parallax offset={40} className="absolute top-10 left-0 right-0 flex justify-center pointer-events-none select-none overflow-hidden md:top-14 lg:top-16 z-0">
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            className="w-full flex justify-center"
+          >
+            <span className="font-syne font-[900] text-[100px] sm:text-[140px] md:text-[180px] lg:text-[220px] uppercase leading-none"
+              style={{
+                color: 'rgba(216,210,196,0.12)',
+                WebkitTextStroke: `1.5px rgba(13,59,46,0.15)`,
+                letterSpacing: '0.04em',
+              }}>
+              CONTACT
+            </span>
+          </motion.div>
+        </Parallax>
 
         {/* Spacer to push content down below the watermark with slight overlap */}
         <div className="h-12 sm:h-16 md:h-20 lg:h-24" />
@@ -158,7 +247,7 @@ export default function Contact() {
         <div className="relative grid grid-cols-1 items-start gap-10 lg:grid-cols-[42%_52%] lg:gap-16">
           {/* ════════ Left — Info ════════ */}
           <div>
-            <RevealOnScroll>
+            <RevealOnScroll direction="left">
               {/* Badge pill */}
 
               <h1 className="mb-4 font-syne text-[38px] font-[800] leading-[1.06] md:text-[48px]" style={{ color: C.warmStone }}>
@@ -170,39 +259,47 @@ export default function Contact() {
             </RevealOnScroll>
 
             {/* ── Contact info cards using C.warmStone ── */}
-            <RevealOnScroll delay={0.08}>
+            <RevealOnScroll delay={0.08} direction="left">
               <div className="space-y-3">
-                <ContactCard
-                  icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg>}
-                  title="Email us"
-                  detail="contact@crevix-studio.in"
-                  href="mailto:contact@crevix-studio.in"
-                />
-                <ContactCard
-                  icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>}
-                  title="Call us"
-                  detail="+91 78178 33974"
-                  href="tel:+917817833974"
-                />
-                <ContactCard
-                  icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>}
-                  title="WhatsApp"
-                  detail="Chat with us →"
-                  href="https://wa.me/917817833974"
-                  target="_blank"
-                />
-                <ContactCard
-                  icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>}
-                  title="Our location"
-                  detail="Delhi, India · Working Worldwide"
-                  href="#"
-                />
+                <Magnetic>
+                  <ContactCard
+                    icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="M22 4L12 13 2 4" /></svg>}
+                    title="Email us"
+                    detail="contact@crevix-studio.in"
+                    href="mailto:contact@crevix-studio.in"
+                  />
+                </Magnetic>
+                <Magnetic>
+                  <ContactCard
+                    icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" /></svg>}
+                    title="Call us"
+                    detail="+91 78178 33974"
+                    href="tel:+917817833974"
+                  />
+                </Magnetic>
+                <Magnetic>
+                  <ContactCard
+                    icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" /></svg>}
+                    title="WhatsApp"
+                    detail="Chat with us →"
+                    href="https://wa.me/917817833974"
+                    target="_blank"
+                  />
+                </Magnetic>
+                <Magnetic>
+                  <ContactCard
+                    icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>}
+                    title="Our location"
+                    detail="Delhi, India · Working Worldwide"
+                    href="#"
+                  />
+                </Magnetic>
               </div>
             </RevealOnScroll>
           </div>
 
-          {/* ════════ Right — Form Container using C.sage ════════ */}
-          <RevealOnScroll delay={0.12}>
+          {/* ── Right — Form Container using C.sage ── */}
+          <RevealOnScroll delay={0.12} direction="right">
             <div className="rounded-[20px] p-6 sm:p-8 md:p-10"
               style={{
                 background: C.sage,
@@ -247,19 +344,23 @@ export default function Contact() {
                       options={['Morning', 'Afternoon', 'Evening', 'Anytime']} />
                     <FormInput label="Message" name="message" value={form.message} onChange={handleChange} error={errors.message} placeholder="Tell us what you need help with..." rows={4} />
 
-                    <button
-                      type="submit"
-                      className="w-full py-4 rounded-full font-sans font-semibold text-[15px] transition-all duration-250 flex items-center justify-center gap-2 mt-2"
-                      style={{
-                        background: C.deepForest,
-                        color: C.warmStone,
-                        boxShadow: '0 4px 24px rgba(13,59,46,0.15)',
-                      }}
-                      onMouseEnter={(e) => { e.target.style.background = '#134e3e'; }}
-                      onMouseLeave={(e) => { e.target.style.background = C.deepForest; }}
-                    >
-                      Request an Appointment →
-                    </button>
+                    <Magnetic>
+                      <motion.button
+                        type="submit"
+                        whileHover={{ y: -4, scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="w-full py-4 rounded-full font-sans font-semibold text-[15px] transition-all duration-250 flex items-center justify-center gap-2 mt-2 cursor-pointer"
+                        style={{
+                          background: C.deepForest,
+                          color: C.warmStone,
+                          boxShadow: '0 4px 24px rgba(13,59,46,0.15)',
+                        }}
+                        onMouseEnter={(e) => { e.target.style.background = '#134e3e'; }}
+                        onMouseLeave={(e) => { e.target.style.background = C.deepForest; }}
+                      >
+                        Request an Appointment →
+                      </motion.button>
+                    </Magnetic>
                   </motion.form>
                 )}
               </AnimatePresence>

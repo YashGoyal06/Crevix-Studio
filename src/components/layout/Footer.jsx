@@ -57,7 +57,7 @@ export default function Footer() {
             <ul className="space-y-1.5 text-[17px] text-[#0D3B2E] font-bold">
               <li><a href="mailto:hello@crevixstudio.com" className="hover:text-[#0D3B2E]/80 transition-colors duration-150 font-sans font-semibold">hello@crevixstudio.com</a></li>
               <li>
-                <a href="https://wa.me/917817833974" className="hover:text-[#0D3B2E]/80 transition-colors duration-150 font-sans font-semibold">
+                <a href="https://wa.me/917817833974" className="hover:text-[#0D3B2E]/80 transition-colors duration-150 font-sans font-semibold font-normal-numbers text-[15px]">
                   +91 78178 33974 (WhatsApp)
                 </a>
               </li>
