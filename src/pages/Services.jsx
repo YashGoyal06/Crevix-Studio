@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { RevealOnScroll } from '../hooks/useScrollReveal';
 import Layout from '../components/layout/Layout';
@@ -32,7 +33,7 @@ const serviceData = [
     desc1: 'Social media is where your brand lives in real time. We manage the calendar, the content, and the conversation — turning followers into a community that actually engages with what you post.',
     desc2: 'From platform strategy to daily execution, we keep your presence consistent, on-brand, and built for growth across every channel that matters.',
     features: ['Content calendar & scheduling', 'Platform-specific creative (Instagram, LinkedIn, X)', 'Community management & engagement', 'Analytics & performance reporting', 'Paid social campaign support'],
-    visual: 'web',
+    visual: 'social',
     flip: true,
   },
 ];
@@ -58,7 +59,7 @@ const ServiceVisual = ({ type, title }) => {
             </div>
           </div>
           <div className="relative min-h-[96px] rounded-2xl border border-white/[0.08] bg-white/[0.04] p-4 sm:min-h-0">
-            <div className="absolute inset-x-4 top-4 h-12 rounded-xl bg-gradient-to-br from-[#6D28D9]/35 via-[#BE185D]/25 to-[#EA580C]/30 sm:top-5 sm:h-24" />
+            <div className="absolute inset-x-4 top-4 h-12 rounded-xl bg-gradient-to-br from-brand-primary/35 via-brand-secondary/25 to-brand-accent/30 sm:top-5 sm:h-24" />
             <div className="absolute bottom-4 left-4 right-4 space-y-2 sm:bottom-5">
               <span className="block h-2 rounded-full bg-white/25" />
               <span className="block h-2 w-2/3 rounded-full bg-white/[0.12]" />
@@ -84,7 +85,7 @@ const ServiceVisual = ({ type, title }) => {
               </div>
             ))}
           </div>
-          <div className="rounded-2xl border border-white/[0.08] bg-[#080808]/40 p-4 sm:p-5">
+          <div className="rounded-2xl border border-white/[0.08] bg-brand-charcoal/40 p-4 sm:p-5">
             <div className="mb-4 h-16 rounded-2xl bg-white/[0.055] sm:mb-5 sm:h-28" />
             <div className="grid grid-cols-3 gap-3">
               {[0, 1, 2, 3, 4, 5].map((item) => (
@@ -92,6 +93,39 @@ const ServiceVisual = ({ type, title }) => {
               ))}
             </div>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (type === 'social') {
+    const tileRows = [
+      'bg-brand-accent/30 border-brand-accent/40',
+      'bg-white/[0.06] border-white/[0.1]',
+      'bg-brand-secondary/30 border-brand-secondary/40',
+    ];
+    return (
+      <div className="glass-surface light-sweep relative flex aspect-[4/3] min-h-[260px] w-full flex-col overflow-hidden rounded-[16px] p-4 sm:p-6">
+        <div className="flex shrink-0 items-center gap-3 border-b border-white/[0.07] pb-3 sm:pb-4">
+          <span className="h-8 w-8 rounded-full bg-gradient-to-br from-brand-primary to-brand-accent sm:h-10 sm:w-10" />
+          <div className="space-y-1.5">
+            <span className="block h-2.5 w-20 rounded-full bg-white/20 sm:w-28" />
+            <span className="block h-2 w-14 rounded-full bg-white/[0.08] sm:w-20" />
+          </div>
+        </div>
+        <div className="flex flex-1 flex-col gap-2 py-4 sm:gap-3 sm:py-5">
+          {tileRows.map((c, row) => (
+            <div key={row} className="grid flex-1 grid-cols-3 gap-2 sm:gap-3">
+              {[0, 1, 2].map((col) => (
+                <span key={col} className={`rounded-lg border sm:rounded-xl ${c}`} />
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className="flex shrink-0 items-center gap-4">
+          <span className="h-2 w-10 rounded-full bg-white/[0.12]" />
+          <span className="h-2 w-10 rounded-full bg-white/[0.12]" />
+          <span className="ml-auto h-2 w-16 rounded-full bg-brand-accent/60" />
         </div>
       </div>
     );
@@ -111,7 +145,7 @@ const ServiceVisual = ({ type, title }) => {
             <div className="h-3 w-20 rounded-full bg-white/20 sm:w-28" />
           </div>
           <div className="grid grid-cols-2 gap-3">
-            {['#6D28D9', '#BE185D', '#EA580C', '#14B8A6'].map((color) => (
+             {['var(--color-primary)', '#6F8A6E', 'var(--color-accent)', 'var(--color-stone)'].map((color) => (
               <span key={color} className="h-10 rounded-xl border border-white/[0.08] sm:h-16" style={{ background: color }} />
             ))}
           </div>
@@ -131,7 +165,7 @@ const ServiceSection = ({ svc, index }) => (
     {/* Text side */}
     <div className="flex-1">
       <RevealOnScroll>
-        <p className="font-sans text-[13px] text-text-secondary tracking-[0.15em] uppercase mb-4">
+        <p className="font-sans text-[13px] text-text-accent tracking-[0.15em] uppercase mb-4">
           Service 0{index + 1}
         </p>
         <h2 className="mb-6 font-syne text-[30px] font-bold leading-[1.08] text-white md:mb-8 md:text-[36px]">{svc.title}</h2>
@@ -155,7 +189,7 @@ const ServiceSection = ({ svc, index }) => (
 
       <RevealOnScroll delay={0.24}>
        <Link to="/contact" className="group inline-flex items-center gap-1.5 font-sans text-[15px] text-white/60 transition-colors duration-300 ease-out hover:text-white">
-          Start This Project →
+          Start This Project
           <span className="transition-transform duration-300 ease-out group-hover:translate-x-1">→</span>
         </Link>
       </RevealOnScroll>
@@ -170,13 +204,20 @@ const ServiceSection = ({ svc, index }) => (
 );
 
 export default function Services() {
+  useEffect(() => {
+    document.body.classList.add('bg-forest-page');
+    return () => {
+      document.body.classList.remove('bg-forest-page');
+    };
+  }, []);
+
   return (
     <Layout>
       {/* Page hero */}
       <section className="mx-auto max-w-[1280px] px-4 pb-10 pt-20 text-center sm:px-6 md:pb-16 md:pt-28">
         <RevealOnScroll>
-          <p className="mb-5 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:mb-6 md:text-[13px]">Our Capabilities</p>
-          <h1 className="mb-5 font-syne text-[40px] font-bold uppercase tracking-wider leading-[1.15] text-white md:mb-6 md:text-[64px]">We Do Three Things.</h1>
+          <p className="mb-5 font-sans text-[12px] uppercase tracking-[0.15em] text-text-accent md:mb-6 md:text-[13px]">Our Capabilities</p>
+          <h1 className="mb-5 font-syne text-[40px] font-bold uppercase tracking-wider leading-[1.15] text-white md:mb-6 md:text-[64px]">We Do Four Things.</h1>
           <p className="font-sans text-[16px] leading-[1.6] text-text-secondary md:text-[18px]">And we do them better than anyone else.</p>
           <div className="w-[80px] h-[1px] bg-white/20 mx-auto mt-8" />
         </RevealOnScroll>
@@ -190,14 +231,16 @@ export default function Services() {
       <section className="py-20 md:py-36">
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
           <RevealOnScroll>
-            <div className="rounded-[16px] p-6 text-center sm:p-10 md:p-16"
-              style={{ background: '#0E0E0E', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <h2 className="mb-4 font-syne text-[28px] font-bold leading-[1.12] text-white md:text-[36px]">Ready to build something exceptional?</h2>
-              <p className="mb-8 font-sans text-[15px] leading-[1.6] text-text-secondary md:mb-10 md:text-[16px]">Start with a free 30-minute consultation.</p>
-              <Link to="/contact" className="group inline-flex items-center gap-1.5 font-sans text-[15px] text-white/60 transition-colors duration-300 ease-out hover:text-white">
-                Book a Free Call →
-                <span className="transition-transform duration-300 ease-out group-hover:translate-x-1">→</span>
-              </Link>
+            <div className="relative overflow-hidden rounded-[16px] border border-white/[0.08] bg-brand-charcoal p-6 text-center sm:p-10 md:p-16">
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-brand-primary/25 via-transparent to-brand-accent/15" />
+              <div className="relative">
+                <h2 className="mb-4 font-syne text-[28px] font-bold leading-[1.12] text-white md:text-[36px]">Ready to build something exceptional?</h2>
+                <p className="mb-8 font-sans text-[15px] leading-[1.6] text-text-secondary md:mb-10 md:text-[16px]">Start with a free 30-minute consultation.</p>
+                <Link to="/contact" className="group inline-flex items-center gap-2 rounded-full bg-brand-accent px-8 py-4 font-sans text-[15px] font-medium text-brand-charcoal transition-all duration-300 ease-out hover:scale-[1.03] hover:bg-brand-accent-hover">
+                  Book a Free Call
+                  <span className="transition-transform duration-300 ease-out group-hover:translate-x-1">→</span>
+                </Link>
+              </div>
             </div>
           </RevealOnScroll>
         </div>
