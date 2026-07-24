@@ -266,12 +266,12 @@ export default function HeroNew() {
           ))}
         </motion.div>
 
-        {/* CALLIGRAPHY SCRIPT "studio" LABEL CENTERED BELOW CREVIX WITH TIGHT GAP */}
+        {/* CALLIGRAPHY SCRIPT "studio" LABEL CENTERED DIRECTLY BELOW CREVIX WITH NO OVERLAP */}
         <motion.p
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="-mt-6 sm:-mt-10 md:-mt-14 lg:-mt-16 mb-2 font-serif italic text-[clamp(2.5rem,6vw,5.5rem)] text-[#C69A45] tracking-wide font-normal text-center w-full select-none drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]"
+          className="mt-1 sm:mt-2 md:mt-3 mb-2 font-serif italic text-[clamp(2.2rem,5.5vw,5rem)] text-[#C69A45] tracking-wide font-normal text-center w-full select-none drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]"
           style={{ fontFamily: "'Playfair Display', Georgia, serif", fontStyle: 'italic' }}
         >
           studio
