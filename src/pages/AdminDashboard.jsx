@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import { 
   FiTrendingUp, 
   FiShoppingBag, 
@@ -7,12 +7,68 @@ import {
   FiArrowRight, 
   FiLock,
   FiLogOut,
-  FiActivity
+  FiActivity,
+  FiFileText,
+  FiCopy,
+  FiExternalLink,
+  FiDownload
 } from 'react-icons/fi';
 import Meta from '../components/ui/Meta';
-import { previewInvoice } from '../lib/payments';
+import { previewInvoice, generateInvoice } from '../lib/payments';
+import { createAgreement } from '../api/agreements/agreementRepository';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://127.0.0.1:8000';
+
+/* ─── AGREEMENT FORM INITIAL STATE ─── */
+const agreementInitialForm = {
+  client_name: '',
+  client_email: '',
+  brand_name: '',
+  project_name: '',
+  service_type: 'Logo Design',
+  deliverables: '',
+  project_description: '',
+  timeline: '14 working days',
+  revision_count: 3,
+  project_cost: 25000,
+  advance_amount: 10000,
+  remaining_amount: 15000,
+};
+
+const agreementFields = [
+  ['client_name', 'Client Name', 'text'],
+  ['client_email', 'Client Email', 'email'],
+  ['brand_name', 'Brand Name', 'text'],
+  ['project_name', 'Project Name', 'text'],
+  ['deliverables', 'Deliverables', 'textarea'],
+  ['project_description', 'Project Description', 'textarea'],
+  ['timeline', 'Timeline', 'text'],
+  ['revision_count', 'Revision Count', 'number'],
+  ['project_cost', 'Project Cost (₹)', 'number'],
+  ['advance_amount', 'Advance Amount (₹)', 'number'],
+  ['remaining_amount', 'Remaining Amount (₹)', 'number'],
+];
+
+/* ─── INVOICE FORM INITIAL STATE ─── */
+const invoiceInitialForm = {
+  customerName: '',
+  customerEmail: '',
+  customerPhone: '',
+  businessName: '',
+  itemName: 'Service Package',
+  itemType: 'Web Design & Development',
+  itemAmount: 25000,
+  paymentType: 'full',
+  advancePrice: 10000,
+  remainingPrice: 15000,
+};
+
+/* ─── STUDIO TOOL TABS ─── */
+const TOOL_TABS = [
+  { id: 'agreement', label: 'Agreement Generator', icon: <FiFileText /> },
+  { id: 'invoice', label: 'Invoice Generator', icon: <FiDownload /> },
+  { id: 'preview', label: 'Preview Invoice', icon: <FiExternalLink /> },
+];
 
 export default function AdminDashboard() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -21,6 +77,16 @@ export default function AdminDashboard() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState(null);
+  const [activeTab, setActiveTab] = useState('agreement');
+
+  /* Agreement form state */
+  const [agrForm, setAgrForm] = useState(agreementInitialForm);
+  const [agrCreating, setAgrCreating] = useState(false);
+  const [agrResult, setAgrResult] = useState(null);
+  const [agrError, setAgrError] = useState('');
+
+  /* Invoice form state */
+  const [invForm, setInvForm] = useState(invoiceInitialForm);
 
   useEffect(() => {
     const token = localStorage.getItem('crevix_admin_token');
@@ -89,6 +155,72 @@ export default function AdminDashboard() {
     setStats(null);
   };
 
+  /* ─── Agreement Handlers ─── */
+  const handleAgrSubmit = async (e) => {
+    e.preventDefault();
+    setAgrCreating(true);
+    setAgrError('');
+    setAgrResult(null);
+
+    try {
+      const payload = {
+        ...agrForm,
+        revision_count: Number(agrForm.revision_count || 0),
+        project_cost: Number(agrForm.project_cost || 0),
+        advance_amount: Number(agrForm.advance_amount || 0),
+        remaining_amount: Number(agrForm.remaining_amount || 0),
+        agreement_date: new Date().toISOString(),
+      };
+      const created = await createAgreement(payload);
+      setAgrResult(created);
+    } catch (nextError) {
+      setAgrError(nextError.message || 'Unable to create agreement.');
+    } finally {
+      setAgrCreating(false);
+    }
+  };
+
+  const copyAgrLink = async () => {
+    if (!agrResult?.signingUrl) return;
+    await navigator.clipboard.writeText(agrResult.signingUrl);
+  };
+
+  /* ─── Invoice Handlers ─── */
+  const handleInvGenerate = () => {
+    const isAdvance = invForm.paymentType === 'advance';
+    const isRemaining = invForm.paymentType === 'remaining';
+    let total = Number(invForm.itemAmount) || 0;
+    if (isAdvance) total = Number(invForm.advancePrice) || 0;
+    if (isRemaining) total = Number(invForm.remainingPrice) || 0;
+
+    const checkoutData = {
+      customer: {
+        name: invForm.customerName || 'Customer Name',
+        email: invForm.customerEmail || 'Email Address',
+        phone: invForm.customerPhone || 'Phone Number',
+        businessName: invForm.businessName || '',
+      },
+      items: [{
+        id: 'manual-invoice',
+        name: invForm.itemName || 'Service Package',
+        type: invForm.itemType || 'Web Design & Development',
+        amount: Number(invForm.itemAmount) || 0,
+        advancePrice: Number(invForm.advancePrice) || 0,
+        remainingPrice: Number(invForm.remainingPrice) || 0,
+        fullPrice: Number(invForm.itemAmount) || 0,
+      }],
+      total,
+      isAdvance,
+      isRemaining,
+      paymentId: `pay_MANUAL_${Date.now().toString(36).toUpperCase()}`,
+      orderId: `order_MANUAL_${Date.now().toString(36).toUpperCase()}`,
+      createdAt: new Date().toISOString(),
+    };
+
+    generateInvoice(checkoutData);
+  };
+
+  /* ─── LOGIN SCREEN ─── */
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen bg-void flex items-center justify-center p-6 relative overflow-hidden">
@@ -160,6 +292,7 @@ export default function AdminDashboard() {
     );
   }
 
+  /* ─── MAIN DASHBOARD ─── */
   return (
     <div className="min-h-screen bg-[#020203] text-white p-4 md:p-10 lg:p-16 relative overflow-hidden">
       <Meta title="Admin Dashboard" />
@@ -216,26 +349,303 @@ export default function AdminDashboard() {
           />
         </div>
 
-        {/* Studio Tools */}
+        {/* ═══════════════════════════════════════════════ */}
+        {/* STUDIO TOOLS – TABBED PANEL                    */}
+        {/* ═══════════════════════════════════════════════ */}
         <div className="mb-16">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-syne font-bold">Studio Tools</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <button 
-              onClick={previewInvoice}
-              className="flex items-center justify-between p-8 rounded-[2.5rem] bg-white/[0.03] border border-white/[0.08] hover:bg-white/[0.06] hover:border-white/20 transition-all group"
-            >
-              <div className="text-left">
-                <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-sans font-bold mb-2">Internal Tools</p>
-                <h3 className="text-xl font-syne font-bold">Preview Premium Invoice</h3>
-                <p className="text-white/20 text-xs mt-2 font-sans">Generate a sample PDF to verify design.</p>
-              </div>
-              <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 group-hover:text-white group-hover:border-white/30 transition-all">
-                <FiArrowRight />
-              </div>
-            </button>
+
+          {/* Tab Buttons */}
+          <div className="flex flex-wrap gap-2 mb-6">
+            {TOOL_TABS.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-sans font-semibold transition-all duration-200 border ${
+                  activeTab === tab.id
+                    ? 'bg-white text-[#020203] border-white shadow-lg'
+                    : 'bg-white/[0.03] text-white/50 border-white/[0.08] hover:text-white hover:bg-white/[0.06] hover:border-white/20'
+                }`}
+              >
+                {tab.icon}
+                {tab.label}
+              </button>
+            ))}
           </div>
+
+          {/* Tab Content */}
+          <AnimatePresence mode="wait">
+            {/* ── AGREEMENT GENERATOR TAB ── */}
+            {activeTab === 'agreement' && (
+              <motion.div
+                key="agreement"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.2 }}
+                className="bg-white/[0.02] border border-white/[0.08] rounded-[2.5rem] p-8 md:p-10 backdrop-blur-3xl"
+              >
+                <div className="mb-8">
+                  <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-sans font-bold mb-2">Client Agreements</p>
+                  <h3 className="text-xl font-syne font-bold">Generate New Agreement</h3>
+                  <p className="text-white/30 text-sm mt-1 font-sans">Fill in the project details to generate a signing link.</p>
+                </div>
+
+                <form onSubmit={handleAgrSubmit} className="space-y-6">
+                  {/* Service Type */}
+                  <div>
+                    <label className="block text-[11px] font-sans font-medium text-white/30 uppercase tracking-[0.2em] mb-2.5 ml-1">Service Type</label>
+                    <select
+                      className="w-full bg-white/[0.03] border border-white/[0.1] rounded-2xl px-5 py-3.5 text-white focus:outline-none focus:border-white/20 transition-all font-sans text-sm appearance-none cursor-pointer"
+                      value={agrForm.service_type}
+                      onChange={(e) => setAgrForm({ ...agrForm, service_type: e.target.value })}
+                    >
+                      <option className="bg-[#0a0a0a]">Logo Design</option>
+                      <option className="bg-[#0a0a0a]">Website Development</option>
+                      <option className="bg-[#0a0a0a]">Social Media</option>
+                      <option className="bg-[#0a0a0a]">Branding</option>
+                    </select>
+                  </div>
+
+                  {/* Field Grid */}
+                  <div className="grid gap-5 md:grid-cols-2">
+                    {agreementFields.map(([field, label, type]) => (
+                      <div key={field} className={type === 'textarea' ? 'md:col-span-2' : ''}>
+                        <label className="block text-[11px] font-sans font-medium text-white/30 uppercase tracking-[0.2em] mb-2.5 ml-1">{label}</label>
+                        {type === 'textarea' ? (
+                          <textarea
+                            className="min-h-24 w-full bg-white/[0.03] border border-white/[0.1] rounded-2xl px-5 py-3.5 text-white focus:outline-none focus:border-white/20 transition-all font-sans text-sm resize-none"
+                            required
+                            value={agrForm[field]}
+                            onChange={(e) => setAgrForm({ ...agrForm, [field]: e.target.value })}
+                          />
+                        ) : (
+                          <input
+                            className="w-full bg-white/[0.03] border border-white/[0.1] rounded-2xl px-5 py-3.5 text-white focus:outline-none focus:border-white/20 transition-all font-sans text-sm"
+                            required
+                            type={type}
+                            value={agrForm[field]}
+                            onChange={(e) => setAgrForm({ ...agrForm, [field]: e.target.value })}
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={agrCreating}
+                    className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-white text-[#020203] font-sans font-bold text-sm hover:opacity-90 transition-all disabled:opacity-40 disabled:cursor-not-allowed group"
+                  >
+                    {agrCreating ? (
+                      <span className="inline-block w-4 h-4 border-2 border-[#020203]/30 border-t-[#020203] rounded-full animate-spin" />
+                    ) : (
+                      <FiFileText />
+                    )}
+                    {agrCreating ? 'Generating...' : 'Generate Agreement'}
+                    {!agrCreating && <FiArrowRight className="group-hover:translate-x-1 transition-transform" />}
+                  </button>
+                </form>
+
+                {/* Agreement Error */}
+                {agrError && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="mt-6 p-4 rounded-2xl border border-red-400/20 bg-red-400/5 text-red-400 text-sm font-sans"
+                  >
+                    {agrError}
+                  </motion.div>
+                )}
+
+                {/* Agreement Success Result */}
+                {agrResult && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-6 p-6 rounded-2xl border border-emerald-400/20 bg-emerald-400/5"
+                  >
+                    <h4 className="font-syne font-bold text-emerald-400 mb-2">✓ Agreement Created</h4>
+                    <p className="text-sm text-white/60 font-sans break-all mb-4">{agrResult.signingUrl}</p>
+                    <div className="flex flex-wrap gap-3">
+                      <button
+                        type="button"
+                        onClick={copyAgrLink}
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-400 text-[#020203] font-sans font-bold text-sm hover:opacity-90 transition-all"
+                      >
+                        <FiCopy size={14} />
+                        Copy Link
+                      </button>
+                      <a
+                        href={agrResult.signingUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/[0.05] border border-white/[0.15] text-white font-sans font-bold text-sm hover:bg-white/[0.1] transition-all"
+                      >
+                        <FiExternalLink size={14} />
+                        Open Agreement
+                      </a>
+                    </div>
+                  </motion.div>
+                )}
+              </motion.div>
+            )}
+
+            {/* ── INVOICE GENERATOR TAB ── */}
+            {activeTab === 'invoice' && (
+              <motion.div
+                key="invoice"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.2 }}
+                className="bg-white/[0.02] border border-white/[0.08] rounded-[2.5rem] p-8 md:p-10 backdrop-blur-3xl"
+              >
+                <div className="mb-8">
+                  <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-sans font-bold mb-2">Manual Invoicing</p>
+                  <h3 className="text-xl font-syne font-bold">Generate PDF Invoice</h3>
+                  <p className="text-white/30 text-sm mt-1 font-sans">Fill client and project info to generate a downloadable Crevix-branded PDF invoice.</p>
+                </div>
+
+                <div className="space-y-6">
+                  {/* Customer Details */}
+                  <div>
+                    <p className="text-[11px] font-sans font-bold text-white/40 uppercase tracking-[0.2em] mb-4 ml-1">Customer Details</p>
+                    <div className="grid gap-5 md:grid-cols-2">
+                      {[
+                        ['customerName', 'Customer Name', 'text'],
+                        ['customerEmail', 'Email Address', 'email'],
+                        ['customerPhone', 'Phone Number', 'tel'],
+                        ['businessName', 'Business Name (Optional)', 'text'],
+                      ].map(([field, label, type]) => (
+                        <div key={field}>
+                          <label className="block text-[11px] font-sans font-medium text-white/30 uppercase tracking-[0.2em] mb-2.5 ml-1">{label}</label>
+                          <input
+                            className="w-full bg-white/[0.03] border border-white/[0.1] rounded-2xl px-5 py-3.5 text-white focus:outline-none focus:border-white/20 transition-all font-sans text-sm"
+                            type={type}
+                            value={invForm[field]}
+                            onChange={(e) => setInvForm({ ...invForm, [field]: e.target.value })}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Line Item */}
+                  <div>
+                    <p className="text-[11px] font-sans font-bold text-white/40 uppercase tracking-[0.2em] mb-4 ml-1">Line Item</p>
+                    <div className="grid gap-5 md:grid-cols-2">
+                      <div>
+                        <label className="block text-[11px] font-sans font-medium text-white/30 uppercase tracking-[0.2em] mb-2.5 ml-1">Item Name</label>
+                        <input
+                          className="w-full bg-white/[0.03] border border-white/[0.1] rounded-2xl px-5 py-3.5 text-white focus:outline-none focus:border-white/20 transition-all font-sans text-sm"
+                          value={invForm.itemName}
+                          onChange={(e) => setInvForm({ ...invForm, itemName: e.target.value })}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-sans font-medium text-white/30 uppercase tracking-[0.2em] mb-2.5 ml-1">Item Type / Description</label>
+                        <input
+                          className="w-full bg-white/[0.03] border border-white/[0.1] rounded-2xl px-5 py-3.5 text-white focus:outline-none focus:border-white/20 transition-all font-sans text-sm"
+                          value={invForm.itemType}
+                          onChange={(e) => setInvForm({ ...invForm, itemType: e.target.value })}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-sans font-medium text-white/30 uppercase tracking-[0.2em] mb-2.5 ml-1">Total Amount (₹)</label>
+                        <input
+                          className="w-full bg-white/[0.03] border border-white/[0.1] rounded-2xl px-5 py-3.5 text-white focus:outline-none focus:border-white/20 transition-all font-sans text-sm"
+                          type="number"
+                          value={invForm.itemAmount}
+                          onChange={(e) => setInvForm({ ...invForm, itemAmount: e.target.value })}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-sans font-medium text-white/30 uppercase tracking-[0.2em] mb-2.5 ml-1">Payment Type</label>
+                        <select
+                          className="w-full bg-white/[0.03] border border-white/[0.1] rounded-2xl px-5 py-3.5 text-white focus:outline-none focus:border-white/20 transition-all font-sans text-sm appearance-none cursor-pointer"
+                          value={invForm.paymentType}
+                          onChange={(e) => setInvForm({ ...invForm, paymentType: e.target.value })}
+                        >
+                          <option value="full" className="bg-[#0a0a0a]">Full Payment</option>
+                          <option value="advance" className="bg-[#0a0a0a]">Advance Payment</option>
+                          <option value="remaining" className="bg-[#0a0a0a]">Remaining Payment</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    {/* Conditional Advance/Remaining Fields */}
+                    {invForm.paymentType !== 'full' && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        className="grid gap-5 md:grid-cols-2 mt-5"
+                      >
+                        <div>
+                          <label className="block text-[11px] font-sans font-medium text-white/30 uppercase tracking-[0.2em] mb-2.5 ml-1">Advance Amount (₹)</label>
+                          <input
+                            className="w-full bg-white/[0.03] border border-white/[0.1] rounded-2xl px-5 py-3.5 text-white focus:outline-none focus:border-white/20 transition-all font-sans text-sm"
+                            type="number"
+                            value={invForm.advancePrice}
+                            onChange={(e) => setInvForm({ ...invForm, advancePrice: e.target.value })}
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[11px] font-sans font-medium text-white/30 uppercase tracking-[0.2em] mb-2.5 ml-1">Remaining Amount (₹)</label>
+                          <input
+                            className="w-full bg-white/[0.03] border border-white/[0.1] rounded-2xl px-5 py-3.5 text-white focus:outline-none focus:border-white/20 transition-all font-sans text-sm"
+                            type="number"
+                            value={invForm.remainingPrice}
+                            onChange={(e) => setInvForm({ ...invForm, remainingPrice: e.target.value })}
+                          />
+                        </div>
+                      </motion.div>
+                    )}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleInvGenerate}
+                    className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-white text-[#020203] font-sans font-bold text-sm hover:opacity-90 transition-all group"
+                  >
+                    <FiDownload />
+                    Download Invoice PDF
+                    <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              </motion.div>
+            )}
+
+            {/* ── PREVIEW INVOICE TAB ── */}
+            {activeTab === 'preview' && (
+              <motion.div
+                key="preview"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.2 }}
+                className="bg-white/[0.02] border border-white/[0.08] rounded-[2.5rem] p-8 md:p-10 backdrop-blur-3xl"
+              >
+                <div className="mb-8">
+                  <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-sans font-bold mb-2">Internal Tools</p>
+                  <h3 className="text-xl font-syne font-bold">Preview Premium Invoice</h3>
+                  <p className="text-white/30 text-sm mt-1 font-sans">Generate a sample PDF with dummy data to verify the invoice design and layout.</p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={previewInvoice}
+                  className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-white text-[#020203] font-sans font-bold text-sm hover:opacity-90 transition-all group"
+                >
+                  <FiExternalLink />
+                  Generate Sample Invoice
+                  <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Recent Orders */}
