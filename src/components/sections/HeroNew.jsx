@@ -266,12 +266,12 @@ export default function HeroNew() {
           ))}
         </motion.div>
 
-        {/* CALLIGRAPHY SCRIPT "Studio" LABEL BELOW CREVIX */}
+        {/* CALLIGRAPHY SCRIPT "studio" LABEL CENTERED BELOW CREVIX WITH TIGHT GAP */}
         <motion.p
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="-mt-3 sm:-mt-5 md:-mt-8 mb-6 font-serif italic text-[clamp(2rem,5vw,4.5rem)] text-[#C69A45] tracking-wide font-normal select-none drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="-mt-6 sm:-mt-10 md:-mt-14 lg:-mt-16 mb-2 font-serif italic text-[clamp(2.5rem,6vw,5.5rem)] text-[#C69A45] tracking-wide font-normal text-center w-full select-none drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]"
           style={{ fontFamily: "'Playfair Display', Georgia, serif", fontStyle: 'italic' }}
         >
           studio
@@ -283,10 +283,10 @@ export default function HeroNew() {
           initial={{ width: 0, opacity: 0 }}
           animate={{ width: 90, opacity: 1 }}
           transition={{
-            delay: 1.0,
+            delay: 0.8,
             duration: 0.8,
           }}
-          className="mt-10 flex items-center justify-center"
+          className="mt-4 sm:mt-6 flex items-center justify-center"
         >
           <div className="h-px w-8 bg-[#C69A45]/35" />
 
