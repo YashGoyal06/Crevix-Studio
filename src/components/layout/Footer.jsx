@@ -14,11 +14,23 @@ const footerLinks = {
 
 export default function Footer() {
   return (
-    <footer className="relative pb-6 pt-8 md:pb-8 md:pt-10 group" style={{ backgroundColor: '#D8D2C4' }}>
-      {/* Top border — dark green with hover transition */}
-      <div className="absolute top-0 left-0 right-0 h-[2px] bg-[#0D3B2E]/30 group-hover:bg-[#0D3B2E] transition-colors duration-500" />
+    <footer className="relative pb-6 pt-4 md:pb-8 md:pt-6 group" style={{ backgroundColor: '#D8D2C4' }}>
+      {/* Top Seamless Wavy Curve Transition */}
+      <div className="absolute left-0 right-0 -top-[36px] sm:-top-[52px] md:-top-[68px] w-full overflow-hidden leading-none pointer-events-none z-20">
+        <svg
+          className="relative block w-full h-[36px] sm:h-[52px] md:h-[68px]"
+          viewBox="0 0 1440 120"
+          preserveAspectRatio="none"
+          fill="none"
+        >
+          <path
+            d="M0,32 C320,96 640,-16 960,64 C1200,112 1360,32 1440,48 L1440,120 L0,120 Z"
+            fill="#D8D2C4"
+          />
+        </svg>
+      </div>
 
-      <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
+      <div className="mx-auto max-w-[1280px] px-4 sm:px-6 relative z-10">
         <div className="mb-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:mb-8 md:grid-cols-3 md:gap-8">
           {/* Brand */}
           <div>
