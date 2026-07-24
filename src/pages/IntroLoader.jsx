@@ -8,8 +8,8 @@ export default function IntroLoader({ onComplete }) {
 
   useEffect(() => {
     const timers = [
-      setTimeout(() => setPhase('exit'), 3400),
-      setTimeout(() => onComplete?.(), 4100),
+      setTimeout(() => setPhase('exit'), 3600),
+      setTimeout(() => onComplete?.(), 4300),
     ];
     return () => timers.forEach(clearTimeout);
   }, [onComplete]);
@@ -50,48 +50,37 @@ export default function IntroLoader({ onComplete }) {
           <div className="relative flex flex-col items-center select-none z-10 px-4">
             {/* CREVIX */}
             <motion.div
-              className="uppercase tracking-[0.22em] text-[#E0D8C3] leading-none"
-              style={{
-                fontSize: 'clamp(48px, 8vw, 110px)',
-                fontFamily: '"Syne", sans-serif',
-                fontWeight: 800,
-                textShadow: '0 0 35px rgba(198, 154, 69, 0.25)',
-              }}
-              initial={{ opacity: 0, y: 24, filter: 'blur(8px)' }}
+              className="uppercase tracking-[0.25em] text-[#D8D2C4] leading-none"
+              style={{ fontSize: 'clamp(52px, 8.5vw, 128px)', fontFamily: '"Playfair Display", serif', fontWeight: 800 }}
+              initial={{ opacity: 0, y: 28, filter: 'blur(6px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              transition={{ delay: 0.2, duration: 0.9, ease }}
+              transition={{ delay: 0.3, duration: 0.9, ease }}
             >
               CREVIX
             </motion.div>
 
-            {/* STUDIO (Calligraphic Script) */}
+            {/* STUDIO */}
             <motion.div
-              className="mt-1 lowercase text-[#C69A45] leading-none"
-              style={{
-                fontSize: 'clamp(36px, 5.5vw, 76px)',
-                fontFamily: '"Great Vibes", cursive',
-                letterSpacing: '0.04em',
-                textShadow: '0 0 20px rgba(198, 154, 69, 0.4)',
-              }}
-              initial={{ opacity: 0, y: 16, filter: 'blur(6px)' }}
+              className="uppercase tracking-[0.25em] text-[#D8D2C4] leading-none mt-2"
+              style={{ fontSize: 'clamp(52px, 8.5vw, 128px)', fontFamily: '"Playfair Display", serif', fontWeight: 800 }}
+              initial={{ opacity: 0, y: 28, filter: 'blur(6px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              transition={{ delay: 0.6, duration: 0.8, ease }}
+              transition={{ delay: 0.7, duration: 0.9, ease }}
             >
-              studio
+              STUDIO
             </motion.div>
 
-            {/* Gold Accent Progress Line */}
+            {/* Single subtle line */}
             <motion.div
-              className="mt-6 rounded-full"
+              className="mt-6"
               style={{
-                height: 2,
-                background: 'linear-gradient(90deg, transparent, #C69A45, transparent)',
+                height: 1,
+                background: 'rgba(216, 210, 196, 0.25)',
                 width: '100%',
-                boxShadow: '0 0 12px rgba(198, 154, 69, 0.5)',
               }}
-              initial={{ scaleX: 0 }}
+              initial={{ scaleX: 0, transformOrigin: 'left' }}
               animate={{ scaleX: 1 }}
-              transition={{ delay: 1.8, duration: 0.9, ease }}
+              transition={{ delay: 2.4, duration: 0.6, ease }}
             />
           </div>
         </motion.div>
