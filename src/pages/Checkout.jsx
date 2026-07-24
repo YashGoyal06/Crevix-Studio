@@ -187,8 +187,12 @@ export default function Checkout() {
       <section className="relative z-10 mx-auto max-w-[1120px] px-4 pb-20 pt-20 sm:px-6 md:pb-28 md:pt-28">
         <RevealOnScroll>
           <div className="mb-10 text-center md:mb-14">
-            <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-[#6F8A6E] md:text-[13px]">Checkout</p>
-            <h1 className="font-syne text-[40px] font-[800] leading-[1.02] text-[#0D3B2E] md:text-[64px]">Complete Your Order.</h1>
+            <p className="mb-3 font-syne text-[12px] font-bold uppercase tracking-[0.3em] text-[#C69A45] md:text-[13px]">
+              ✦ CHECKOUT ✦
+            </p>
+            <h1 className="font-syne text-[40px] font-[800] leading-[1.02] text-white md:text-[64px]">
+              Complete Your <span className="bg-gradient-to-r from-[#C69A45] via-[#F5E6BF] to-[#B88C3A] bg-clip-text text-transparent drop-shadow-[0_2px_10px_rgba(198,154,69,0.3)]">Order.</span>
+            </h1>
           </div>
         </RevealOnScroll>
 
