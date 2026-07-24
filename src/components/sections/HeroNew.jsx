@@ -5,6 +5,7 @@ import {
   } from "framer-motion";
   
   import { Link } from "react-router-dom";
+import MarqueeTicker from "../ui/MarqueeTicker";
   
   const title = "CREVIX";
   
@@ -453,38 +454,8 @@ import {
 </motion.div>
 
 {/* BOTTOM MARQUEE */}
-
-<div className="absolute bottom-0 left-0 w-full overflow-hidden border-t border-white/5 py-5">
-  <motion.div
-    animate={{
-      x: ["0%", "-50%"],
-    }}
-    transition={{
-      duration: 22,
-      repeat: Infinity,
-      ease: "linear",
-    }}
-    className="flex whitespace-nowrap text-[#C69A45]/80 text-sm uppercase tracking-[0.35em]"
-  >
-    {[...Array(2)].map((_, i) => (
-      <div key={i} className="flex">
-        <span className="mx-8">Web Development</span>
-        <span className="mx-8">•</span>
-
-        <span className="mx-8">UI / UX</span>
-        <span className="mx-8">•</span>
-
-        <span className="mx-8">Brand Identity</span>
-        <span className="mx-8">•</span>
-
-        <span className="mx-8">Digital Strategy</span>
-        <span className="mx-8">•</span>
-
-        <span className="mx-8">Creative Technology</span>
-        <span className="mx-8">•</span>
-      </div>
-    ))}
-  </motion.div>
+<div className="absolute bottom-0 left-0 w-full z-20">
+  <MarqueeTicker speed={28} />
 </div>
 
 </div>
