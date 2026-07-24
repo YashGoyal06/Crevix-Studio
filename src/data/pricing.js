@@ -19,6 +19,24 @@ export const paymentLinks = {
 
 export const webPlans = [
   {
+    id: 'test-plan',
+    type: 'Website Plan',
+    name: 'Test Plan (₹1)',
+    fullPrice: 1,
+    advancePrice: 1,
+    remainingPrice: 0,
+    price: '₹1',
+    advance: '₹1',
+    paymentLinks: paymentLinks.basic,
+    features: [
+      'Live Gateway Test Plan',
+      'Instant ₹1 Razorpay Checkout',
+      'Full Invoice PDF Generation',
+      'Admin Dashboard Tracking',
+    ],
+    featured: true,
+  },
+  {
     id: 'basic-plan',
     type: 'Website Plan',
     name: 'Basic Plan',
