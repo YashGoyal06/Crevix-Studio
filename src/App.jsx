@@ -39,26 +39,23 @@ function ScrollToTop() {
   return null;
 }
 
-const AnimatedRoutes = () => {
-  const location = useLocation();
+const AppRoutes = () => {
   return (
-    <AnimatePresence mode="sync">
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<PageTransition><Home /></PageTransition>} />
-        <Route path="/services" element={<PageTransition><Services /></PageTransition>} />
-        <Route path="/portfolio" element={<PageTransition><Portfolio /></PageTransition>} />
-        <Route path="/team" element={<PageTransition><Team /></PageTransition>} />
-        <Route path="/pricing" element={<PageTransition><Pricing /></PageTransition>} />
-        <Route path="/cart" element={<PageTransition><Cart /></PageTransition>} />
-        <Route path="/checkout" element={<PageTransition><ProtectedRoute><Checkout /></ProtectedRoute></PageTransition>} />
-        <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
-        <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
-        <Route path="/profile" element={<PageTransition><ProtectedRoute><Profile /></ProtectedRoute></PageTransition>} />
-        <Route path="/crevix-admin" element={<PageTransition><AdminDashboard /></PageTransition>} />
-        <Route path="/agreement/new" element={<ProtectedRoute><AgreementCreatePage /></ProtectedRoute>} />
-        <Route path="/agreement/:token" element={<AgreementPage />} />
-      </Routes>
-    </AnimatePresence>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/services" element={<Services />} />
+      <Route path="/portfolio" element={<Portfolio />} />
+      <Route path="/team" element={<Team />} />
+      <Route path="/pricing" element={<Pricing />} />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+      <Route path="/crevix-admin" element={<AdminDashboard />} />
+      <Route path="/agreement/new" element={<ProtectedRoute><AgreementCreatePage /></ProtectedRoute>} />
+      <Route path="/agreement/:token" element={<AgreementPage />} />
+    </Routes>
   );
 };
 
@@ -80,7 +77,7 @@ export default function App() {
           </AnimatePresence>
 
           {!showIntro && (
-            <AnimatedRoutes />
+            <AppRoutes />
           )}
         </BrowserRouter>
       </CartProvider>
