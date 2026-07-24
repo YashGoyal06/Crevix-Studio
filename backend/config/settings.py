@@ -114,7 +114,7 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
     "ngrok-skip-browser-warning",
 ]
 
-# Razorpay credentials
-RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID", "")
-RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET", "")
-RAZORPAY_WEBHOOK_SECRET = os.getenv("RAZORPAY_WEBHOOK_SECRET", "")
+# Razorpay credentials (supports live and test env keys)
+RAZORPAY_KEY_ID = (os.getenv("RAZORPAY_LIVE_KEY_ID") or os.getenv("RAZORPAY_KEY_ID") or "").strip()
+RAZORPAY_KEY_SECRET = (os.getenv("RAZORPAY_LIVE_KEY_SECRET") or os.getenv("RAZORPAY_KEY_SECRET") or "").strip()
+RAZORPAY_WEBHOOK_SECRET = (os.getenv("RAZORPAY_WEBHOOK_SECRET") or "").strip()

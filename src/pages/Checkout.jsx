@@ -83,8 +83,13 @@ export default function Checkout() {
         },
       });
 
+      const razorpayKey = order.key_id || PUBLIC_RAZORPAY_KEY_ID;
+      if (!order.razorpay_order_id) {
+        throw new Error('Order creation failed. Live backend order ID missing.');
+      }
+
       const options = {
-        key: PUBLIC_RAZORPAY_KEY_ID || order.key_id,
+        key: razorpayKey,
         amount: order.amount_paise,
         currency: order.currency,
         order_id: order.razorpay_order_id,

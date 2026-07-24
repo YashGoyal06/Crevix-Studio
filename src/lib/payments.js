@@ -33,7 +33,13 @@ export const loadRazorpayScript = () =>
   });
 
 const toJson = async (response) => {
-  const data = await response.json().catch(() => ({}));
+  const text = await response.text();
+  let data = {};
+  try {
+    data = JSON.parse(text);
+  } catch {
+    throw new Error('Payment backend is warming up or unavailable. Please try again in 5 seconds.');
+  }
   if (!response.ok) {
     throw new Error(data.error || 'Payment API request failed.');
   }
@@ -41,16 +47,43 @@ const toJson = async (response) => {
 };
 
 export const createRazorpayOrder = async ({ amountPaise, notes }) => {
-  const response = await fetch(`${BACKEND_BASE_URL}/api/create-order`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      amount_paise: amountPaise,
-      currency: 'INR',
-      notes,
-    }),
-  });
-  return toJson(response);
+  let retries = 3;
+  let response;
+
+  while (retries > 0) {
+    try {
+      response = await fetch(`${BACKEND_BASE_URL}/api/create-order`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount_paise: amountPaise,
+          currency: 'INR',
+          notes,
+        }),
+      });
+      if (response.ok || response.status === 400 || response.status === 401) {
+        break;
+      }
+    } catch {
+      // Retry for Hugging Face wake-up
+    }
+    retries -= 1;
+    if (retries > 0) {
+      await new Promise((r) => setTimeout(r, 2500));
+    }
+  }
+
+  if (!response) {
+    throw new Error('Payment server (Hugging Face) is waking up. Please wait 10 seconds and try again.');
+  }
+
+  const orderData = await toJson(response);
+
+  if (!orderData || !orderData.razorpay_order_id) {
+    throw new Error('Backend failed to generate a valid Razorpay order ID. Please try again.');
+  }
+
+  return orderData;
 };
 
 export const verifyRazorpayPayment = async ({
