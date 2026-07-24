@@ -1,6 +1,6 @@
-import { Suspense, lazy, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { useLenisSmoothScroll } from './hooks/useLenisSmoothScroll';
 
 import IntroLoader from './pages/IntroLoader';
@@ -9,19 +9,19 @@ import { CartProvider } from './context/CartContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import GoogleAnalytics from './components/ui/GoogleAnalytics';
 
-const Home = lazy(() => import('./pages/Home'));
-const Services = lazy(() => import('./pages/Services'));
-const Portfolio = lazy(() => import('./pages/Portfolio'));
-const Team = lazy(() => import('./pages/Team'));
-const Pricing = lazy(() => import('./pages/Pricing'));
-const Cart = lazy(() => import('./pages/Cart'));
-const Checkout = lazy(() => import('./pages/Checkout'));
-const Contact = lazy(() => import('./pages/Contact'));
-const Login = lazy(() => import('./pages/Login'));
-const Profile = lazy(() => import('./pages/Profile'));
-const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
-const AgreementCreatePage = lazy(() => import('./modules/agreements/AgreementCreatePage'));
-const AgreementPage = lazy(() => import('./modules/agreements/AgreementPage'));
+import Home from './pages/Home';
+import Services from './pages/Services';
+import Portfolio from './pages/Portfolio';
+import Team from './pages/Team';
+import Pricing from './pages/Pricing';
+import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
+import Contact from './pages/Contact';
+import Login from './pages/Login';
+import Profile from './pages/Profile';
+import AdminDashboard from './pages/AdminDashboard';
+import AgreementCreatePage from './modules/agreements/AgreementCreatePage';
+import AgreementPage from './modules/agreements/AgreementPage';
 
 import PageTransition from './components/ui/PageTransition';
 
@@ -42,7 +42,7 @@ function ScrollToTop() {
 const AnimatedRoutes = () => {
   const location = useLocation();
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode="sync">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageTransition><Home /></PageTransition>} />
         <Route path="/services" element={<PageTransition><Services /></PageTransition>} />
@@ -55,7 +55,7 @@ const AnimatedRoutes = () => {
         <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
         <Route path="/profile" element={<PageTransition><ProtectedRoute><Profile /></ProtectedRoute></PageTransition>} />
         <Route path="/crevix-admin" element={<PageTransition><AdminDashboard /></PageTransition>} />
-        <Route path="/agreement/new" element={<AgreementCreatePage />} />
+        <Route path="/agreement/new" element={<ProtectedRoute><AgreementCreatePage /></ProtectedRoute>} />
         <Route path="/agreement/:token" element={<AgreementPage />} />
       </Routes>
     </AnimatePresence>
@@ -72,21 +72,16 @@ export default function App() {
         <BrowserRouter>
           <ScrollToTop />
           <GoogleAnalytics />
-          <Suspense fallback={
-            <div className="fixed inset-0 bg-void flex items-center justify-center">
-              <div className="w-8 h-8 rounded-full border-2 border-white/20 border-t-white animate-spin" />
-            </div>
-          }>
-            <AnimatePresence>
-              {showIntro && (
-                <IntroLoader onComplete={() => setShowIntro(false)} />
-              )}
-            </AnimatePresence>
 
-            {!showIntro && (
-              <AnimatedRoutes />
+          <AnimatePresence>
+            {showIntro && (
+              <IntroLoader onComplete={() => setShowIntro(false)} />
             )}
-          </Suspense>
+          </AnimatePresence>
+
+          {!showIntro && (
+            <AnimatedRoutes />
+          )}
         </BrowserRouter>
       </CartProvider>
     </AuthProvider>
