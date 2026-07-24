@@ -11,21 +11,29 @@ const navigationLinks = [
 
 export default function Footer() {
   return (
-    <footer className="relative bg-[#D8D2C4] pt-8 pb-4 md:pt-10 md:pb-6 overflow-hidden select-none">
-      {/* Top Subtle Arc Curve Transition */}
-      <div className="absolute left-0 right-0 -top-[16px] sm:-top-[20px] md:-top-[24px] w-full overflow-hidden leading-none pointer-events-none z-20">
+    <footer className="relative bg-[#D8D2C4] pt-10 pb-4 md:pt-12 md:pb-6 overflow-hidden select-none">
+      {/* Organic Graphic Crest Top Transition (Breaver Style Graphic Crown) */}
+      <div className="absolute left-0 right-0 -top-[28px] sm:-top-[38px] md:-top-[46px] w-full overflow-hidden leading-none pointer-events-none z-20">
         <svg
-          className="relative block w-full h-[16px] sm:h-[20px] md:h-[24px]"
-          viewBox="0 0 1440 24"
+          className="relative block w-full h-[28px] sm:h-[38px] md:h-[46px]"
+          viewBox="0 0 1440 60"
           preserveAspectRatio="none"
           fill="none"
         >
           <path
-            d="M0,24 Q720,-4 1440,24 L1440,24 L0,24 Z"
+            d="M0,60 C180,10 360,50 540,20 C720,-10 900,45 1080,15 C1260,40 1380,10 1440,30 L1440,60 L0,60 Z"
             fill="#D8D2C4"
           />
         </svg>
       </div>
+
+      {/* Tactile Texture Noise Overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.06] mix-blend-multiply"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+        }}
+      />
 
       <div className="mx-auto max-w-[1280px] px-4 sm:px-6 relative z-10">
         {/* Main Content Grid: Navigation, Say Hi CTA, Info & Socials */}
