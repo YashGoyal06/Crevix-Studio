@@ -152,12 +152,12 @@ export default function Navbar() {
                   />
                 )}
 
-                {/* Active Page Accent Indicator */}
-                {isActive && !isHovered && (
+                {/* Active Page Luxury Gold Capsule Highlight */}
+                {isActive && (
                   <motion.span
-                    layoutId="nike-nav-active"
-                    className="absolute bottom-0 left-4 right-4 h-[2px] bg-[#C69A45] rounded-full"
-                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    layoutId="luxury-active-badge"
+                    className="absolute inset-0 bg-[#C69A45]/15 border border-[#C69A45]/40 rounded-full -z-10 shadow-[0_0_20px_rgba(198,154,69,0.3)]"
+                    transition={{ type: 'spring', stiffness: 420, damping: 32 }}
                   />
                 )}
 
