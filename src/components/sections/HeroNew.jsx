@@ -484,31 +484,6 @@ export default function HeroNew() {
 
       </div>
 
-      {/* ========================================================= */}
-      {/* CUSTOM CURSOR & TEXT REVEAL OVERLAY (Desktop only) */}
-      {/* ========================================================= */}
-      {isDesktop && (
-        <>
-          {/* Custom smooth-following warm gold circle cursor */}
-          <motion.div
-            style={{
-              x: cursorSpringX,
-              y: cursorSpringY,
-              translateX: '-50%',
-              translateY: '-50%',
-            }}
-            className="fixed top-0 left-0 w-[150px] h-[150px] bg-[#C69A45] rounded-full pointer-events-none z-[50] shadow-[0_0_60px_rgba(198,154,69,0.35)]"
-          />
-
-          {/* Warm color tint overlay – covers entire viewport, clipped to circle */}
-          <motion.div
-            style={{
-              clipPath: clipPathStr,
-            }}
-            className="pointer-events-none fixed inset-0 z-[55] bg-[#D4A843] mix-blend-color"
-          />
-        </>
-      )}
     </section>
   );
 }

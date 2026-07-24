@@ -463,8 +463,15 @@ export default function Pricing() {
       {/* ── Page background with gradient effect ── */}
       <div style={{
         position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none',
-        background: 'linear-gradient(135deg, #0D3B2E 0%, #6F8A6E 50%, #0D3B2E 100%)',
+        background: 'linear-gradient(135deg, #0D3B2E 0%, #071D18 50%, #0D3B2E 100%)',
       }} />
+
+      <div
+        className="fixed left-1/2 top-1/3 -translate-x-1/2 h-[700px] w-[700px] rounded-full blur-[180px] pointer-events-none z-0"
+        style={{
+          background: "radial-gradient(circle, rgba(184,140,58,.14), transparent 70%)",
+        }}
+      />
 
       {toast && (
         <div className="fixed right-4 top-24 z-[120] rounded-full border border-[var(--color-border)] bg-[#111111]/95 px-5 py-3 font-sans text-[14px] text-white shadow-2xl backdrop-blur-md">
