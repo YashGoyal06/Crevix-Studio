@@ -5,8 +5,8 @@ export const COMPANY_PROFILE = {
   website: 'www.crevixstudio.com',
   email: 'codewithyash124@gmail.com',
   phone: '+91 98765 43210',
-  representative: 'Crevix Studio',
-  designation: 'Authorized Signatory',
+  representative: 'Yash Goyal',
+  designation: 'Founder & Creative Director',
 };
 
 export const AGREEMENT_STATUS = {

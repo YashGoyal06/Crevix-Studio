@@ -154,11 +154,19 @@ export const generateAgreementPdf = ({ agreement, signature }) => {
   field(doc, 'Authorized Representative', COMPANY_PROFILE.representative, MARGIN, y + 82);
   field(doc, 'Designation', COMPANY_PROFILE.designation, MARGIN, y + 91);
   field(doc, 'Date', signature ? formatDate(signature.signed_at) : formatDate(agreement.agreement_date), MARGIN, y + 100);
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(18);
-  doc.text('Crevix Studio', MARGIN, y + 119);
+  
+  // Company Signature Box with Yash Goyal Signature
+  doc.setDrawColor(17, 24, 39);
+  doc.rect(MARGIN, y + 108, 76, 28);
+  doc.setFont('times', 'bolditalic');
+  doc.setFontSize(20);
+  doc.setTextColor(30, 41, 59);
+  doc.text('Yash Goyal', MARGIN + 12, y + 125);
+  doc.setTextColor(0, 0, 0);
+
+  doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
-  doc.text('Company Signature', MARGIN, y + 126);
+  doc.text('Company Signature (Yash Goyal)', MARGIN, y + 142);
   addFooter(doc, 3);
 
   doc.addPage();

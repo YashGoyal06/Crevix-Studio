@@ -86,6 +86,34 @@ export const createAgreement = async (input) => {
   }
 };
 
+export const getAllAgreements = async () => {
+  try {
+    const { data, error } = await supabase
+      .from(TABLES.agreements)
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (!error && data && data.length > 0) {
+      return data;
+    }
+  } catch (err) {
+    console.warn('Supabase fetch agreements error:', err);
+  }
+
+  // Fallback to local storage agreements
+  const localAgreements = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key.startsWith('crevix_agreement_')) {
+      try {
+        const item = JSON.parse(localStorage.getItem(key));
+        if (item && item.token) localAgreements.push(item);
+      } catch (e) {}
+    }
+  }
+  return localAgreements;
+};
+
 export const getAgreementByToken = async (token) => {
   const localAgreement = localStorage.getItem(`crevix_agreement_${token}`);
   if (localAgreement) return normalizeAgreement(JSON.parse(localAgreement));

@@ -11,11 +11,15 @@ import {
   FiFileText,
   FiCopy,
   FiExternalLink,
-  FiDownload
+  FiDownload,
+  FiCheckCircle,
+  FiClock,
+  FiCheckSquare,
+  FiGrid
 } from 'react-icons/fi';
 import Meta from '../components/ui/Meta';
 import { previewInvoice, generateInvoice } from '../lib/payments';
-import { createAgreement } from '../api/agreements/agreementRepository';
+import { createAgreement, getAllAgreements } from '../api/agreements/agreementRepository';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://127.0.0.1:8000';
 
@@ -91,11 +95,11 @@ const invoiceTestData = {
   remainingPrice: 35000,
 };
 
-/* ─── STUDIO TOOL TABS ─── */
-const TOOL_TABS = [
-  { id: 'agreement', label: 'Agreement Generator', icon: <FiFileText /> },
-  { id: 'invoice', label: 'Invoice Generator', icon: <FiDownload /> },
-  { id: 'preview', label: 'Preview Invoice', icon: <FiExternalLink /> },
+/* ─── MAIN NAV TABS ─── */
+const MAIN_PAGES = [
+  { id: 'dashboard', label: 'Dashboard', icon: <FiGrid /> },
+  { id: 'agreements', label: 'Agreements & Signatures', icon: <FiCheckSquare /> },
+  { id: 'invoices', label: 'Invoices & Billing', icon: <FiDownload /> },
 ];
 
 export default function AdminDashboard() {
@@ -105,15 +109,17 @@ export default function AdminDashboard() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState(null);
-  const [activeTab, setActiveTab] = useState('agreement');
+  const [activePage, setActivePage] = useState('dashboard');
 
-  /* Agreement form state */
+  /* Agreement states */
   const [agrForm, setAgrForm] = useState(agreementInitialForm);
   const [agrCreating, setAgrCreating] = useState(false);
   const [agrResult, setAgrResult] = useState(null);
   const [agrError, setAgrError] = useState('');
+  const [agreementsList, setAgreementsList] = useState([]);
+  const [agreementsLoading, setAgreementsLoading] = useState(false);
 
-  /* Invoice form state */
+  /* Invoice state */
   const [invForm, setInvForm] = useState(invoiceInitialForm);
 
   useEffect(() => {
@@ -121,8 +127,16 @@ export default function AdminDashboard() {
     if (token) {
       setIsLoggedIn(true);
       fetchStats(token);
+      loadAgreements();
     }
   }, []);
+
+  const loadAgreements = async () => {
+    setAgreementsLoading(true);
+    const data = await getAllAgreements();
+    setAgreementsList(data || []);
+    setAgreementsLoading(false);
+  };
 
   const fetchStats = async (token) => {
     try {
@@ -167,6 +181,7 @@ export default function AdminDashboard() {
         localStorage.setItem('crevix_admin_token', data.token);
         setIsLoggedIn(true);
         fetchStats(data.token);
+        loadAgreements();
       } else {
         setError(data.error || 'Invalid credentials');
       }
@@ -201,6 +216,7 @@ export default function AdminDashboard() {
       };
       const created = await createAgreement(payload);
       setAgrResult(created);
+      loadAgreements(); // Refresh list after creation
     } catch (nextError) {
       setAgrError(nextError.message || 'Unable to create agreement.');
     } finally {
@@ -208,9 +224,9 @@ export default function AdminDashboard() {
     }
   };
 
-  const copyAgrLink = async () => {
-    if (!agrResult?.signingUrl) return;
-    await navigator.clipboard.writeText(agrResult.signingUrl);
+  const copyAgrLink = async (url) => {
+    if (!url) return;
+    await navigator.clipboard.writeText(url);
   };
 
   /* ─── Invoice Handlers ─── */
@@ -320,109 +336,201 @@ export default function AdminDashboard() {
     );
   }
 
-  /* ─── MAIN DASHBOARD ─── */
+  /* ─── MAIN DASHBOARD UI ─── */
   return (
     <div className="min-h-screen bg-[#020203] text-white p-4 md:p-10 lg:p-16 relative overflow-hidden">
-      <Meta title="Admin Dashboard" />
+      <Meta title="Admin Portal | Crevix Studio" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_10%,rgba(120,84,255,0.05),transparent_40%),radial-gradient(circle_at_90%_90%,rgba(0,183,255,0.05),transparent_40%)]" />
       
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
-        <header className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16">
+        <header className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-10">
           <div>
-            <div className="flex items-center gap-3 text-white/30 mb-3">
+            <div className="flex items-center gap-3 text-white/30 mb-2">
               <FiActivity className="text-purple-400" />
               <span className="text-[10px] uppercase tracking-[0.25em] font-sans font-bold">Crevix Internal Console</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-syne font-bold tracking-tight">Studio Dashboard.</h1>
+            <h1 className="text-4xl md:text-5xl font-syne font-bold tracking-tight">Studio Admin.</h1>
           </div>
-          <button 
-            onClick={handleLogout}
-            className="flex items-center gap-2.5 px-6 py-3 rounded-full bg-white/[0.03] border border-white/[0.08] text-white/50 hover:text-white hover:bg-white/[0.08] hover:border-white/20 transition-all font-sans text-sm font-medium w-fit group"
-          >
-            <FiLogOut className="group-hover:-translate-x-1 transition-transform" />
-            Sign Out
-          </button>
+
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={handleLogout}
+              className="flex items-center gap-2.5 px-6 py-3 rounded-full bg-white/[0.03] border border-white/[0.08] text-white/50 hover:text-white hover:bg-white/[0.08] hover:border-white/20 transition-all font-sans text-sm font-medium group"
+            >
+              <FiLogOut className="group-hover:-translate-x-1 transition-transform" />
+              Sign Out
+            </button>
+          </div>
         </header>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          <AdminStatCard 
-            title="Total Revenue" 
-            value={stats ? `₹${stats.total_revenue.toLocaleString()}` : '...'} 
-            icon={<FiTrendingUp className="text-emerald-400" />}
-            trend="+12.5% vs last month"
-            color="#34D399"
-          />
-          <AdminStatCard 
-            title="Pending Payments" 
-            value="₹12,500" 
-            icon={<FiActivity className="text-amber-400" />}
-            trend="4 projects in progress"
-            color="#FBBF24"
-          />
-          <AdminStatCard 
-            title="Active Clients" 
-            value={stats ? stats.order_count : '...'} 
-            icon={<FiUsers className="text-purple-400" />}
-            trend="New projects this week"
-            color="#A78BFA"
-          />
-          <AdminStatCard 
-            title="Avg. Project Value" 
-            value={stats ? `₹${Math.round(stats.total_revenue / (stats.order_count || 1)).toLocaleString()}` : '...'} 
-            icon={<FiShoppingBag className="text-blue-400" />}
-            trend="High ticket conversion"
-            color="#60A5FA"
-          />
-        </div>
-
-        {/* ═══════════════════════════════════════════════ */}
-        {/* STUDIO TOOLS – TABBED PANEL                    */}
-        {/* ═══════════════════════════════════════════════ */}
-        <div className="mb-16">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-syne font-bold">Studio Tools</h2>
-          </div>
-
-          {/* Tab Buttons */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            {TOOL_TABS.map((tab) => (
+        {/* PAGE NAVIGATION TABS */}
+        <div className="flex items-center gap-2 mb-12 border-b border-white/10 pb-4 overflow-x-auto">
+          {MAIN_PAGES.map((page) => {
+            const isActive = activePage === page.id;
+            return (
               <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-sans font-semibold transition-all duration-200 border ${
-                  activeTab === tab.id
-                    ? 'bg-white text-[#020203] border-white shadow-lg'
-                    : 'bg-white/[0.03] text-white/50 border-white/[0.08] hover:text-white hover:bg-white/[0.06] hover:border-white/20'
+                key={page.id}
+                onClick={() => setActivePage(page.id)}
+                className={`relative flex items-center gap-2.5 px-6 py-3 rounded-full text-sm font-sans font-bold transition-all duration-200 ${
+                  isActive
+                    ? 'bg-white text-[#020203] shadow-lg'
+                    : 'bg-white/[0.03] text-white/60 hover:text-white hover:bg-white/[0.08] border border-white/[0.08]'
                 }`}
               >
-                {tab.icon}
-                {tab.label}
+                {page.icon}
+                {page.label}
               </button>
-            ))}
-          </div>
+            );
+          })}
+        </div>
 
-          {/* Tab Content */}
-          <AnimatePresence mode="wait">
-            {/* ── AGREEMENT GENERATOR TAB ── */}
-            {activeTab === 'agreement' && (
-              <motion.div
-                key="agreement"
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.2 }}
-                className="bg-white/[0.02] border border-white/[0.08] rounded-[2.5rem] p-8 md:p-10 backdrop-blur-3xl"
-              >
-                <div className="mb-8">
-                  <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-sans font-bold mb-2">Client Agreements</p>
-                  <h3 className="text-xl font-syne font-bold">Generate New Agreement</h3>
-                  <p className="text-white/30 text-sm mt-1 font-sans">Fill in the project details to generate a signing link.</p>
+        {/* PAGE CONTENT */}
+        <AnimatePresence mode="wait">
+          {/* ═══════════════════════════════════════════════ */}
+          {/* PAGE 1: DASHBOARD OVERVIEW                     */}
+          {/* ═══════════════════════════════════════════════ */}
+          {activePage === 'dashboard' && (
+            <motion.div
+              key="dashboard-page"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.2 }}
+            >
+              {/* Stats Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                <AdminStatCard 
+                  title="Total Revenue" 
+                  value={stats ? `₹${stats.total_revenue.toLocaleString()}` : '...'} 
+                  icon={<FiTrendingUp className="text-emerald-400" />}
+                  trend="+12.5% vs last month"
+                  color="#34D399"
+                />
+                <AdminStatCard 
+                  title="Pending Payments" 
+                  value="₹12,500" 
+                  icon={<FiActivity className="text-amber-400" />}
+                  trend="4 projects in progress"
+                  color="#FBBF24"
+                />
+                <AdminStatCard 
+                  title="Active Clients" 
+                  value={stats ? stats.order_count : '...'} 
+                  icon={<FiUsers className="text-purple-400" />}
+                  trend="New projects this week"
+                  color="#A78BFA"
+                />
+                <AdminStatCard 
+                  title="Avg. Project Value" 
+                  value={stats ? `₹${Math.round(stats.total_revenue / (stats.order_count || 1)).toLocaleString()}` : '...'} 
+                  icon={<FiShoppingBag className="text-blue-400" />}
+                  trend="High ticket conversion"
+                  color="#60A5FA"
+                />
+              </div>
+
+              {/* Recent Orders Table */}
+              <section className="bg-white/[0.02] border border-white/[0.08] rounded-[2.5rem] overflow-hidden backdrop-blur-3xl shadow-2xl">
+                <div className="p-8 md:p-10 border-b border-white/[0.08] flex items-center justify-between">
+                  <div>
+                    <h2 className="text-2xl font-syne font-bold mb-1">Recent Transactions</h2>
+                    <p className="text-white/40 text-sm font-sans">Live feed of payments processed through Razorpay.</p>
+                  </div>
+                  <button 
+                    onClick={() => stats && fetchStats(localStorage.getItem('crevix_admin_token'))}
+                    className="text-xs uppercase tracking-widest text-white/30 hover:text-white transition-colors font-sans font-bold"
+                  >
+                    Refresh
+                  </button>
+                </div>
+                
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-sans font-bold">
+                        <th className="px-10 py-7 border-b border-white/[0.05]">Order ID</th>
+                        <th className="px-10 py-7 border-b border-white/[0.05]">Customer</th>
+                        <th className="px-10 py-7 border-b border-white/[0.05]">Amount</th>
+                        <th className="px-10 py-7 border-b border-white/[0.05]">Project Status</th>
+                        <th className="px-10 py-7 border-b border-white/[0.05]">Date</th>
+                        <th className="px-10 py-7 border-b border-white/[0.05]">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-sm">
+                      {stats?.recent_orders.map((order) => (
+                        <tr key={order.id} className="group hover:bg-white/[0.01] transition-all">
+                          <td className="px-10 py-8 font-mono text-[11px] text-white/50">#{order.id.slice(-8).toUpperCase()}</td>
+                          <td className="px-10 py-8 font-sans font-medium text-white/80">{order.email}</td>
+                          <td className="px-10 py-8 font-syne font-bold text-base">₹{order.amount.toLocaleString()}</td>
+                          <td className="px-10 py-8">
+                            <span className="inline-flex items-center gap-2 rounded-full border border-white/5 bg-white/[0.03] px-3 py-1 text-[10px] font-sans font-medium text-white/40">
+                              {order.status === 'captured' ? 'Developing' : 'Awaiting Payment'}
+                            </span>
+                          </td>
+                          <td className="px-10 py-8 text-white/40 font-sans">
+                            {new Date(order.date).toLocaleDateString('en-IN', {
+                              day: '2-digit',
+                              month: 'short',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </td>
+                          <td className="px-10 py-8">
+                            <span className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest border ${
+                              order.status === 'captured' || order.status === 'paid'
+                                ? 'bg-emerald-400/5 text-emerald-400 border-emerald-400/20' 
+                              : order.status === 'authorized'
+                                ? 'bg-amber-400/5 text-amber-400 border-amber-400/20'
+                              : order.status === 'failed'
+                                ? 'bg-red-400/5 text-red-400 border-red-400/20'
+                              : 'bg-white/5 text-white/40 border-white/10'
+                            }`}>
+                              <span className={`w-1.5 h-1.5 rounded-full ${
+                                order.status === 'captured' || order.status === 'paid' ? 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]' : 
+                                order.status === 'authorized' ? 'bg-amber-400 animate-pulse' : 'bg-current'
+                              }`} />
+                              {order.status}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  {(!stats || stats.recent_orders.length === 0) && (
+                    <div className="px-10 py-20 text-center text-white/20 italic font-sans">
+                      Waiting for incoming transaction data...
+                    </div>
+                  )}
+                </div>
+              </section>
+            </motion.div>
+          )}
+
+          {/* ═══════════════════════════════════════════════ */}
+          {/* PAGE 2: AGREEMENTS & SIGNATURES PAGE           */}
+          {/* ═══════════════════════════════════════════════ */}
+          {activePage === 'agreements' && (
+            <motion.div
+              key="agreements-page"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.2 }}
+              className="space-y-12"
+            >
+              {/* AGREEMENT GENERATOR FORM */}
+              <div className="bg-white/[0.02] border border-white/[0.08] rounded-[2.5rem] p-8 md:p-10 backdrop-blur-3xl">
+                <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div>
+                    <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-sans font-bold mb-2">Client Agreements</p>
+                    <h3 className="text-2xl font-syne font-bold">Generate New Agreement</h3>
+                    <p className="text-white/30 text-sm mt-1 font-sans">Fill in the project details to generate a signing link.</p>
+                  </div>
                   <button
                     type="button"
                     onClick={() => setAgrForm(agreementTestData)}
-                    className="mt-3 inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-400/20 text-purple-400 text-xs font-sans font-bold uppercase tracking-widest hover:bg-purple-500/20 transition-all"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-400/20 text-purple-400 text-xs font-sans font-bold uppercase tracking-widest hover:bg-purple-500/20 transition-all w-fit"
                   >
                     ⚡ Fill Test Data
                   </button>
@@ -507,7 +615,7 @@ export default function AdminDashboard() {
                     <div className="flex flex-wrap gap-3">
                       <button
                         type="button"
-                        onClick={copyAgrLink}
+                        onClick={() => copyAgrLink(agrResult.signingUrl)}
                         className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-400 text-[#020203] font-sans font-bold text-sm hover:opacity-90 transition-all"
                       >
                         <FiCopy size={14} />
@@ -525,27 +633,139 @@ export default function AdminDashboard() {
                     </div>
                   </motion.div>
                 )}
-              </motion.div>
-            )}
+              </div>
 
-            {/* ── INVOICE GENERATOR TAB ── */}
-            {activeTab === 'invoice' && (
-              <motion.div
-                key="invoice"
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.2 }}
-                className="bg-white/[0.02] border border-white/[0.08] rounded-[2.5rem] p-8 md:p-10 backdrop-blur-3xl"
-              >
-                <div className="mb-8">
-                  <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-sans font-bold mb-2">Manual Invoicing</p>
-                  <h3 className="text-xl font-syne font-bold">Generate PDF Invoice</h3>
-                  <p className="text-white/30 text-sm mt-1 font-sans">Fill client and project info to generate a downloadable Crevix-branded PDF invoice.</p>
+              {/* SIGNED & SENT AGREEMENTS FEED */}
+              <div className="bg-white/[0.02] border border-white/[0.08] rounded-[2.5rem] p-8 md:p-10 backdrop-blur-3xl">
+                <div className="flex items-center justify-between mb-8">
+                  <div>
+                    <h3 className="text-2xl font-syne font-bold">Agreements & Signatures Feed</h3>
+                    <p className="text-white/40 text-sm font-sans">Track sent agreements and client signature statuses.</p>
+                  </div>
+                  <button
+                    onClick={loadAgreements}
+                    className="text-xs uppercase tracking-widest text-white/30 hover:text-white transition-colors font-sans font-bold"
+                  >
+                    Refresh List
+                  </button>
+                </div>
+
+                {agreementsLoading ? (
+                  <div className="py-16 text-center text-white/30 font-sans text-sm">
+                    Loading agreements...
+                  </div>
+                ) : agreementsList.length === 0 ? (
+                  <div className="py-16 text-center text-white/20 italic font-sans">
+                    No agreements created yet. Use the form above to generate your first agreement.
+                  </div>
+                ) : (
+                  <div className="grid gap-4 md:grid-cols-2">
+                    {agreementsList.map((item) => {
+                      const isSigned = item.status === 'COMPLETED';
+                      const signingUrl = `${window.location.origin}/agreement/${item.token}`;
+                      return (
+                        <div
+                          key={item.token || item.id}
+                          className="p-6 rounded-2xl bg-white/[0.03] border border-white/[0.08] space-y-4 hover:border-white/20 transition-all"
+                        >
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <p className="text-[11px] font-sans font-bold text-white/40 uppercase tracking-widest">
+                                {item.document_id || 'CREVIX-DOC'}
+                              </p>
+                              <h4 className="text-lg font-syne font-bold text-white mt-1">
+                                {item.client_name || 'Client Name'}
+                              </h4>
+                              <p className="text-xs text-white/60 font-sans">{item.client_email}</p>
+                            </div>
+                            <span
+                              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
+                                isSigned
+                                  ? 'bg-emerald-400/10 text-emerald-400 border-emerald-400/30'
+                                  : 'bg-amber-400/10 text-amber-400 border-amber-400/30'
+                              }`}
+                            >
+                              {isSigned ? <FiCheckCircle size={12} /> : <FiClock size={12} />}
+                              {isSigned ? 'SIGNED' : 'SENT / PENDING'}
+                            </span>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2 py-2 border-y border-white/5 text-xs font-sans">
+                            <div>
+                              <span className="text-white/30">Brand:</span>{' '}
+                              <span className="text-white/80 font-medium">{item.brand_name || 'N/A'}</span>
+                            </div>
+                            <div>
+                              <span className="text-white/30">Service:</span>{' '}
+                              <span className="text-white/80 font-medium">{item.service_type}</span>
+                            </div>
+                            <div>
+                              <span className="text-white/30">Cost:</span>{' '}
+                              <span className="text-white font-bold">₹{(item.project_cost || 0).toLocaleString()}</span>
+                            </div>
+                            <div>
+                              <span className="text-white/30">Advance:</span>{' '}
+                              <span className="text-white/80 font-medium">₹{(item.advance_amount || 0).toLocaleString()}</span>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center justify-between pt-1">
+                            <span className="text-[11px] text-white/30 font-sans">
+                              {item.agreement_date ? new Date(item.agreement_date).toLocaleDateString() : 'Recent'}
+                            </span>
+                            <div className="flex items-center gap-2">
+                              <button
+                                type="button"
+                                onClick={() => copyAgrLink(signingUrl)}
+                                className="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white/70 hover:text-white text-xs font-sans font-medium transition-all inline-flex items-center gap-1"
+                              >
+                                <FiCopy size={12} />
+                                Copy Link
+                              </button>
+                              <a
+                                href={signingUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white text-xs font-sans font-medium transition-all inline-flex items-center gap-1"
+                              >
+                                <FiExternalLink size={12} />
+                                View
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+
+          {/* ═══════════════════════════════════════════════ */}
+          {/* PAGE 3: INVOICES & BILLING PAGE                */}
+          {/* ═══════════════════════════════════════════════ */}
+          {activePage === 'invoices' && (
+            <motion.div
+              key="invoices-page"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.2 }}
+              className="space-y-12"
+            >
+              {/* INVOICE GENERATOR */}
+              <div className="bg-white/[0.02] border border-white/[0.08] rounded-[2.5rem] p-8 md:p-10 backdrop-blur-3xl">
+                <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div>
+                    <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-sans font-bold mb-2">Manual Invoicing</p>
+                    <h3 className="text-2xl font-syne font-bold">Generate PDF Invoice</h3>
+                    <p className="text-white/30 text-sm mt-1 font-sans">Fill client and project info to generate a downloadable Crevix-branded PDF invoice.</p>
+                  </div>
                   <button
                     type="button"
                     onClick={() => setInvForm(invoiceTestData)}
-                    className="mt-3 inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-400/20 text-purple-400 text-xs font-sans font-bold uppercase tracking-widest hover:bg-purple-500/20 transition-all"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-400/20 text-purple-400 text-xs font-sans font-bold uppercase tracking-widest hover:bg-purple-500/20 transition-all w-fit"
                   >
                     ⚡ Fill Test Data
                   </button>
@@ -657,108 +877,29 @@ export default function AdminDashboard() {
                     <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
                   </button>
                 </div>
-              </motion.div>
-            )}
+              </div>
 
-            {/* ── PREVIEW INVOICE TAB ── */}
-            {activeTab === 'preview' && (
-              <motion.div
-                key="preview"
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.2 }}
-                className="bg-white/[0.02] border border-white/[0.08] rounded-[2.5rem] p-8 md:p-10 backdrop-blur-3xl"
-              >
-                <div className="mb-8">
-                  <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-sans font-bold mb-2">Internal Tools</p>
-                  <h3 className="text-xl font-syne font-bold">Preview Premium Invoice</h3>
-                  <p className="text-white/30 text-sm mt-1 font-sans">Generate a sample PDF with dummy data to verify the invoice design and layout.</p>
+              {/* PREVIEW SAMPLE INVOICE */}
+              <div className="bg-white/[0.02] border border-white/[0.08] rounded-[2.5rem] p-8 md:p-10 backdrop-blur-3xl">
+                <div className="mb-6">
+                  <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-sans font-bold mb-2">Sample Testing</p>
+                  <h3 className="text-xl font-syne font-bold">Preview Sample Invoice PDF</h3>
+                  <p className="text-white/30 text-sm mt-1 font-sans">Generate a sample PDF with dummy data to test invoice layout.</p>
                 </div>
 
                 <button
                   type="button"
                   onClick={previewInvoice}
-                  className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-white text-[#020203] font-sans font-bold text-sm hover:opacity-90 transition-all group"
+                  className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-white/[0.05] border border-white/[0.15] text-white font-sans font-bold text-sm hover:bg-white/[0.1] transition-all group"
                 >
                   <FiExternalLink />
-                  Generate Sample Invoice
+                  Generate Sample PDF
                   <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
                 </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-        {/* Recent Orders */}
-        <section className="bg-white/[0.02] border border-white/[0.08] rounded-[2.5rem] overflow-hidden backdrop-blur-3xl shadow-2xl">
-          <div className="p-8 md:p-10 border-b border-white/[0.08] flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-syne font-bold mb-1">Recent Transactions</h2>
-              <p className="text-white/40 text-sm font-sans">Live feed of payments processed through Razorpay.</p>
-            </div>
-            <button className="text-xs uppercase tracking-widest text-white/30 hover:text-white transition-colors font-sans font-bold">Refresh</button>
-          </div>
-          
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-sans font-bold">
-                  <th className="px-10 py-7 border-b border-white/[0.05]">Order ID</th>
-                  <th className="px-10 py-7 border-b border-white/[0.05]">Customer</th>
-                  <th className="px-10 py-7 border-b border-white/[0.05]">Amount</th>
-                  <th className="px-10 py-7 border-b border-white/[0.05]">Project Status</th>
-                  <th className="px-10 py-7 border-b border-white/[0.05]">Date</th>
-                  <th className="px-10 py-7 border-b border-white/[0.05]">Status</th>
-                </tr>
-              </thead>
-              <tbody className="text-sm">
-                {stats?.recent_orders.map((order) => (
-                  <tr key={order.id} className="group hover:bg-white/[0.01] transition-all">
-                    <td className="px-10 py-8 font-mono text-[11px] text-white/50">#{order.id.slice(-8).toUpperCase()}</td>
-                    <td className="px-10 py-8 font-sans font-medium text-white/80">{order.email}</td>
-                    <td className="px-10 py-8 font-syne font-bold text-base">₹{order.amount.toLocaleString()}</td>
-                    <td className="px-10 py-8">
-                      <span className="inline-flex items-center gap-2 rounded-full border border-white/5 bg-white/[0.03] px-3 py-1 text-[10px] font-sans font-medium text-white/40">
-                        {order.status === 'captured' ? 'Developing' : 'Awaiting Payment'}
-                      </span>
-                    </td>
-                    <td className="px-10 py-8 text-white/40 font-sans">
-                      {new Date(order.date).toLocaleDateString('en-IN', {
-                        day: '2-digit',
-                        month: 'short',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
-                    </td>
-                    <td className="px-10 py-8">
-                      <span className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest border ${
-                        order.status === 'captured' || order.status === 'paid'
-                          ? 'bg-emerald-400/5 text-emerald-400 border-emerald-400/20' 
-                        : order.status === 'authorized'
-                          ? 'bg-amber-400/5 text-amber-400 border-amber-400/20'
-                        : order.status === 'failed'
-                          ? 'bg-red-400/5 text-red-400 border-red-400/20'
-                        : 'bg-white/5 text-white/40 border-white/10'
-                      }`}>
-                        <span className={`w-1.5 h-1.5 rounded-full ${
-                          order.status === 'captured' || order.status === 'paid' ? 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]' : 
-                          order.status === 'authorized' ? 'bg-amber-400 animate-pulse' : 'bg-current'
-                        }`} />
-                        {order.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            {(!stats || stats.recent_orders.length === 0) && (
-              <div className="px-10 py-20 text-center text-white/20 italic font-sans">
-                Waiting for incoming transaction data...
               </div>
-            )}
-          </div>
-        </section>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
