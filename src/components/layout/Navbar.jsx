@@ -71,6 +71,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hideForFooter, setHideForFooter] = useState(false);
+  const [hoveredNav, setHoveredNav] = useState(null);
   const location = useLocation();
   const { items, requiresAuth } = useCart();
   const { isAuthenticated, user } = useAuth();
@@ -100,20 +101,20 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-[100] w-full h-[70px] px-6 sm:px-12 md:px-16 transition-colors duration-300 flex items-center justify-between ${
+        className={`fixed top-0 left-0 right-0 z-[100] w-full h-[70px] px-6 sm:px-12 md:px-16 transition-all duration-300 flex items-center justify-between ${
           scrolled
-            ? 'bg-[#030A08]/90 backdrop-blur-md border-b border-white/10 shadow-xl'
+            ? 'bg-[#030A08]/85 backdrop-blur-xl border-b border-[#C69A45]/30 shadow-[0_15px_35px_rgba(0,0,0,0.8)]'
             : 'bg-transparent border-b border-transparent'
         }`}
         style={{
           transform: hideForFooter ? 'translateY(-100%)' : 'translateY(0)',
           opacity: hideForFooter ? 0 : 1,
           pointerEvents: hideForFooter ? 'none' : 'auto',
-          willChange: 'transform, background-color',
+          willChange: 'transform, background-color, border-color',
         }}
       >
         {/* LEFT: BRAND LOGO */}
-        <Link to="/" className="flex items-center gap-2.5 font-brand font-bold text-[18px] sm:text-[20px] tracking-wide text-white group shrink-0">
+        <Link to="/" className="flex items-center gap-2.5 font-brand font-bold text-[18px] sm:text-[20px] tracking-wide text-white group shrink-0 z-10">
           <img 
             src="/logo.png" 
             alt="Crevix" 
@@ -125,26 +126,42 @@ export default function Navbar() {
           </div>
         </Link>
 
-        {/* CENTER: NAV LINKS (Absolute Center Alignment) */}
-        <nav className="hidden md:flex items-center justify-center gap-6 lg:gap-8 absolute left-1/2 -translate-x-1/2">
+        {/* CENTER: NAV LINKS WITH FROSTED HOVER PILL ANIMATION */}
+        <nav
+          className="hidden md:flex items-center justify-center gap-1.5 absolute left-1/2 -translate-x-1/2"
+          onMouseLeave={() => setHoveredNav(null)}
+        >
           {navLinks.map((link) => {
             const isActive = location.pathname === link.to;
+            const isHovered = hoveredNav === link.to;
             return (
               <Link
                 key={link.to}
                 to={link.to}
-                className={`relative py-1 text-[15px] font-sans font-semibold tracking-wide transition-colors duration-200 ${
-                  isActive ? 'text-white' : 'text-white/70 hover:text-white'
+                onMouseEnter={() => setHoveredNav(link.to)}
+                className={`relative px-4 py-1.5 text-[14.5px] font-sans font-semibold tracking-wide transition-colors duration-200 z-10 ${
+                  isActive ? 'text-white font-bold' : isHovered ? 'text-white' : 'text-white/70'
                 }`}
               >
-                {link.label}
-                {isActive && (
+                {/* Floating Frosted Glass Pill on Hover */}
+                {isHovered && (
+                  <motion.span
+                    layoutId="hover-pill"
+                    className="absolute inset-0 bg-white/10 backdrop-blur-md border border-white/15 rounded-full -z-10 shadow-sm"
+                    transition={{ type: 'spring', stiffness: 450, damping: 30 }}
+                  />
+                )}
+
+                {/* Active Page Accent Indicator */}
+                {isActive && !isHovered && (
                   <motion.span
                     layoutId="nike-nav-active"
-                    className="absolute -bottom-1 left-0 right-0 h-[2px] bg-[#C69A45] rounded-full"
+                    className="absolute bottom-0 left-4 right-4 h-[2px] bg-[#C69A45] rounded-full"
                     transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                   />
                 )}
+
+                {link.label}
               </Link>
             );
           })}
