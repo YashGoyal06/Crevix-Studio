@@ -35,6 +35,21 @@ const agreementInitialForm = {
   remaining_amount: 15000,
 };
 
+const agreementTestData = {
+  client_name: 'Rahul Sharma',
+  client_email: 'rahul@example.com',
+  brand_name: 'TechNova',
+  project_name: 'TechNova Brand Identity',
+  service_type: 'Branding',
+  deliverables: 'Logo Design, Brand Guidelines, Social Media Kit, Business Card Design, Letterhead',
+  project_description: 'Complete brand identity design for TechNova, a Delhi-based SaaS startup building AI-powered HR tools. Modern, premium, tech-forward aesthetic.',
+  timeline: '21 working days',
+  revision_count: 4,
+  project_cost: 45000,
+  advance_amount: 20000,
+  remaining_amount: 25000,
+};
+
 const agreementFields = [
   ['client_name', 'Client Name', 'text'],
   ['client_email', 'Client Email', 'email'],
@@ -61,6 +76,19 @@ const invoiceInitialForm = {
   paymentType: 'full',
   advancePrice: 10000,
   remainingPrice: 15000,
+};
+
+const invoiceTestData = {
+  customerName: 'Priya Kapoor',
+  customerEmail: 'priya@novadesigns.in',
+  customerPhone: '+91 98765 43210',
+  businessName: 'Nova Designs Pvt. Ltd.',
+  itemName: 'Premium Website Package',
+  itemType: 'Full-Stack Web Development',
+  itemAmount: 65000,
+  paymentType: 'advance',
+  advancePrice: 30000,
+  remainingPrice: 35000,
 };
 
 /* ─── STUDIO TOOL TABS ─── */
@@ -391,6 +419,13 @@ export default function AdminDashboard() {
                   <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-sans font-bold mb-2">Client Agreements</p>
                   <h3 className="text-xl font-syne font-bold">Generate New Agreement</h3>
                   <p className="text-white/30 text-sm mt-1 font-sans">Fill in the project details to generate a signing link.</p>
+                  <button
+                    type="button"
+                    onClick={() => setAgrForm(agreementTestData)}
+                    className="mt-3 inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-400/20 text-purple-400 text-xs font-sans font-bold uppercase tracking-widest hover:bg-purple-500/20 transition-all"
+                  >
+                    ⚡ Fill Test Data
+                  </button>
                 </div>
 
                 <form onSubmit={handleAgrSubmit} className="space-y-6">
@@ -507,6 +542,13 @@ export default function AdminDashboard() {
                   <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-sans font-bold mb-2">Manual Invoicing</p>
                   <h3 className="text-xl font-syne font-bold">Generate PDF Invoice</h3>
                   <p className="text-white/30 text-sm mt-1 font-sans">Fill client and project info to generate a downloadable Crevix-branded PDF invoice.</p>
+                  <button
+                    type="button"
+                    onClick={() => setInvForm(invoiceTestData)}
+                    className="mt-3 inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-400/20 text-purple-400 text-xs font-sans font-bold uppercase tracking-widest hover:bg-purple-500/20 transition-all"
+                  >
+                    ⚡ Fill Test Data
+                  </button>
                 </div>
 
                 <div className="space-y-6">
