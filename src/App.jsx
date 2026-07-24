@@ -1,53 +1,60 @@
-import { Suspense, lazy, useState } from 'react';
+import { Suspense, lazy, useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useLenisSmoothScroll } from './hooks/useLenisSmoothScroll';
+
 import IntroLoader from './pages/IntroLoader';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import GoogleAnalytics from './components/ui/GoogleAnalytics';
 
-const Home      = lazy(() => import('./pages/Home'));
-const Services  = lazy(() => import('./pages/Services'));
+const Home = lazy(() => import('./pages/Home'));
+const Services = lazy(() => import('./pages/Services'));
 const Portfolio = lazy(() => import('./pages/Portfolio'));
-const Team      = lazy(() => import('./pages/Team'));
-const Pricing   = lazy(() => import('./pages/Pricing'));
-const Cart      = lazy(() => import('./pages/Cart'));
-const Checkout  = lazy(() => import('./pages/Checkout'));
-const Contact   = lazy(() => import('./pages/Contact'));
-const Login     = lazy(() => import('./pages/Login'));
-const Profile   = lazy(() => import('./pages/Profile'));
+const Team = lazy(() => import('./pages/Team'));
+const Pricing = lazy(() => import('./pages/Pricing'));
+const Cart = lazy(() => import('./pages/Cart'));
+const Checkout = lazy(() => import('./pages/Checkout'));
+const Contact = lazy(() => import('./pages/Contact'));
+const Login = lazy(() => import('./pages/Login'));
+const Profile = lazy(() => import('./pages/Profile'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 const AgreementCreatePage = lazy(() => import('./modules/agreements/AgreementCreatePage'));
 const AgreementPage = lazy(() => import('./modules/agreements/AgreementPage'));
 
-const PageFade = ({ children }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 12, filter: 'blur(10px)' }}
-    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-    exit={{ opacity: 0, y: -10, filter: 'blur(6px)' }}
-    transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
-  >
-    {children}
-  </motion.div>
-);
+import PageTransition from './components/ui/PageTransition';
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (window.__lenis) {
+      window.__lenis.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname]);
+
+  return null;
+}
 
 const AnimatedRoutes = () => {
   const location = useLocation();
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/"          element={<PageFade><Home /></PageFade>} />
-        <Route path="/services"  element={<PageFade><Services /></PageFade>} />
-        <Route path="/portfolio" element={<PageFade><Portfolio /></PageFade>} />
-        <Route path="/team"      element={<PageFade><Team /></PageFade>} />
-        <Route path="/pricing"   element={<PageFade><Pricing /></PageFade>} />
-        <Route path="/cart"      element={<PageFade><Cart /></PageFade>} />
-        <Route path="/checkout"  element={<PageFade><ProtectedRoute><Checkout /></ProtectedRoute></PageFade>} />
-        <Route path="/contact"   element={<PageFade><Contact /></PageFade>} />
-        <Route path="/login"     element={<PageFade><Login /></PageFade>} />
-        <Route path="/profile"   element={<PageFade><ProtectedRoute><Profile /></ProtectedRoute></PageFade>} />
-        <Route path="/crevix-admin" element={<PageFade><AdminDashboard /></PageFade>} />
+        <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+        <Route path="/services" element={<PageTransition><Services /></PageTransition>} />
+        <Route path="/portfolio" element={<PageTransition><Portfolio /></PageTransition>} />
+        <Route path="/team" element={<PageTransition><Team /></PageTransition>} />
+        <Route path="/pricing" element={<PageTransition><Pricing /></PageTransition>} />
+        <Route path="/cart" element={<PageTransition><Cart /></PageTransition>} />
+        <Route path="/checkout" element={<PageTransition><ProtectedRoute><Checkout /></ProtectedRoute></PageTransition>} />
+        <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+        <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
+        <Route path="/profile" element={<PageTransition><ProtectedRoute><Profile /></ProtectedRoute></PageTransition>} />
+        <Route path="/crevix-admin" element={<PageTransition><AdminDashboard /></PageTransition>} />
         <Route path="/agreement/new" element={<AgreementCreatePage />} />
         <Route path="/agreement/:token" element={<AgreementPage />} />
       </Routes>
@@ -57,11 +64,13 @@ const AnimatedRoutes = () => {
 
 export default function App() {
   const [showIntro, setShowIntro] = useState(true);
+  useLenisSmoothScroll();
 
   return (
     <AuthProvider>
       <CartProvider>
         <BrowserRouter>
+          <ScrollToTop />
           <GoogleAnalytics />
           <Suspense fallback={
             <div className="fixed inset-0 bg-void flex items-center justify-center">
@@ -74,7 +83,9 @@ export default function App() {
               )}
             </AnimatePresence>
 
-            {!showIntro && <AnimatedRoutes />}
+            {!showIntro && (
+              <AnimatedRoutes />
+            )}
           </Suspense>
         </BrowserRouter>
       </CartProvider>

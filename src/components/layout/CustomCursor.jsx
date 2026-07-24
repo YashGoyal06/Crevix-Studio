@@ -74,9 +74,9 @@ export const CustomCursor = () => {
         transition={{ duration: 0 }}
       />
       
-      {/* Dynamic ring */}
+      {/* Dynamic triangle / ring container */}
       <motion.div
-        className="fixed top-0 left-0 rounded-full pointer-events-none z-[9998] flex items-center justify-center overflow-hidden"
+        className="fixed top-0 left-0 pointer-events-none z-[9998] flex items-center justify-center"
         style={{
           x: cursorXSpring,
           y: cursorYSpring,
@@ -87,28 +87,36 @@ export const CustomCursor = () => {
         animate={{
           width:  cursorText ? 100 : (isHovering || isMagnetic) ? 56 : 36,
           height: cursorText ? 100 : (isHovering || isMagnetic) ? 56 : 36,
-          backgroundColor: cursorText ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0)',
-          border: cursorText ? 'none' : (isHovering || isMagnetic) ? '1px solid rgba(255,255,255,0.6)' : '1px solid rgba(255,255,255,0.25)',
+          rotate: (isHovering || isMagnetic) ? 180 : 0,
         }}
         transition={{ type: 'spring', damping: 20, stiffness: 200 }}
       >
+        {!cursorText && (
+          <svg
+            width="100%"
+            height="100%"
+            viewBox="0 0 40 40"
+            className="absolute inset-0 pointer-events-none fill-none"
+            style={{
+              stroke: 'white',
+              strokeWidth: 1.5,
+              opacity: (isHovering || isMagnetic) ? 0.6 : 0.25,
+            }}
+          >
+            <polygon points="20,6 35,32 5,32" />
+          </svg>
+        )}
+
         {cursorText && (
-          <motion.span 
+          <motion.div
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="text-[11px] font-sans font-bold uppercase tracking-wider text-black text-center px-2"
+            className="w-full h-full rounded-full bg-white flex items-center justify-center"
           >
-            {cursorText}
-          </motion.span>
-        )}
-        
-        {/* Gradient fill on standard hover */}
-        {!cursorText && (
-          <motion.div 
-            className="absolute inset-0 rounded-full"
-            style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))' }}
-            animate={{ opacity: isHovering || isMagnetic ? 1 : 0 }}
-          />
+            <span className="text-[11px] font-sans font-bold uppercase tracking-wider text-black text-center px-2">
+              {cursorText}
+            </span>
+          </motion.div>
         )}
       </motion.div>
     </>

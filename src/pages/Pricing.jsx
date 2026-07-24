@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { RevealOnScroll } from '../hooks/useScrollReveal';
@@ -8,6 +8,18 @@ import { useAuth } from '../context/authStore';
 import { supabase } from '../lib/supabaseClient';
 import { addOns, designServices, designPackages, webPlans } from '../data/pricing';
 
+// Purchase status badge configurations
+const STATUS_BADGES = {
+  full: {
+    text: 'Plan Purchased',
+    classes: 'border-[rgba(16,185,129,0.25)] bg-[rgba(16,185,129,0.1)] text-success',
+  },
+  advance: {
+    text: 'Advance Given',
+    classes: 'border-[rgba(245,158,11,0.25)] bg-[rgba(245,158,11,0.1)] text-warning',
+  },
+};
+
 const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
   const isWebPlan = plan.type === 'Website Plan';
 
@@ -15,14 +27,10 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
     <motion.div
       whileHover={{ y: -8, rotateX: -3, rotateY: 3 }}
       transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-      className={`group relative flex flex-col rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1 sm:p-8 md:p-10 ${
-        plan.featured ? '' : ''
-      }`}
+      className="group relative flex flex-col rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1 sm:p-8 md:p-10 pricing-card-el w-full max-w-[360px]"
       style={{
-        background: plan.featured ? '#141414' : '#0E0E0E',
-        border: plan.featured ? 'none' : '1px solid rgba(255,255,255,0.06)',
-        borderTop: plan.featured ? '1px solid #FFFFFF' : undefined,
-        boxShadow: plan.featured ? '0 24px 48px rgba(0,0,0,0.4)' : 'none',
+        background: 'var(--color-surface)',
+        border: plan.featured ? '1px solid var(--color-accent)' : '1px solid var(--color-border)',
       }}
       onMouseEnter={(e) => {
         if (!plan.featured) e.currentTarget.style.boxShadow = '0 16px 32px rgba(0,0,0,0.3)';
@@ -31,35 +39,34 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
         if (!plan.featured) e.currentTarget.style.boxShadow = 'none';
       }}
     >
+      {/* Ambient Glow (intensifies on hover) */}
+      <div className="absolute inset-0 -z-10 rounded-[16px] bg-gradient-to-b from-brand-secondary/10 to-transparent opacity-0 blur-xl transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 pointer-events-none" />
+
       <div className="pointer-events-none absolute inset-0 rounded-[16px] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       {plan.featured && (
-        <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-[11px] font-sans tracking-wider uppercase"
-          style={{ background: '#1A1A1A', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.15)' }}>
-          <span className="text-gradient">Most Popular</span>
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-[11px] font-sans tracking-wider uppercase font-bold"
+          style={{ background: '#0D3B2E', color: '#B88C3A', border: '1px solid #B88C3A' }}>
+          Most Popular
         </div>
       )}
-      {purchaseStatus === 'full' && (
-        <div className="absolute right-4 top-4 rounded-full border border-emerald-300/25 bg-emerald-400/10 px-3 py-1 text-[11px] font-sans uppercase tracking-[0.1em] text-emerald-200">
-          Plan Purchased
-        </div>
-      )}
-      {purchaseStatus === 'advance' && (
-        <div className="absolute right-4 top-4 rounded-full border border-amber-300/25 bg-amber-400/10 px-3 py-1 text-[11px] font-sans uppercase tracking-[0.1em] text-amber-200">
-          Advance Given
+
+      {STATUS_BADGES[purchaseStatus] && (
+        <div className={`absolute right-4 top-4 rounded-full border px-3 py-1 text-[11px] font-sans uppercase tracking-[0.1em] ${STATUS_BADGES[purchaseStatus].classes}`}>
+          {STATUS_BADGES[purchaseStatus].text}
         </div>
       )}
 
       <div className="mb-8">
-        <p className="font-syne font-bold text-[18px] text-white mb-3">{plan.name}</p>
+        <p className="font-syne font-bold text-[18px] text-[var(--color-text)] mb-3">{plan.name}</p>
         <div className="flex flex-col gap-1">
           <div className="flex items-baseline gap-2">
-            <span className="font-syne text-[38px] font-[800] leading-none text-white md:text-[44px]">{plan.price}</span>
-            <span className="font-sans text-[13px] text-white/40">Full Amount</span>
+            <span className="font-syne text-[38px] font-[800] leading-none text-[var(--color-text)] md:text-[44px]">{plan.price}</span>
+            <span className="font-sans text-[13px] text-[var(--color-text-muted)]">Full Amount</span>
           </div>
           {isWebPlan && (
             <div className="mt-1 flex items-baseline gap-2">
-              <span className="font-syne text-[22px] font-bold text-white/80">{plan.advance}</span>
-              <span className="font-sans text-[12px] text-white/30 italic">Start with Advance</span>
+              <span className="font-syne text-[22px] font-bold text-[var(--color-text-secondary)]">{plan.advance}</span>
+              <span className="font-sans text-[12px] text-[var(--color-text-muted)]/65 italic">Start with Advance</span>
             </div>
           )}
         </div>
@@ -67,8 +74,8 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
 
       <ul className="space-y-4 flex-1 mb-10">
         {plan.features.map((f, i) => (
-          <li key={i} className="flex items-start gap-3 font-sans text-[14px] leading-[1.55] text-[#C9C9C9]">
-            <span className="mt-[2px] text-white/30">✓</span>
+          <li key={i} className="flex items-start gap-3 font-sans text-[14px] leading-[1.55] text-[var(--color-text-secondary)]">
+            <span className="mt-[2px] text-[var(--color-accent)] font-bold">✓</span>
             {f}
           </li>
         ))}
@@ -96,7 +103,7 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.99 }}
                   onClick={() => onBuyNow(plan, true)}
-                  className="block w-full rounded-full bg-white py-3.5 text-center font-sans text-[15px] font-bold text-[#080808] transition-opacity duration-150 hover:opacity-90"
+                  className="block w-full rounded-full bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] py-3.5 text-center font-sans text-[15px] font-bold text-[#080808] transition-colors duration-150"
                 >
                   Pay Advance
                 </motion.button>
@@ -104,12 +111,12 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.99 }}
                   onClick={() => onBuyNow(plan, false)}
-                  className="block w-full rounded-full border border-white/[0.12] py-3.5 text-center font-sans text-[15px] font-medium text-white transition-colors duration-150 hover:border-white/[0.2] hover:bg-white/5"
+                  className="block w-full rounded-full border border-brand-secondary/30 text-white transition-colors duration-150 hover:bg-brand-secondary/10 py-3.5 text-center font-sans text-[15px] font-medium"
                 >
                   Pay Full Amount
                 </motion.button>
-                <p className="px-2 text-center font-sans text-[11px] leading-relaxed text-white/40">
-                  Start with a small advance or pay full amount. <span className="text-amber-400/60">Advance valid for 7 days.</span> Remaining can be completed later.
+                <p className="px-2 text-center font-sans text-[11px] leading-relaxed text-[var(--color-text-secondary)]">
+                  Start with a small advance or pay full amount. <span className="text-[var(--color-accent)] font-medium">Advance valid for 7 days.</span> Remaining can be completed later.
                 </p>
               </>
             )}
@@ -119,11 +126,10 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
             <motion.button
               type="button"
               onClick={() => onBuyNow(plan)}
-              className={`block w-full rounded-full py-3.5 text-center font-sans text-[15px] font-medium transition-opacity duration-150 hover:opacity-85 ${
-                plan.featured
-                  ? 'bg-white text-[#080808]'
-                  : 'border border-white/[0.12] text-white hover:border-white/[0.2]'
-              }`}
+              className={`block w-full rounded-full py-3.5 text-center font-sans text-[15px] font-medium transition-colors duration-150 ${plan.featured
+                ? 'bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-[#080808] font-bold'
+                : 'border border-border text-white hover:border-brand-secondary hover:bg-brand-secondary/10'
+                }`}
             >
               <span className="inline-flex items-center gap-2">
                 {purchaseStatus === 'full' ? 'Renew Plan' : 'Buy Now'}
@@ -133,7 +139,7 @@ const PricingCard = ({ plan, onBuyNow, onAddToCart, purchaseStatus }) => {
             <motion.button
               type="button"
               onClick={() => onAddToCart(plan)}
-              className="mt-3 block w-full rounded-full border border-white/[0.1] py-3.5 text-center font-sans text-[15px] font-medium text-white/65 transition-colors duration-150 hover:border-white/[0.22] hover:text-white"
+              className="mt-3 block w-full rounded-full border border-border py-3.5 text-center font-sans text-[15px] font-medium text-[var(--color-text-secondary)] transition-colors duration-150 hover:border-brand-secondary/30 hover:text-white"
               whileHover={{ y: -1 }}
               transition={{ duration: 0.2 }}
             >
@@ -150,30 +156,33 @@ const ServiceCard = ({ item, onAddToCart, onBuyNow }) => (
   <motion.div
     whileHover={{ y: -6 }}
     transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-    className="relative flex flex-col justify-between rounded-[20px] p-6 transition-all duration-300"
-    style={{ background: '#0A0A0A', border: '1px solid rgba(255,255,255,0.05)' }}
+    className="group relative flex flex-col justify-between rounded-[20px] p-6 transition-all duration-300 w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] max-w-[320px] pricing-card-el"
+    style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
   >
+    {/* Ambient Glow */}
+    <div className="absolute inset-0 -z-10 rounded-[20px] bg-gradient-to-b from-brand-secondary/10 to-transparent opacity-0 blur-xl transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 pointer-events-none" />
+
     <div>
-      <h3 className="font-syne font-bold text-[17px] text-white mb-2">{item.name}</h3>
+      <h3 className="font-syne font-bold text-[17px] text-[var(--color-text)] mb-2">{item.name}</h3>
       <p className="font-sans text-[13px] leading-[1.5] text-text-secondary mb-6">{item.unit}</p>
     </div>
     <div>
       <div className="flex items-baseline gap-1.5 mb-5">
-        <span className="font-syne font-extrabold text-[22px] text-white">{item.price.replace('Starting from ', '')}</span>
-        <span className="font-sans text-[11px] text-white/30 uppercase tracking-wider font-semibold">Starting</span>
+        <span className="font-syne font-extrabold text-[22px] text-[var(--color-text)]">{item.price.replace('Starting from ', '')}</span>
+        <span className="font-sans text-[11px] text-[var(--color-text-muted)] uppercase tracking-wider font-semibold">Starting</span>
       </div>
       <div className="grid grid-cols-2 gap-2">
         <button
           type="button"
           onClick={() => onAddToCart(item)}
-          className="rounded-full border border-white/[0.06] py-2.5 text-center font-sans text-[11px] font-medium text-white/60 transition-all duration-150 hover:border-white/[0.15] hover:text-white hover:bg-white/[0.02]"
+          className="rounded-full border border-border py-2.5 text-center font-sans text-[11px] font-medium text-white transition-all duration-150 hover:border-brand-secondary/30 hover:text-white hover:bg-brand-secondary/5"
         >
           Add to Cart
         </button>
         <button
           type="button"
           onClick={() => onBuyNow(item)}
-          className="rounded-full bg-white py-2.5 text-center font-sans text-[11px] font-bold text-[#080808] transition-opacity duration-150 hover:opacity-90"
+          className="rounded-full bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] py-2.5 text-center font-sans text-[11px] font-bold text-[#080808] transition-colors duration-150"
         >
           Buy Now
         </button>
@@ -186,37 +195,38 @@ const PackageCard = ({ item, onBuyNow, onAddToCart }) => (
   <motion.div
     whileHover={{ y: -8 }}
     transition={{ type: 'spring', stiffness: 220, damping: 18 }}
-    className="group relative flex flex-col rounded-[24px] p-8 md:p-10 transition-all duration-300"
+    className="group relative flex flex-col rounded-[24px] p-8 md:p-10 transition-all duration-300 pricing-card-el w-full max-w-[360px]"
     style={{
-      background: 'linear-gradient(180deg, #111111 0%, #080808 100%)',
-      border: '1px solid rgba(255,255,255,0.05)',
-      boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
+      background: 'var(--color-surface)',
+      border: '1px solid var(--color-border)',
+      boxShadow: '0 5px 20px rgba(0, 0, 0, 0.38)',
     }}
   >
-    <div className="absolute inset-0 rounded-[24px] bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none" />
-    
+    {/* Ambient Glow */}
+    <div className="absolute inset-0 -z-10 rounded-[24px] bg-gradient-to-b from-brand-secondary/10 to-transparent opacity-0 blur-2xl transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 pointer-events-none" />
+
     <div className="mb-8">
-      <div className="inline-block px-3 py-1 rounded-full text-[10px] font-sans tracking-widest uppercase text-white/40 border border-white/[0.08] mb-4">
+      <div className="inline-block px-3 py-1 rounded-full text-[10px] font-sans tracking-widest uppercase text-[var(--color-text-secondary)] border border-[var(--color-border)] mb-4">
         {item.type}
       </div>
-      <h3 className="font-syne font-bold text-[22px] text-white mb-2">{item.name}</h3>
+      <h3 className="font-syne font-bold text-[22px] text-[var(--color-text)] mb-2">{item.name}</h3>
       <div className="flex items-baseline gap-2 mt-4">
-        <span className="font-syne text-[36px] font-[800] leading-none text-white">{item.price.split('/')[0].replace('Starting from ', '')}</span>
+        <span className="font-syne text-[36px] font-[800] leading-none text-[var(--color-text)]">{item.price.split('/')[0].replace('Starting from ', '')}</span>
         {item.price.includes('/month') && (
-          <span className="font-sans text-[13px] text-white/40">/ month</span>
+          <span className="font-sans text-[13px] text-[var(--color-text-secondary)]">/ month</span>
         )}
         {!item.price.includes('/month') && (
-          <span className="font-sans text-[11px] text-white/30 uppercase tracking-wider font-semibold">Starting</span>
+          <span className="font-sans text-[11px] text-[var(--color-text-secondary)] uppercase tracking-wider font-semibold">Starting</span>
         )}
       </div>
     </div>
 
     <div className="flex-1 mb-8">
-      <p className="font-sans text-[12px] uppercase tracking-wider text-white/30 mb-4 font-semibold">Includes:</p>
+      <p className="font-sans text-[12px] uppercase tracking-wider text-[var(--color-text-secondary)] mb-4 font-semibold">Includes:</p>
       <ul className="space-y-3">
         {item.features.map((feature, i) => (
-          <li key={i} className="flex items-start gap-2.5 font-sans text-[14px] leading-relaxed text-white/80">
-            <span className="text-white/40 mt-[3px]">✦</span>
+          <li key={i} className="flex items-start gap-2.5 font-sans text-[14px] leading-relaxed text-[var(--color-text-secondary)]">
+            <span className="text-[var(--color-accent)] mt-[3px]">✦</span>
             {feature}
           </li>
         ))}
@@ -227,19 +237,161 @@ const PackageCard = ({ item, onBuyNow, onAddToCart }) => (
       <button
         type="button"
         onClick={() => onBuyNow(item)}
-        className="block w-full rounded-full bg-white py-3.5 text-center font-sans text-[14px] font-bold text-[#080808] transition-opacity duration-150 hover:opacity-90"
+        className="block w-full rounded-full bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] py-3.5 text-center font-sans text-[14px] font-bold text-[#080808] transition-colors duration-150"
       >
         Get Started
       </button>
       <button
         type="button"
         onClick={() => onAddToCart(item)}
-        className="block w-full rounded-full border border-white/[0.08] py-3.5 text-center font-sans text-[14px] font-medium text-white/65 transition-all duration-150 hover:border-white/[0.18] hover:text-white"
+        className="block w-full rounded-full border border-border py-3.5 text-center font-sans text-[14px] font-medium text-[var(--color-text-secondary)] transition-all duration-150 hover:border-brand-secondary/30 hover:text-white"
       >
         Add to Cart
       </button>
     </div>
   </motion.div>
+);
+
+// Logical Sections Components
+const PricingHeader = () => (
+  <section className="relative z-10 mx-auto max-w-[1280px] px-4 pb-8 pt-20 text-center sm:px-6 md:pb-12 md:pt-28">
+    <RevealOnScroll>
+
+
+
+      <h1 className="mb-4 font-syne text-[40px] font-bold uppercase tracking-wider leading-[1.15] text-[var(--color-text)] md:text-[64px]">Honest Pricing.</h1>
+      <p className="font-sans text-[16px] leading-[1.6] text-text-secondary md:text-[18px]">Websites, design support, and online ordering setup without hidden fees.</p>
+    </RevealOnScroll>
+  </section>
+);
+
+const WebsitePlansSection = ({ plans, onBuyNow, onAddToCart, purchasedItems }) => (
+  <section className="relative z-10 mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
+    <RevealOnScroll>
+      <p className="mb-10 text-center font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:mb-14 md:text-[13px]">
+        Website Packages <span className="text-[var(--color-accent)] font-medium block mt-1 normal-case font-sans text-[11px] tracking-normal">(Note: Domain is excluded from all plans)</span>
+      </p>
+    </RevealOnScroll>
+    <div className="flex flex-wrap justify-center gap-6 items-start">
+      {plans.map((p, i) => (
+        <RevealOnScroll key={i} delay={i * 0.08} className="flex w-full max-w-[360px]">
+          <PricingCard
+            plan={p}
+            onBuyNow={onBuyNow}
+            onAddToCart={onAddToCart}
+            purchaseStatus={purchasedItems.find(item => item.id === p.id)?.status}
+          />
+        </RevealOnScroll>
+      ))}
+    </div>
+  </section>
+);
+
+const DesignServicesSection = ({ services, onAddToCart, onBuyNow }) => (
+  <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
+    <RevealOnScroll>
+      <div className="mb-10 text-center md:mb-12">
+        <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">Individual Services</p>
+        <h2 className="font-syne text-[32px] font-bold leading-[1.08] text-[var(--color-text)] md:text-[44px]">Design Services</h2>
+      </div>
+      <div className="flex flex-wrap justify-center gap-6">
+        {services.map((s, i) => (
+          <ServiceCard key={i} item={s} onAddToCart={onAddToCart} onBuyNow={onBuyNow} />
+        ))}
+      </div>
+    </RevealOnScroll>
+  </section>
+);
+
+const DesignPackagesSection = ({ packages, onBuyNow, onAddToCart }) => (
+  <section className="relative z-10 mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
+    <RevealOnScroll>
+      <div className="mb-10 text-center md:mb-12">
+        <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">Packages</p>
+        <h2 className="font-syne text-[32px] font-bold leading-[1.08] text-[var(--color-text)] md:text-[44px]">Premium Design Packages</h2>
+      </div>
+      <div className="flex flex-wrap justify-center gap-8">
+        {packages.map((pkg, i) => (
+          <RevealOnScroll key={i} delay={i * 0.08} className="flex w-full max-w-[360px]">
+            <PackageCard item={pkg} onBuyNow={onBuyNow} onAddToCart={onAddToCart} />
+          </RevealOnScroll>
+        ))}
+      </div>
+    </RevealOnScroll>
+  </section>
+);
+
+const CustomSolutionsSection = () => (
+  <section className="relative z-10 mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
+    <RevealOnScroll>
+      <div className="relative rounded-[28px] overflow-hidden p-8 md:p-14 text-center border border-[var(--color-border)]"
+        style={{
+          background: 'radial-gradient(ellipse at top, rgba(184, 140, 58, 0.05) 0%, rgba(0,0,0,0) 80%), var(--color-surface)'
+        }}
+      >
+        <div className="max-w-[640px] mx-auto">
+          <div className="inline-block px-3 py-1 rounded-full text-[10px] font-sans tracking-widest uppercase text-[var(--color-text-muted)] border border-[var(--color-border)] mb-6">
+            Tailored Creative Solutions
+          </div>
+          <h2 className="font-syne text-[32px] font-bold leading-tight text-[var(--color-text)] mb-4 md:text-[42px]">Custom Solutions</h2>
+          <p className="font-sans text-[16px] leading-relaxed text-text-secondary mb-3 font-semibold">
+            Need something specific?
+          </p>
+          <p className="font-sans text-[15px] leading-relaxed text-[var(--color-text-secondary)]/70 mb-8 max-w-[500px] mx-auto">
+            We offer tailored creative solutions designed around your brand goals, campaign requirements, and business needs. Contact us for a custom quote.
+          </p>
+          <Link to="/contact" className="inline-flex items-center gap-2.5 rounded-full bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] px-8 py-4 font-sans text-[15px] font-bold text-[#080808] transition-colors duration-150">
+            Request Custom Quote
+            <span>→</span>
+          </Link>
+        </div>
+      </div>
+    </RevealOnScroll>
+  </section>
+);
+
+const AddOnsSection = ({ addOnsList, onAddToCart }) => (
+  <section className="relative z-10 mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
+    <RevealOnScroll>
+      <div className="mb-10 text-center md:mb-12">
+        <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">Add-ons</p>
+        <h2 className="font-syne text-[32px] font-bold leading-[1.08] text-[var(--color-text)] md:text-[44px]">Upgrade Only What You Need.</h2>
+      </div>
+    </RevealOnScroll>
+
+    <div className="flex flex-wrap justify-center gap-4">
+      {addOnsList.map((item, i) => (
+        <RevealOnScroll key={item.name} delay={i * 0.04} className="flex w-full max-w-[240px]">
+          <div className="group relative h-full w-full rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1 pricing-card-el"
+            style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
+            {/* Ambient Glow */}
+            <div className="absolute inset-0 -z-10 rounded-[16px] bg-gradient-to-b from-brand-secondary/10 to-transparent opacity-0 blur-xl transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 pointer-events-none" />
+
+            <p className="mb-3 font-syne text-[16px] font-bold leading-tight text-[var(--color-text)]">{item.name}</p>
+            <p className="font-sans text-[15px] text-text-secondary">{item.price}</p>
+            <button
+              type="button"
+              onClick={() => onAddToCart(item)}
+              className="mt-6 w-full rounded-full border border-border py-3 text-center font-sans text-[14px] font-medium text-[var(--color-text-secondary)] transition-colors duration-150 hover:border-brand-secondary/30 hover:text-white"
+            >
+              Add to Cart
+            </button>
+          </div>
+        </RevealOnScroll>
+      ))}
+    </div>
+  </section>
+);
+
+const PricingFooterCTA = () => (
+  <RevealOnScroll>
+    <div className="px-4 py-14 pb-20 text-center md:py-20 md:pb-36">
+      <p className="font-sans text-[15px] text-text-secondary mb-3">Not sure which plan fits?</p>
+      <Link to="/contact" className="font-sans font-semibold text-[16px] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors duration-150">
+        Book a Free Strategy Call →
+      </Link>
+    </div>
+  </RevealOnScroll>
 );
 
 export default function Pricing() {
@@ -250,32 +402,30 @@ export default function Pricing() {
   const [purchasedItems, setPurchasedItems] = useState([]);
 
   useEffect(() => {
+    document.body.classList.add('bg-forest-page');
+    return () => {
+      document.body.classList.remove('bg-forest-page');
+    };
+  }, []);
+
+  useEffect(() => {
     if (!user?.id) return;
     let active = true;
-    
+
     const loadPurchases = async () => {
       const { data, error } = await supabase
         .from('purchased_plans')
         .select('plan_id, status')
         .eq('user_id', user.id);
-        
+
       if (active && data) {
         setPurchasedItems(data.map(item => ({ id: item.plan_id, status: item.status })));
       }
     };
-    
+
     loadPurchases();
     return () => { active = false; };
   }, [user?.id]);
-
-  const lastCheckout = useMemo(() => {
-    if (typeof window === 'undefined') return null;
-    try {
-      return JSON.parse(window.localStorage.getItem('crevix-last-checkout') || 'null');
-    } catch {
-      return null;
-    }
-  }, []);
 
   const showAddedToast = (name) => {
     setToast(`${name} added to cart`);
@@ -310,146 +460,47 @@ export default function Pricing() {
 
   return (
     <Layout>
+      {/* ── Page background with gradient effect ── */}
+      <div style={{
+        position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none',
+        background: 'linear-gradient(135deg, #0D3B2E 0%, #6F8A6E 50%, #0D3B2E 100%)',
+      }} />
+
       {toast && (
-        <div className="fixed right-4 top-24 z-[120] rounded-full border border-white/[0.12] bg-[#111111]/95 px-5 py-3 font-sans text-[14px] text-white shadow-2xl backdrop-blur-md">
+        <div className="fixed right-4 top-24 z-[120] rounded-full border border-[var(--color-border)] bg-[#111111]/95 px-5 py-3 font-sans text-[14px] text-white shadow-2xl backdrop-blur-md">
           {toast}
         </div>
       )}
 
-      <section className="mx-auto max-w-[1280px] px-4 pb-8 pt-20 text-center sm:px-6 md:pb-12 md:pt-28">
-        <RevealOnScroll>
-          <div className="mb-6 flex items-center justify-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/20 bg-amber-500/10 px-4 py-1.5 font-sans text-[11px] font-bold uppercase tracking-widest text-amber-200">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-amber-500"></span>
-              </span>
-              Prices Increase After May 15th
-            </div>
-          </div>
-          <h1 className="mb-4 font-syne text-[40px] font-bold uppercase tracking-wider leading-[1.15] text-white md:text-[64px]">Honest Pricing.</h1>
-          <p className="font-sans text-[16px] leading-[1.6] text-text-secondary md:text-[18px]">Websites, design support, and online ordering setup without hidden fees.</p>
-        </RevealOnScroll>
-      </section>
+      <PricingHeader />
 
-      {/* Website Plans */}
-      <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
-        <RevealOnScroll>
-          <p className="mb-10 text-center font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:mb-14 md:text-[13px]">
-            Website Packages <span className="text-amber-400/90 font-medium block mt-1 normal-case font-sans text-[11px] tracking-normal">(Note: Domain is excluded from all plans)</span>
-          </p>
-        </RevealOnScroll>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
-          {webPlans.map((p, i) => (
-            <RevealOnScroll key={i} delay={i * 0.08}>
-              <PricingCard
-                plan={p}
-                onBuyNow={handleBuyNow}
-                onAddToCart={handleAddToCart}
-                purchaseStatus={purchasedItems.find(item => item.id === p.id)?.status}
-              />
-            </RevealOnScroll>
-          ))}
-        </div>
-      </section>
+      <WebsitePlansSection
+        plans={webPlans}
+        onBuyNow={handleBuyNow}
+        onAddToCart={handleAddToCart}
+        purchasedItems={purchasedItems}
+      />
 
+      <DesignServicesSection
+        services={designServices}
+        onAddToCart={handleAddToCart}
+        onBuyNow={handleBuyNow}
+      />
 
-      {/* Design Services */}
-      <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
-        <RevealOnScroll>
-          <div className="mb-10 text-center md:mb-12">
-            <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">Individual Services</p>
-            <h2 className="font-syne text-[32px] font-bold leading-[1.08] text-white md:text-[44px]">Design Services</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {designServices.map((s, i) => (
-              <ServiceCard key={i} item={s} onAddToCart={handleAddToCart} onBuyNow={handleBuyNow} />
-            ))}
-          </div>
-        </RevealOnScroll>
-      </section>
+      <DesignPackagesSection
+        packages={designPackages}
+        onBuyNow={handleBuyNow}
+        onAddToCart={handleAddToCart}
+      />
 
-      {/* Packages */}
-      <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
-        <RevealOnScroll>
-          <div className="mb-10 text-center md:mb-12">
-            <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">Packages</p>
-            <h2 className="font-syne text-[32px] font-bold leading-[1.08] text-white md:text-[44px]">Premium Design Packages</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {designPackages.map((pkg, i) => (
-              <PackageCard key={i} item={pkg} onBuyNow={handleBuyNow} onAddToCart={handleAddToCart} />
-            ))}
-          </div>
-        </RevealOnScroll>
-      </section>
+      <CustomSolutionsSection />
 
-      {/* Custom Solutions */}
-      <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
-        <RevealOnScroll>
-          <div className="relative rounded-[28px] overflow-hidden p-8 md:p-14 text-center border border-white/[0.05]"
-            style={{
-              background: 'radial-gradient(ellipse at top, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 80%), #0A0A0A'
-            }}
-          >
-            <div className="max-w-[640px] mx-auto">
-              <div className="inline-block px-3 py-1 rounded-full text-[10px] font-sans tracking-widest uppercase text-white/40 border border-white/[0.08] mb-6">
-                Tailored Creative Solutions
-              </div>
-              <h2 className="font-syne text-[32px] font-bold leading-tight text-white mb-4 md:text-[42px]">Custom Solutions</h2>
-              <p className="font-sans text-[16px] leading-relaxed text-text-secondary mb-3 font-semibold">
-                Need something specific?
-              </p>
-              <p className="font-sans text-[15px] leading-relaxed text-text-secondary/70 mb-8 max-w-[500px] mx-auto">
-                We offer tailored creative solutions designed around your brand goals, campaign requirements, and business needs. Contact us for a custom quote.
-              </p>
-              <Link to="/contact" className="inline-flex items-center gap-2.5 rounded-full bg-white px-8 py-4 font-sans text-[15px] font-bold text-[#080808] transition-opacity duration-150 hover:opacity-90">
-                Request Custom Quote
-                <span>→</span>
-              </Link>
-            </div>
-          </div>
-        </RevealOnScroll>
-      </section>
+      <AddOnsSection
+        addOnsList={addOns}
+        onAddToCart={handleAddToCart}
+      />
 
-      {/* Add-ons */}
-      <section className="mx-auto max-w-[1280px] px-4 py-12 sm:px-6 md:py-16">
-        <RevealOnScroll>
-          <div className="mb-10 text-center md:mb-12">
-            <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">Add-ons</p>
-            <h2 className="font-syne text-[32px] font-bold leading-[1.08] text-white md:text-[44px]">Upgrade Only What You Need.</h2>
-          </div>
-        </RevealOnScroll>
-
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {addOns.map((item, i) => (
-            <RevealOnScroll key={item.name} delay={i * 0.04}>
-              <div className="h-full rounded-[16px] p-6 transition-all duration-200 hover:-translate-y-1"
-                style={{ background: '#0E0E0E', border: '1px solid rgba(255,255,255,0.06)' }}>
-                <p className="mb-3 font-syne text-[17px] font-bold leading-tight text-white">{item.name}</p>
-                <p className="font-sans text-[15px] text-text-secondary">{item.price}</p>
-                <button
-                  type="button"
-                  onClick={() => handleAddToCart(item)}
-                  className="mt-6 w-full rounded-full border border-white/[0.1] py-3 text-center font-sans text-[14px] font-medium text-white/65 transition-colors duration-150 hover:border-white/[0.22] hover:text-white"
-                >
-                  Add to Cart
-                </button>
-              </div>
-            </RevealOnScroll>
-          ))}
-        </div>
-      </section>
-
-      {/* Footer CTA */}
-      <RevealOnScroll>
-        <div className="px-4 py-14 pb-20 text-center md:py-20 md:pb-36">
-          <p className="font-sans text-[15px] text-text-secondary mb-3">Not sure which plan fits?</p>
-          <Link to="/contact" className="font-sans text-[16px] text-white/60 hover:text-white transition-colors duration-150">
-            Book a Free Strategy Call →
-          </Link>
-        </div>
-      </RevealOnScroll>
+      <PricingFooterCTA />
     </Layout>
   );
 }

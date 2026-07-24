@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RevealOnScroll } from '../hooks/useScrollReveal';
 import Layout from '../components/layout/Layout';
@@ -12,6 +12,13 @@ import LogoLightbox from '../components/ui/LogoLightbox';
 export default function Portfolio() {
   const [activeTab, setActiveTab] = useState('web'); // 'web' or 'brand'
   const [selectedLogo, setSelectedLogo] = useState(null);
+
+  useEffect(() => {
+    document.body.classList.add('bg-forest-page');
+    return () => {
+      document.body.classList.remove('bg-forest-page');
+    };
+  }, []);
 
   const handlePrevLogo = () => {
     if (!selectedLogo) return;
@@ -33,20 +40,41 @@ export default function Portfolio() {
         title="Our Portfolio" 
         description="Explore our curated collection of premium web prototypes, SaaS dashboards, and digital brand identities designed by Crevix Studio."
       />
-      <section className="mx-auto max-w-[1280px] px-4 pb-20 pt-20 sm:px-6 md:pb-36 md:pt-28">
+
+      {/* Ambient background glow & forest base */}
+      <div 
+        className="fixed inset-0 z-0 pointer-events-none"
+        style={{
+          background: 'linear-gradient(135deg, #0D3B2E 0%, #071D18 50%, #0D3B2E 100%)',
+        }} 
+      />
+
+      <div
+        className="fixed left-1/2 top-1/3 -translate-x-1/2 h-[700px] w-[700px] rounded-full blur-[180px] pointer-events-none z-0"
+        style={{
+          background: "radial-gradient(circle, rgba(184,140,58,.14), transparent 70%)",
+        }}
+      />
+
+      <section className="relative z-10 mx-auto max-w-[1280px] px-4 pb-20 pt-24 sm:px-6 md:pb-36 md:pt-32">
         <RevealOnScroll>
           <div className="mb-16 text-center md:mb-20">
-            <div className="mb-5 flex items-center justify-center gap-3">
-              <span className="h-px w-8 bg-white/20" />
-              <p className="font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary md:text-[13px]">
-                Portfolio
+            <div className="mb-4 flex items-center justify-center gap-3">
+              <span className="h-px w-10 bg-[#B88C3A]/50" />
+              <p className="uppercase tracking-[0.35em] text-[#B88C3A] text-xs font-semibold">
+                OUR PORTFOLIO
               </p>
-              <span className="h-px w-8 bg-white/20" />
+              <span className="h-px w-10 bg-[#B88C3A]/50" />
             </div>
-            <h1 className="font-syne text-[40px] font-bold uppercase tracking-wider leading-[1.15] text-white md:text-[64px]">
-              Our Showcase.
+
+            <h1 className="font-syne text-5xl md:text-7xl font-bold leading-tight text-[#F4EFE5]">
+              Our{" "}
+              <span className="bg-gradient-to-r from-[#D8D2C4] via-[#D2BC7A] to-[#B88C3A] bg-clip-text text-transparent">
+                Showcase.
+              </span>
             </h1>
-            <p className="mx-auto mt-5 max-w-[550px] font-sans text-[15px] leading-[1.7] text-text-secondary">
+
+            <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-[#D8D2C4]/75">
               A curated collection of bespoke web products and premium brand identities, designed with precision and digital craft.
             </p>
           </div>
@@ -55,17 +83,17 @@ export default function Portfolio() {
         {/* Animated Segmented Control Tabs */}
         <RevealOnScroll>
           <div className="mb-16 flex justify-center">
-            <div className="relative flex items-center gap-1 rounded-full border border-white/[0.08] bg-white/[0.02] p-1.5 backdrop-blur-md">
+            <div className="relative flex items-center gap-1.5 rounded-full border border-[#B88C3A]/30 bg-[#082A22]/70 p-1.5 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
               <button
                 onClick={() => setActiveTab('web')}
-                className={`relative rounded-full px-6 py-2.5 font-sans text-[11px] sm:text-[12px] font-bold tracking-wider uppercase transition-colors duration-300 ${
-                  activeTab === 'web' ? 'text-black' : 'text-white/60 hover:text-white'
+                className={`relative rounded-full px-7 py-3 font-syne text-xs font-bold tracking-wider uppercase transition-colors duration-300 ${
+                  activeTab === 'web' ? 'text-[#071D18]' : 'text-[#D8D2C4]/70 hover:text-white'
                 }`}
               >
                 {activeTab === 'web' && (
                   <motion.div
                     layoutId="activeTabPill"
-                    className="absolute inset-0 rounded-full bg-white"
+                    className="absolute inset-0 rounded-full bg-[#B88C3A] shadow-[0_0_20px_rgba(184,140,58,0.4)]"
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -73,14 +101,14 @@ export default function Portfolio() {
               </button>
               <button
                 onClick={() => setActiveTab('brand')}
-                className={`relative rounded-full px-6 py-2.5 font-sans text-[11px] sm:text-[12px] font-bold tracking-wider uppercase transition-colors duration-300 ${
-                  activeTab === 'brand' ? 'text-black' : 'text-white/60 hover:text-white'
+                className={`relative rounded-full px-7 py-3 font-syne text-xs font-bold tracking-wider uppercase transition-colors duration-300 ${
+                  activeTab === 'brand' ? 'text-[#071D18]' : 'text-[#D8D2C4]/70 hover:text-white'
                 }`}
               >
                 {activeTab === 'brand' && (
                   <motion.div
                     layoutId="activeTabPill"
-                    className="absolute inset-0 rounded-full bg-white"
+                    className="absolute inset-0 rounded-full bg-[#B88C3A] shadow-[0_0_20px_rgba(184,140,58,0.4)]"
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -142,19 +170,22 @@ export default function Portfolio() {
 
         {/* Bottom CTA */}
         <RevealOnScroll>
-          <div className="mt-24 rounded-[24px] border border-white/[0.06] bg-gradient-to-b from-white/[0.04] to-transparent p-10 text-center md:mt-36 md:p-16">
-            <p className="mb-3 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary">
-              Ready to start?
+          <div className="mt-24 rounded-3xl border border-[#B88C3A]/30 bg-[#082A22]/60 backdrop-blur-xl p-10 text-center md:mt-36 md:p-16 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+            <p className="mb-3 uppercase tracking-[0.3em] text-[#B88C3A] text-xs font-semibold">
+              READY TO START?
             </p>
-            <h3 className="mb-4 font-syne text-[28px] font-bold text-white md:text-[42px]">
+
+            <h3 className="mb-4 font-syne text-3xl font-bold text-[#F4EFE5] md:text-5xl">
               Let's build something together.
             </h3>
-            <p className="mx-auto mb-8 max-w-[440px] font-sans text-[14px] leading-[1.7] text-text-secondary md:text-[16px]">
-              Have a project in mind? We'd love to bring your vision to life.
+
+            <p className="mx-auto mb-8 max-w-md text-base md:text-lg leading-relaxed text-[#D8D2C4]/75">
+              Have a project in mind? We'd love to bring your vision to life with world-class design & engineering.
             </p>
+
             <a
               href="/contact"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-9 py-4 font-sans text-[15px] font-semibold text-[#080808] transition-opacity duration-150 hover:opacity-90"
+              className="inline-flex items-center gap-2 rounded-full bg-[#B88C3A] px-9 py-4 font-syne text-sm font-bold text-[#071D18] transition-all duration-300 hover:bg-[#D2BC7A] hover:shadow-[0_0_30px_rgba(184,140,58,0.35)] hover:-translate-y-1"
             >
               Get in Touch
               <span className="ml-1">→</span>

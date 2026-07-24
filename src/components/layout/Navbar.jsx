@@ -16,9 +16,9 @@ const navLinks = [
 
 const HamburgerIcon = ({ open }) => (
   <div className="w-5 h-4 flex flex-col justify-between cursor-pointer">
-    <motion.span animate={{ rotate: open ? 45 : 0, y: open ? 7 : 0 }} className="h-[1px] w-full bg-white block origin-center" />
-    <motion.span animate={{ opacity: open ? 0 : 1 }} className="h-[1px] w-full bg-white block" />
-    <motion.span animate={{ rotate: open ? -45 : 0, y: open ? -7 : 0 }} className="h-[1px] w-full bg-white block origin-center" />
+    <motion.span animate={{ rotate: open ? 45 : 0, y: open ? 7 : 0 }} className="h-[1px] w-full bg-[#0D3B2E] block origin-center" />
+    <motion.span animate={{ opacity: open ? 0 : 1 }} className="h-[1px] w-full bg-[#0D3B2E] block" />
+    <motion.span animate={{ rotate: open ? -45 : 0, y: open ? -7 : 0 }} className="h-[1px] w-full bg-[#0D3B2E] block origin-center" />
   </div>
 );
 
@@ -40,7 +40,12 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className="fixed top-4 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-2rem)] max-w-[1200px] h-[60px] flex items-center bg-[#09090B]/70 backdrop-blur-md rounded-full border border-white/[0.08] shadow-[0_20px_50px_rgba(0,0,0,0.5)] px-6"
+        className="fixed top-4 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-2rem)] max-w-[1200px] h-[60px] flex items-center backdrop-blur-md rounded-full px-6 transition-all duration-300"
+        style={{
+          background: 'rgba(216, 210, 196, 0.95)',
+          border: '1px solid rgba(13, 59, 46, 0.2)',
+          boxShadow: '0 20px 50px rgba(13, 59, 46, 0.25)',
+        }}
       >
         <div className="w-full flex items-center justify-between">
           {/* Logo */}
@@ -49,11 +54,11 @@ export default function Navbar() {
               src="/logo.png" 
               alt="Crevix" 
               className="w-7 h-7 object-contain transition-transform group-hover:scale-110" 
-              style={{ mixBlendMode: 'screen' }}
+              style={{ mixBlendMode: 'multiply' }}
             />
             <div className="flex items-baseline gap-1.2 font-brand">
-              <span className="text-white">CREVIX</span>
-              <span className="text-gradient">STUDIO</span>
+              <span className="text-[#0D3B2E]">CREVIX</span>
+              <span className="text-[#B88C3A]">STUDIO</span>
             </div>
           </Link>
 
@@ -63,15 +68,15 @@ export default function Navbar() {
               <Link
                 key={link.to}
                 to={link.to}
-                className={`relative py-1 text-[13px] font-sans font-medium transition-colors duration-150 ${
-                  location.pathname === link.to ? 'text-white' : 'text-text-secondary hover:text-white'
+                className={`relative py-1 text-[16px] font-sans font-semibold transition-colors duration-150 ${
+                  location.pathname === link.to ? 'text-[#0D3B2E]' : 'text-[#0D3B2E]/70 hover:text-[#0D3B2E]'
                 }`}
               >
                 {link.label}
                 {location.pathname === link.to && (
                   <motion.span
                     layoutId="nav-active-underline"
-                    className="absolute -bottom-1 left-0 right-0 h-px bg-white"
+                    className="absolute -bottom-1 left-0 right-0 h-px bg-[#0D3B2E]"
                     transition={{ type: 'spring', stiffness: 420, damping: 34 }}
                   />
                 )}
@@ -81,13 +86,13 @@ export default function Navbar() {
 
           <div className="hidden md:flex items-center gap-4">
             {isAuthenticated && (
-              <span className="max-w-[140px] truncate font-sans text-[13px] text-white/75" title={clientName}>
+              <span className="max-w-[140px] truncate font-sans text-[16px] text-[#0D3B2E]/80 font-medium" title={clientName}>
                 {clientName}
               </span>
             )}
             <Link
               to={isAuthenticated ? '/profile' : '/login'}
-              className="px-4 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] text-[13px] font-sans font-medium text-white/80 hover:text-white hover:bg-white/[0.08] hover:border-white/[0.18] transition-all duration-300"
+              className="px-4 py-1.5 rounded-full text-[16px] font-sans font-semibold text-[#D8D2C4] bg-[#0D3B2E] hover:bg-[#134e3e] transition-all duration-300"
             >
               {isAuthenticated ? 'Profile' : 'Login'}
             </Link>
@@ -95,8 +100,8 @@ export default function Navbar() {
               to="/cart"
               className={`relative inline-flex h-9 w-9 items-center justify-center rounded-full border transition-colors duration-150 ${
                 location.pathname === '/cart'
-                  ? 'border-white/[0.35] text-white'
-                  : 'border-white/[0.06] text-white/65 hover:border-white/[0.35] hover:text-white'
+                  ? 'border-[#0D3B2E]/50 text-[#0D3B2E]'
+                  : 'border-[#0D3B2E]/20 text-[#0D3B2E]/75 hover:border-[#0D3B2E]/50 hover:text-[#0D3B2E]'
               }`}
               aria-label="Cart"
             >
@@ -107,7 +112,7 @@ export default function Navbar() {
                   initial={{ scale: 0.5, y: 2, opacity: 0.4 }}
                   animate={{ scale: 1, y: 0, opacity: 1 }}
                   transition={{ type: 'spring', stiffness: 420, damping: 22 }}
-                  className="absolute -right-1.5 -top-1.5 min-w-[18px] rounded-full bg-white px-1 py-0.5 text-center font-sans text-[10px] font-semibold leading-none text-[#080808]"
+                  className="absolute -right-1.5 -top-1.5 min-w-[18px] rounded-full bg-[#0D3B2E] px-1 py-0.5 text-center font-sans text-[10px] font-semibold leading-none text-[#D8D2C4]"
                 >
                   {items.length}
                 </motion.span>

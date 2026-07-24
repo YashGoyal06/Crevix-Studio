@@ -4,6 +4,15 @@ import { useAuth } from '../context/authStore';
 import { supabase } from '../lib/supabaseClient';
 import { webPlans, addOns, designServices, designPackages } from '../data/pricing';
 
+/* ── Palette ── */
+const C = {
+  deepForest: '#0D3B2E',
+  sage:       '#6F8A6E',
+  warmStone:  '#D8D2C4',
+  gold:       '#B88C3A',
+  charcoal:   '#2B2F2E',
+};
+
 const emptyForm = {
   businessName: '',
   phone: '',
@@ -119,57 +128,65 @@ export default function Profile() {
     }
   };
 
+  const inputClass = "w-full rounded-[12px] border px-[18px] py-[14px] font-sans text-[15px] outline-none transition-all duration-200";
+  const inputStyle = {
+    color: C.deepForest,
+    borderColor: 'rgba(13,59,46,0.25)',
+    background: 'rgba(216,210,196,0.4)',
+  };
+
   return (
     <Layout>
-      <section className="mx-auto max-w-[980px] px-4 pb-20 pt-20 sm:px-6 md:pb-28 md:pt-28">
+      {/* ── Page background ── */}
+      <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', background: C.deepForest }} />
+
+      <section className="relative z-10 mx-auto max-w-[980px] px-4 pb-20 pt-20 sm:px-6 md:pb-28 md:pt-28">
         <div className="mb-10 text-center md:mb-14">
-          <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em] text-text-secondary">Business Profile</p>
-          <h1 className="font-syne text-[38px] font-[800] leading-[1.02] text-white md:text-[56px]">Your Account.</h1>
-          <p className="mx-auto mt-4 max-w-[560px] font-sans text-[15px] leading-[1.7] text-text-secondary">
+          <p className="mb-4 font-sans text-[12px] uppercase tracking-[0.15em]" style={{ color: C.sage }}>Business Profile</p>
+          <h1 className="font-syne text-[38px] font-[800] leading-[1.02] md:text-[56px]" style={{ color: C.warmStone }}>Your Account.</h1>
+          <p className="mx-auto mt-4 max-w-[560px] font-sans text-[15px] leading-[1.7]" style={{ color: C.sage }}>
             Logged in as {user?.email}. This profile can be reused during checkout and onboarding.
           </p>
         </div>
 
-        <form onSubmit={handleSave} className="rounded-[16px] border border-white/[0.08] bg-[#0E0E0E]/85 p-5 sm:p-8">
+        {/* ── Profile Card ── */}
+        <form onSubmit={handleSave} className="rounded-[16px] p-5 sm:p-8"
+          style={{ background: C.warmStone, border: '1px solid rgba(13,59,46,0.15)', boxShadow: '0 24px 80px rgba(0,0,0,0.15)' }}>
           {loading ? (
-            <div className="py-8 text-center font-sans text-[14px] text-text-secondary">Loading profile...</div>
+            <div className="py-8 text-center font-sans text-[14px]" style={{ color: C.deepForest }}>Loading profile...</div>
           ) : hasSavedProfile && !isEditing ? (
             <>
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                <div className="rounded-[12px] border border-white/[0.08] bg-white/[0.02] p-4">
-                  <p className="mb-1 font-sans text-[11px] uppercase tracking-[0.15em] text-text-secondary">Business Name</p>
-                  <p className="font-sans text-[15px] text-white">{form.businessName || '-'}</p>
-                </div>
-                <div className="rounded-[12px] border border-white/[0.08] bg-white/[0.02] p-4">
-                  <p className="mb-1 font-sans text-[11px] uppercase tracking-[0.15em] text-text-secondary">Phone</p>
-                  <p className="font-sans text-[15px] text-white">{form.phone || '-'}</p>
-                </div>
-                <div className="rounded-[12px] border border-white/[0.08] bg-white/[0.02] p-4 sm:col-span-2">
-                  <p className="mb-1 font-sans text-[11px] uppercase tracking-[0.15em] text-text-secondary">Website</p>
-                  <p className="font-sans text-[15px] text-white">{form.website || '-'}</p>
-                </div>
-                <div className="rounded-[12px] border border-white/[0.08] bg-white/[0.02] p-4 sm:col-span-2">
-                  <p className="mb-1 font-sans text-[11px] uppercase tracking-[0.15em] text-text-secondary">About</p>
-                  <p className="font-sans text-[15px] leading-[1.7] text-white/90 whitespace-pre-wrap">{form.about || '-'}</p>
-                </div>
+                {[
+                  { label: 'Business Name', val: form.businessName },
+                  { label: 'Phone', val: form.phone },
+                  { label: 'Website', val: form.website, span: true },
+                  { label: 'About', val: form.about, span: true, pre: true },
+                ].map(({ label, val, span, pre }) => (
+                  <div key={label} className={`rounded-[12px] p-4 ${span ? 'sm:col-span-2' : ''}`}
+                    style={{ border: '1px solid rgba(13,59,46,0.1)', background: 'rgba(13,59,46,0.04)' }}>
+                    <p className="mb-1 font-sans text-[11px] uppercase tracking-[0.15em]" style={{ color: C.sage }}>{label}</p>
+                    <p className={`font-sans text-[15px] ${pre ? 'leading-[1.7] whitespace-pre-wrap' : ''}`}
+                      style={{ color: C.deepForest }}>{val || '—'}</p>
+                  </div>
+                ))}
               </div>
 
-              {message && <p className="mt-5 font-sans text-[13px] text-emerald-300">{message}</p>}
-              {error && <p className="mt-5 font-sans text-[13px] text-red-400">{error}</p>}
+              {message && <p className="mt-5 font-sans text-[13px]" style={{ color: C.deepForest }}>{message}</p>}
+              {error && <p className="mt-5 font-sans text-[13px] text-red-600">{error}</p>}
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-between">
-                <button type="button" onClick={handleSignOut} className="rounded-full border border-white/[0.12] px-6 py-3.5 text-center font-sans text-[15px] font-medium text-white transition-colors duration-150 hover:border-white/[0.24]">
+                <button type="button" onClick={handleSignOut}
+                  className="rounded-full px-6 py-3.5 text-center font-sans text-[15px] font-medium transition-all duration-200"
+                  style={{ border: '1px solid rgba(13,59,46,0.3)', color: C.deepForest }}
+                  onMouseEnter={(e) => e.target.style.borderColor = C.gold}
+                  onMouseLeave={(e) => e.target.style.borderColor = 'rgba(13,59,46,0.3)'}>
                   Sign Out
                 </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsEditing(true);
-                    setMessage('');
-                    setError('');
-                  }}
-                  className="rounded-full bg-white px-6 py-3.5 text-center font-sans text-[15px] font-medium text-[#080808] transition-opacity duration-150 hover:opacity-85"
-                >
+                <button type="button"
+                  onClick={() => { setIsEditing(true); setMessage(''); setError(''); }}
+                  className="rounded-full px-6 py-3.5 text-center font-sans text-[15px] font-semibold transition-all duration-200"
+                  style={{ background: C.deepForest, color: C.warmStone }}>
                   Edit Profile
                 </button>
               </div>
@@ -177,46 +194,55 @@ export default function Profile() {
           ) : (
             <>
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                <label className="block">
-                  <span className="mb-2 block font-sans text-[11px] uppercase tracking-[0.15em] text-text-secondary">Business Name</span>
-                  <input name="businessName" value={form.businessName} onChange={handleChange} className="w-full rounded-[12px] border border-white/[0.09] bg-transparent px-[18px] py-[14px] font-sans text-[15px] text-white outline-none transition-colors duration-150 placeholder:text-text-muted focus:border-white/[0.35]" placeholder="Your business name" />
-                </label>
-                <label className="block">
-                  <span className="mb-2 block font-sans text-[11px] uppercase tracking-[0.15em] text-text-secondary">Phone</span>
-                  <input name="phone" value={form.phone} onChange={handleChange} className="w-full rounded-[12px] border border-white/[0.09] bg-transparent px-[18px] py-[14px] font-sans text-[15px] text-white outline-none transition-colors duration-150 placeholder:text-text-muted focus:border-white/[0.35]" placeholder="+91 99999 99999" />
-                </label>
-                <label className="block">
-                  <span className="mb-2 block font-sans text-[11px] uppercase tracking-[0.15em] text-text-secondary">Website</span>
-                  <input name="website" value={form.website} onChange={handleChange} className="w-full rounded-[12px] border border-white/[0.09] bg-transparent px-[18px] py-[14px] font-sans text-[15px] text-white outline-none transition-colors duration-150 placeholder:text-text-muted focus:border-white/[0.35]" placeholder="https://yourdomain.com" />
-                </label>
+                {[
+                  { label: 'Business Name', name: 'businessName', ph: 'Your business name' },
+                  { label: 'Phone', name: 'phone', ph: '+91 99999 99999' },
+                  { label: 'Website', name: 'website', ph: 'https://yourdomain.com' },
+                ].map((f) => (
+                  <label key={f.name} className="block">
+                    <span className="mb-2 block font-sans text-[11px] uppercase tracking-[0.15em]" style={{ color: C.deepForest }}>{f.label}</span>
+                    <input name={f.name} value={form[f.name]} onChange={handleChange}
+                      className={inputClass} style={inputStyle}
+                      onFocus={(e) => { e.target.style.borderColor = C.gold; }}
+                      onBlur={(e) => { e.target.style.borderColor = 'rgba(13,59,46,0.25)'; }}
+                      placeholder={f.ph} />
+                  </label>
+                ))}
                 <label className="block sm:col-span-2">
-                  <span className="mb-2 block font-sans text-[11px] uppercase tracking-[0.15em] text-text-secondary">About</span>
-                  <textarea name="about" value={form.about} onChange={handleChange} rows={4} className="w-full rounded-[12px] border border-white/[0.09] bg-transparent px-[18px] py-[14px] font-sans text-[15px] text-white outline-none transition-colors duration-150 placeholder:text-text-muted focus:border-white/[0.35]" placeholder="Tell us briefly about your business." />
+                  <span className="mb-2 block font-sans text-[11px] uppercase tracking-[0.15em]" style={{ color: C.deepForest }}>About</span>
+                  <textarea name="about" value={form.about} onChange={handleChange} rows={4}
+                    className={`${inputClass} resize-none`} style={inputStyle}
+                    onFocus={(e) => { e.target.style.borderColor = C.gold; }}
+                    onBlur={(e) => { e.target.style.borderColor = 'rgba(13,59,46,0.25)'; }}
+                    placeholder="Tell us briefly about your business." />
                 </label>
               </div>
 
-              {message && <p className="mt-5 font-sans text-[13px] text-emerald-300">{message}</p>}
-              {error && <p className="mt-5 font-sans text-[13px] text-red-400">{error}</p>}
+              {message && <p className="mt-5 font-sans text-[13px]" style={{ color: C.deepForest }}>{message}</p>}
+              {error && <p className="mt-5 font-sans text-[13px] text-red-600">{error}</p>}
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-between">
-                <button type="button" onClick={handleSignOut} className="rounded-full border border-white/[0.12] px-6 py-3.5 text-center font-sans text-[15px] font-medium text-white transition-colors duration-150 hover:border-white/[0.24]">
+                <button type="button" onClick={handleSignOut}
+                  className="rounded-full px-6 py-3.5 text-center font-sans text-[15px] font-medium transition-all duration-200"
+                  style={{ border: '1px solid rgba(13,59,46,0.3)', color: C.deepForest }}
+                  onMouseEnter={(e) => e.target.style.borderColor = C.gold}
+                  onMouseLeave={(e) => e.target.style.borderColor = 'rgba(13,59,46,0.3)'}>
                   Sign Out
                 </button>
                 <div className="flex flex-col gap-3 sm:flex-row">
                   {hasSavedProfile && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setIsEditing(false);
-                        setMessage('');
-                        setError('');
-                      }}
-                      className="rounded-full border border-white/[0.12] px-6 py-3.5 text-center font-sans text-[15px] font-medium text-white transition-colors duration-150 hover:border-white/[0.24]"
-                    >
+                    <button type="button"
+                      onClick={() => { setIsEditing(false); setMessage(''); setError(''); }}
+                      className="rounded-full px-6 py-3.5 text-center font-sans text-[15px] font-medium transition-all duration-200"
+                      style={{ border: '1px solid rgba(13,59,46,0.3)', color: C.deepForest }}
+                      onMouseEnter={(e) => e.target.style.borderColor = C.gold}
+                      onMouseLeave={(e) => e.target.style.borderColor = 'rgba(13,59,46,0.3)'}>
                       Cancel
                     </button>
                   )}
-                  <button type="submit" disabled={saving} className="rounded-full bg-white px-6 py-3.5 text-center font-sans text-[15px] font-medium text-[#080808] transition-opacity duration-150 hover:opacity-85 disabled:cursor-not-allowed disabled:opacity-45">
+                  <button type="submit" disabled={saving}
+                    className="rounded-full px-6 py-3.5 text-center font-sans text-[15px] font-semibold transition-all duration-200 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-45"
+                    style={{ background: C.deepForest, color: C.warmStone }}>
                     {saving ? 'Saving...' : 'Save Profile'}
                   </button>
                 </div>
@@ -225,35 +251,40 @@ export default function Profile() {
           )}
         </form>
 
+        {/* ── Your Plans ── */}
         <div className="mt-16">
-          <div className="mb-8 border-b border-white/[0.08] pb-6">
-            <h2 className="font-syne text-[28px] font-[800] text-white">Your Plans</h2>
-            <p className="mt-2 font-sans text-[15px] text-text-secondary">View your active plans and payment status.</p>
+          <div className="mb-8 pb-6" style={{ borderBottom: '1px solid rgba(216,210,196,0.15)' }}>
+            <h2 className="font-syne text-[28px] font-[800]" style={{ color: C.warmStone }}>Your Plans</h2>
+            <p className="mt-2 font-sans text-[15px]" style={{ color: C.sage }}>View your active plans and payment status.</p>
           </div>
-          
+
           <div className="flex flex-col gap-4">
             {purchasedItems.length === 0 ? (
-              <div className="rounded-[16px] border border-white/[0.08] bg-[#0E0E0E]/85 p-8 text-center font-sans text-[14px] text-text-secondary">
+              <div className="rounded-[16px] p-8 text-center font-sans text-[14px]"
+                style={{ background: C.warmStone, border: '1px solid rgba(13,59,46,0.15)', color: C.deepForest }}>
                 You haven't purchased any plans yet.
               </div>
             ) : (
               purchasedItems.map((item, index) => {
                 const allPlans = [...webPlans, ...addOns, ...designServices, ...designPackages];
                 const planDetails = allPlans.find(p => p.id === item.id) || { name: item.id, type: 'Custom Plan' };
-                
+
                 return (
-                  <div key={index} className="flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-[16px] border border-white/[0.08] bg-[#0E0E0E]/85 p-6">
+                  <div key={index} className="flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-[16px] p-6"
+                    style={{ background: C.warmStone, border: '1px solid rgba(13,59,46,0.15)' }}>
                     <div>
-                      <h3 className="font-syne text-[18px] font-bold text-white">{planDetails.name}</h3>
-                      <p className="mt-1 font-sans text-[13px] text-text-secondary">{planDetails.type}</p>
+                      <h3 className="font-syne text-[18px] font-bold" style={{ color: C.deepForest }}>{planDetails.name}</h3>
+                      <p className="mt-1 font-sans text-[13px]" style={{ color: C.sage }}>{planDetails.type}</p>
                     </div>
                     <div className="mt-4 sm:mt-0 flex items-center gap-3">
                       {item.status === 'full' ? (
-                        <div className="rounded-full border border-emerald-300/25 bg-emerald-400/10 px-4 py-2 text-[12px] font-sans uppercase tracking-[0.1em] text-emerald-200">
+                        <div className="rounded-full px-4 py-2 text-[12px] font-sans uppercase tracking-[0.1em]"
+                          style={{ border: `1px solid ${C.deepForest}`, background: 'rgba(13,59,46,0.1)', color: C.deepForest }}>
                           Full Amount Done
                         </div>
                       ) : (
-                        <div className="rounded-full border border-amber-300/25 bg-amber-400/10 px-4 py-2 text-[12px] font-sans uppercase tracking-[0.1em] text-amber-200">
+                        <div className="rounded-full px-4 py-2 text-[12px] font-sans uppercase tracking-[0.1em]"
+                          style={{ border: `1px solid ${C.gold}`, background: 'rgba(184,140,58,0.18)', color: C.gold }}>
                           Advance Given
                         </div>
                       )}
