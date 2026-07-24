@@ -184,7 +184,7 @@ export default function Checkout() {
         <Aurora colorStops={['#0D3B2E', '#6F8A6E', '#0D3B2E']} amplitude={4.0} blend={0.6} speed={0.8} />
       </div>
 
-      <section className="relative z-10 mx-auto max-w-[1120px] px-4 pb-20 pt-20 sm:px-6 md:pb-28 md:pt-28">
+      <section className="relative z-10 mx-auto min-h-[85vh] max-w-[1120px] px-4 pb-24 pt-28 sm:px-6 md:pb-36 md:pt-36 flex flex-col justify-start">
         <RevealOnScroll>
           <div className="mb-10 text-center md:mb-14">
             <h1 className="font-syne text-[40px] font-[800] leading-[1.02] text-white md:text-[64px]">
