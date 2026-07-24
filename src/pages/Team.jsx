@@ -28,7 +28,7 @@ export default function Team() {
           <div className="mx-auto mb-12 max-w-[760px] text-center md:mb-20">
 
             <h1 className="font-syne text-[40px] font-bold uppercase tracking-wider leading-[1.15] text-white md:text-[64px]">
-              Meet The People <span className="bg-gradient-to-r from-brand-secondary via-brand-accent to-brand-stone bg-clip-text text-transparent">Behind Crevix.</span>
+              Meet The People <span className="bg-gradient-to-r from-[#C69A45] via-[#F5E6BF] to-[#B88C3A] bg-clip-text text-transparent drop-shadow-[0_2px_10px_rgba(198,154,69,0.3)]">Behind Crevix.</span>
             </h1>
             <p className="mx-auto mt-6 max-w-4xl font-sans text-[15px] leading-[1.75] text-text-secondary md:text-[17px]">
               A focused studio team across strategy, technology, design, PR, and social media.
