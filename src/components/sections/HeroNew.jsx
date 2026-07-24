@@ -61,7 +61,7 @@ import {
         {/* ========================================================= */}
   
         <motion.div
-          className="pointer-events-none absolute h-[850px] w-[850px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[180px]"
+          className="pointer-events-none absolute h-[850px] w-[850px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[160px]"
           animate={{
             scale: [1, 1.08, 1],
             opacity: [0.7, 1, 0.7],
@@ -76,6 +76,8 @@ import {
             top: glowY,
             background:
               "radial-gradient(circle, rgba(198,154,69,.20), transparent 70%)",
+            willChange: "transform, left, top",
+            transform: "translateZ(0)",
           }}
         />
   
@@ -94,9 +96,11 @@ import {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute -left-44 top-10 h-[520px] w-[520px] rounded-full blur-[180px]"
+          className="absolute -left-44 top-10 h-[520px] w-[520px] rounded-full blur-[150px] pointer-events-none"
           style={{
             background: "rgba(198,154,69,.12)",
+            willChange: "transform",
+            transform: "translateZ(0)",
           }}
         />
   
@@ -115,9 +119,11 @@ import {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute -right-44 bottom-0 h-[700px] w-[700px] rounded-full blur-[220px]"
+          className="absolute -right-44 bottom-0 h-[700px] w-[700px] rounded-full blur-[180px] pointer-events-none"
           style={{
             background: "rgba(22,80,65,.45)",
+            willChange: "transform",
+            transform: "translateZ(0)",
           }}
         />
   
@@ -228,57 +234,57 @@ import {
             className="absolute h-[760px] w-[760px] rounded-full border border-white/[0.03]"
           />
   
-          {/* STUDIO LABEL */}
-  
-          <motion.p
-            initial={{
-              opacity: 0,
-              y: 25,
-            }}
-            animate={{
-              opacity: 1,
-              y: 0,
-            }}
-            transition={{
-              duration: 0.8,
-            }}
-            className="mb-8 uppercase tracking-[0.7em] text-xs text-[#C69A45]"
-          >
-            STUDIO
-          </motion.p>
-  
           {/* CREVIX TITLE */}
-  
+
           <motion.div
             variants={container}
             initial="hidden"
             animate="show"
-            className="relative flex overflow-hidden"
+            className="relative flex items-center justify-center overflow-visible py-4 px-2"
           >
             {title.split("").map((char, index) => (
-  <motion.span
-    key={index}
-    variants={letter}
-    whileHover={{
-      y: -8,
-      color: "#C69A45",
-      transition: { duration: 0.25 },
-    }}
-    className="
-      font-black
-      uppercase
-      leading-none
-      tracking-[-0.06em]
-      text-[#F5F2EA]
-      text-[clamp(5rem,14vw,11rem)]
-      cursor-default
-      select-none
-    "
-  >
-    {char}
-  </motion.span>
-))}
-</motion.div>
+              <motion.span
+                key={index}
+                variants={letter}
+                whileHover={{
+                  y: -8,
+                  color: "#C69A45",
+                  transition: { duration: 0.25 },
+                }}
+                className={`
+                  font-black
+                  uppercase
+                  leading-none
+                  pb-3
+                  pt-1
+                  tracking-[-0.04em]
+                  text-[clamp(4.5rem,13vw,10.5rem)]
+                  cursor-default
+                  select-none
+                  transition-colors duration-300
+                  ${char === 'E' ? 'text-[#C69A45]' : 'text-[#F5F2EA]'}
+                `}
+              >
+                {char}
+              </motion.span>
+            ))}
+          </motion.div>
+
+          {/* CALLIGRAPHY STUDIO RIGHT BELOW CREVIX */}
+
+          <motion.div
+            initial={{ opacity: 0, y: 15, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: 0.7, duration: 0.8 }}
+            className="relative z-10 -mt-3 md:-mt-8 lg:-mt-10 text-center"
+          >
+            <span
+              className="text-4xl md:text-6xl lg:text-7xl text-[#C69A45] tracking-wide block font-normal select-none pointer-events-none drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
+              style={{ fontFamily: "'Great Vibes', 'Alex Brush', cursive" }}
+            >
+              studio
+            </span>
+          </motion.div>
 
 {/* GOLD DIVIDER */}
 

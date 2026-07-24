@@ -61,6 +61,8 @@ export default function ServicesNew() {
         blur-[190px]"
         style={{
           background: "rgba(200,154,66,.16)",
+          willChange: "transform",
+          transform: "translateZ(0)",
         }}
       />
 
@@ -81,9 +83,12 @@ export default function ServicesNew() {
         h-[720px]
         w-[720px]
         rounded-full
-        blur-[230px]"
+        blur-[180px]
+        pointer-events-none"
         style={{
           background: "rgba(25,92,70,.42)",
+          willChange: "transform",
+          transform: "translateZ(0)",
         }}
       />
 

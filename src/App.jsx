@@ -1,12 +1,13 @@
-import { Suspense, lazy, useState } from 'react';
+import { Suspense, lazy, useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useLenisSmoothScroll } from './hooks/useLenisSmoothScroll';
+
 import IntroLoader from './pages/IntroLoader';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import GoogleAnalytics from './components/ui/GoogleAnalytics';
-import { CustomCursor } from './components/layout/CustomCursor';
 
 const Home = lazy(() => import('./pages/Home'));
 const Services = lazy(() => import('./pages/Services'));
@@ -23,6 +24,20 @@ const AgreementCreatePage = lazy(() => import('./modules/agreements/AgreementCre
 const AgreementPage = lazy(() => import('./modules/agreements/AgreementPage'));
 
 import PageTransition from './components/ui/PageTransition';
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (window.__lenis) {
+      window.__lenis.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname]);
+
+  return null;
+}
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -49,11 +64,13 @@ const AnimatedRoutes = () => {
 
 export default function App() {
   const [showIntro, setShowIntro] = useState(true);
+  useLenisSmoothScroll();
 
   return (
     <AuthProvider>
       <CartProvider>
         <BrowserRouter>
+          <ScrollToTop />
           <GoogleAnalytics />
           <Suspense fallback={
             <div className="fixed inset-0 bg-void flex items-center justify-center">
@@ -67,10 +84,7 @@ export default function App() {
             </AnimatePresence>
 
             {!showIntro && (
-              <>
-                <CustomCursor />
-                <AnimatedRoutes />
-              </>
+              <AnimatedRoutes />
             )}
           </Suspense>
         </BrowserRouter>
