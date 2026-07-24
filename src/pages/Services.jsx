@@ -370,7 +370,7 @@ export default function Services() {
       <section className="relative z-10 py-20 md:py-36">
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
           <RevealOnScroll>
-            <div className="relative overflow-hidden rounded-[16px] bg-[#8A9A5B] p-6 text-center sm:p-10 md:p-16">
+            <div className="relative overflow-hidden rounded-[16px] bg-[#6F8A6E] p-6 text-center sm:p-10 md:p-16">
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-brand-primary/10 via-transparent to-brand-accent/5" />
               <div className="relative">
                 <h2 className="mb-4 font-syne text-[28px] font-bold leading-[1.12] text-brand-primary md:text-[36px]">Ready to build something exceptional?</h2>
@@ -387,28 +387,7 @@ export default function Services() {
       {/* ========================================================= */}
       {/* CUSTOM CURSOR & TEXT REVEAL OVERLAY (Desktop only) */}
       {/* ========================================================= */}
-      {isDesktop && (
-        <>
-          {/* Custom smooth-following warm gold circle cursor */}
-          <motion.div
-            style={{
-              x: cursorSpringX,
-              y: cursorSpringY,
-              translateX: '-50%',
-              translateY: '-50%',
-            }}
-            className="fixed top-0 left-0 w-[150px] h-[150px] bg-[#C69A45] rounded-full pointer-events-none z-[50] shadow-[0_0_60px_rgba(198,154,69,0.35)]"
-          />
-
-          {/* Warm color tint overlay – covers entire viewport, clipped to circle */}
-          <motion.div
-            style={{
-              clipPath: clipPathStr,
-            }}
-            className="pointer-events-none fixed inset-0 z-[55] bg-[#D4A843] mix-blend-color"
-          />
-        </>
-      )}
+      {/* Removed warm gold circular cursor and overlay for cleaner Services page */}
     </Layout>
   );
 }

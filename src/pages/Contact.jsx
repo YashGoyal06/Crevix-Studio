@@ -217,55 +217,8 @@ export default function Contact() {
         document.body
       )}
 
-      {/* ── Large Circle with WebGL Aurora backdrop - Viewport level (no borders, no clipping) ── */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none flex items-center justify-center w-full min-h-screen">
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{
-            type: "spring",
-            stiffness: 70,
-            damping: 15,
-            mass: 0.9,
-            delay: 0.2
-          }}
-          style={{
-            x: circleX,
-            y: circleY,
-            boxShadow: '0 0 100px rgba(184, 140, 58, 0.08), 0 0 40px rgba(13, 59, 46, 0.15)'
-          }}
-          className="relative h-[300px] w-[300px] sm:h-[480px] sm:w-[480px] md:h-[680px] md:w-[680px] rounded-full overflow-hidden pointer-events-none bg-[#B88C3A]"
-        >
-          {/* Subtle warm orange gradient blend overlay inside circle */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-[#B88C3A]/20 to-transparent mix-blend-color-dodge z-10 pointer-events-none" />
-          <div className="w-full h-full scale-[1.15] z-0">
-            <Aurora colorStops={['#B88C3A', '#F4E0A5', '#E6D5B8']} amplitude={2.2} blend={0.65} speed={0.75} />
-          </div>
 
-          {/* Masked reveal container: perfectly counter-tracks circle movement */}
-          <motion.div
-            style={{
-              x: negCircleX,
-              y: negCircleY,
-            }}
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-[1280px] h-[2000px] pointer-events-none z-10 pt-32 md:pt-40 lg:pt-48 px-4 sm:px-6"
-          >
-            {/* Left-half clip wrapper to keep watermark solid reveal only on the left side */}
-            <div className="absolute inset-0 w-[40%] overflow-hidden">
-              {/* Duplicate watermark heading (Solid Warm Stone / Beige color) */}
-              <div className="absolute top-10 left-0 w-[1280px] flex justify-center pointer-events-none select-none overflow-hidden md:top-14 lg:top-16 z-0">
-                <span className="font-syne font-[900] text-[100px] sm:text-[140px] md:text-[180px] lg:text-[220px] uppercase leading-none"
-                  style={{
-                    color: C.warmStone,
-                    letterSpacing: '0.04em',
-                  }}>
-                  CONTACT
-                </span>
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-      </div>
+
 
       <section className="relative z-10 mx-auto max-w-[1280px] px-4 pt-32 pb-20 sm:px-6 md:pt-40 md:pb-28 lg:pt-48 lg:pb-36">
 

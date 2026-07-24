@@ -170,10 +170,8 @@ export default function Portfolio() {
 
         {/* Bottom CTA */}
         <RevealOnScroll>
-          <div className="mt-24 rounded-3xl border border-[#B88C3A]/30 bg-[#082A22]/60 backdrop-blur-xl p-10 text-center md:mt-36 md:p-16 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-            <p className="mb-3 uppercase tracking-[0.3em] text-[#B88C3A] text-xs font-semibold">
-              READY TO START?
-            </p>
+          <div className="mt-24 rounded-3xl border border-[#6F8A6E]/30 bg-[#6F8A6E] backdrop-blur-xl p-10 text-center md:mt-36 md:p-16 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+          
 
             <h3 className="mb-4 font-syne text-3xl font-bold text-[#F4EFE5] md:text-5xl">
               Let's build something together.
