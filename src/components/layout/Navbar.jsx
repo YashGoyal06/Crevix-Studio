@@ -126,9 +126,9 @@ export default function Navbar() {
           </div>
         </Link>
 
-        {/* CENTER: NAV LINKS WITH FROSTED HOVER PILL ANIMATION */}
+        {/* CENTER: NAV LINKS WITH SOLID CAPSULE ACTIVE HIGHLIGHT */}
         <nav
-          className="hidden md:flex items-center justify-center gap-1.5 absolute left-1/2 -translate-x-1/2"
+          className="hidden md:flex items-center justify-center gap-1 absolute left-1/2 -translate-x-1/2"
           onMouseLeave={() => setHoveredNav(null)}
         >
           {navLinks.map((link) => {
@@ -140,23 +140,27 @@ export default function Navbar() {
                 to={link.to}
                 onMouseEnter={() => setHoveredNav(link.to)}
                 className={`relative px-4 py-1.5 text-[14.5px] font-sans font-semibold tracking-wide transition-colors duration-200 z-10 ${
-                  isActive ? 'text-white font-bold' : isHovered ? 'text-white' : 'text-white/70'
+                  isActive
+                    ? 'text-[#030A08] font-bold'
+                    : isHovered
+                    ? 'text-white'
+                    : 'text-white/75'
                 }`}
               >
                 {/* Floating Frosted Glass Pill on Hover */}
-                {isHovered && (
+                {isHovered && !isActive && (
                   <motion.span
                     layoutId="hover-pill"
-                    className="absolute inset-0 bg-white/10 backdrop-blur-md border border-white/15 rounded-full -z-10 shadow-sm"
+                    className="absolute inset-0 bg-white/10 backdrop-blur-md border border-white/15 rounded-full -z-10"
                     transition={{ type: 'spring', stiffness: 450, damping: 30 }}
                   />
                 )}
 
-                {/* Active Page Luxury Gold Capsule Highlight */}
+                {/* Active Page Solid White Capsule Pill */}
                 {isActive && (
                   <motion.span
-                    layoutId="luxury-active-badge"
-                    className="absolute inset-0 bg-[#C69A45]/15 border border-[#C69A45]/40 rounded-full -z-10 shadow-[0_0_20px_rgba(198,154,69,0.3)]"
+                    layoutId="solid-active-pill"
+                    className="absolute inset-0 bg-white rounded-full -z-10 shadow-md"
                     transition={{ type: 'spring', stiffness: 420, damping: 32 }}
                   />
                 )}
