@@ -158,20 +158,19 @@
   }
 
   ::-webkit-scrollbar {
-    width: 5px;
+    width: 0px;
+    height: 0px;
+    display: none;
   }
 
   ::-webkit-scrollbar-track {
-    background: #0D3B2E;
+    background: transparent;
+    display: none;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 4px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: transparent;
+    display: none;
   }
 }
 

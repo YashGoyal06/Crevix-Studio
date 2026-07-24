@@ -185,12 +185,14 @@ export default function HeroNew() {
           top-1/2
           -translate-x-1/2
           -translate-y-1/2
-          text-[22vw]
+          text-[21vw]
           font-black
           uppercase
-          tracking-[-0.08em]
+          tracking-[-0.05em]
           text-transparent
           [-webkit-text-stroke:1px_rgba(255,255,255,.18)]
+          pr-6
+          whitespace-nowrap
           "
       >
         CREVIX
@@ -229,32 +231,13 @@ export default function HeroNew() {
           className="absolute h-[760px] w-[760px] rounded-full border border-white/[0.03]"
         />
 
-        {/* STUDIO LABEL */}
-
-        <motion.p
-          initial={{
-            opacity: 0,
-            y: 25,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            duration: 0.8,
-          }}
-          className="mb-8 uppercase tracking-[0.7em] text-xs text-[#C69A45]"
-        >
-          STUDIO
-        </motion.p>
-
         {/* CREVIX TITLE */}
 
         <motion.div
           variants={container}
           initial="hidden"
           animate="show"
-          className="relative flex overflow-hidden"
+          className="relative flex items-center justify-center overflow-visible px-4 pr-6"
         >
           {title.split("").map((char, index) => (
             <motion.span
@@ -269,17 +252,30 @@ export default function HeroNew() {
       font-black
       uppercase
       leading-none
-      tracking-[-0.06em]
+      tracking-[-0.05em]
       text-[#F5F2EA]
       text-[clamp(5rem,14vw,11rem)]
       cursor-default
       select-none
+      inline-block
+      pr-[0.05em]
     "
             >
               {char}
             </motion.span>
           ))}
         </motion.div>
+
+        {/* CALLIGRAPHY SCRIPT "Studio" LABEL BELOW CREVIX */}
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="-mt-3 sm:-mt-5 md:-mt-8 mb-6 font-serif italic text-[clamp(2rem,5vw,4.5rem)] text-[#C69A45] tracking-wide font-normal select-none drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
+          style={{ fontFamily: "'Playfair Display', Georgia, serif", fontStyle: 'italic' }}
+        >
+          studio
+        </motion.p>
 
         {/* GOLD DIVIDER */}
 

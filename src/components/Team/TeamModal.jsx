@@ -262,7 +262,7 @@ export default function TeamModal({ member, onClose }) {
   return createPortal(
     <AnimatePresence>
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10"
+        className="fixed inset-0 z-50 flex items-center justify-center pt-24 pb-6 px-4 sm:px-6 md:px-10"
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-member-name"
@@ -288,8 +288,8 @@ export default function TeamModal({ member, onClose }) {
           exit={{ opacity: 0, scale: 0.97 }}
           transition={{ duration: 0.18, ease: 'easeOut' }}
           className={`team-modal-container relative w-full max-w-[920px] bg-[#0A0A0A]/95 border border-white/[0.08] rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-y-auto md:overflow-hidden focus:outline-none z-10 ${hasDetailedContent
-              ? 'max-h-[90vh] md:h-[85vh] min-h-[60vh]'
-              : 'max-h-[90vh] md:h-auto md:min-h-0'
+              ? 'max-h-[calc(100vh-7rem)] md:h-[calc(100vh-7rem)] min-h-[50vh]'
+              : 'max-h-[calc(100vh-7rem)] md:h-auto md:min-h-0'
             }`}
         >
           {/* Mobile Close Button (Sticky, does not consume vertical space) */}
