@@ -239,9 +239,10 @@ def admin_login(request: HttpRequest) -> JsonResponse:
         username = payload.get("username")
         password = payload.get("password")
         
-        # In a real app, you'd use Django's auth system properly.
-        # Here we follow the user's specific requirement for special id/pass.
-        if username == "admin123" and password == "admin@123":
+        expected_username = getattr(settings, "ADMIN_USERNAME", os.getenv("ADMIN_USERNAME", "crevixadmin"))
+        expected_password = getattr(settings, "ADMIN_PASSWORD", os.getenv("ADMIN_PASSWORD", "crevixadmin@9897"))
+
+        if username == expected_username and password == expected_password:
             return JsonResponse({"success": True, "token": "admin-secret-session-token-v1"})
         return JsonResponse({"error": "Invalid admin credentials."}, status=401)
     except Exception as exc:

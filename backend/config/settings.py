@@ -118,3 +118,7 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 RAZORPAY_KEY_ID = (os.getenv("RAZORPAY_LIVE_KEY_ID") or os.getenv("RAZORPAY_KEY_ID") or "").strip()
 RAZORPAY_KEY_SECRET = (os.getenv("RAZORPAY_LIVE_KEY_SECRET") or os.getenv("RAZORPAY_KEY_SECRET") or "").strip()
 RAZORPAY_WEBHOOK_SECRET = (os.getenv("RAZORPAY_WEBHOOK_SECRET") or "").strip()
+
+# Admin Portal Credentials
+ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "crevixadmin").strip()
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "crevixadmin@9897").strip()
