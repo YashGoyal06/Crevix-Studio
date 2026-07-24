@@ -37,6 +37,10 @@ export default function TeamModal({ member, onClose }) {
     const originalStyle = window.getComputedStyle(document.body).overflow;
     document.body.style.overflow = 'hidden';
 
+    if (window.__lenis) {
+      window.__lenis.stop();
+    }
+
     // Focus the modal for screen readers / keyboard navigation
     if (modalRef.current) {
       modalRef.current.focus();
@@ -44,6 +48,9 @@ export default function TeamModal({ member, onClose }) {
 
     return () => {
       document.body.style.overflow = originalStyle;
+      if (window.__lenis) {
+        window.__lenis.start();
+      }
       if (previouslyFocused && typeof previouslyFocused.focus === 'function') {
         previouslyFocused.focus();
       }
@@ -275,6 +282,7 @@ export default function TeamModal({ member, onClose }) {
         <motion.div
           ref={modalRef}
           tabIndex={-1}
+          data-lenis-prevent
           initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.97 }}
@@ -305,8 +313,11 @@ export default function TeamModal({ member, onClose }) {
           </button>
 
           {/* DESKTOP LEFT COLUMN: Photo, Gallery, Skills & Tech Stack (40%) - EXACT ORIGINAL LAYOUT */}
-          <div className={`team-modal-left-col hidden md:flex w-full md:w-[40%] bg-[#0B0B0B]/40 p-8 flex-col justify-start border-b md:border-b-0 md:border-r border-white/[0.06] overflow-y-auto gap-7 shrink-0 ${hasDetailedContent ? 'md:h-full' : 'md:h-auto'
-            }`}>
+          <div
+            data-lenis-prevent
+            className={`team-modal-left-col hidden md:flex w-full md:w-[40%] bg-[#0B0B0B]/40 p-8 flex-col justify-start border-b md:border-b-0 md:border-r border-white/[0.06] overflow-y-auto gap-7 shrink-0 ${hasDetailedContent ? 'md:h-full' : 'md:h-auto'
+            }`}
+          >
             <div>
               {/* Featured image display frame */}
               <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-neutral-900/50 mb-5 border border-white/[0.04]">
@@ -433,10 +444,13 @@ export default function TeamModal({ member, onClose }) {
           </div>
 
           {/* RIGHT COLUMN: Details Scroll Box (60%) */}
-          <div className={`w-full md:w-[60%] px-6 pb-8 pt-6 sm:px-10 sm:py-9 overflow-y-visible md:overflow-y-auto flex flex-col select-text ${hasDetailedContent
+          <div
+            data-lenis-prevent
+            className={`w-full md:w-[60%] px-6 pb-8 pt-6 sm:px-10 sm:py-9 overflow-y-auto flex flex-col select-text ${hasDetailedContent
               ? 'justify-between md:h-full min-h-[320px] sm:min-h-[400px]'
               : 'justify-center md:h-auto md:min-h-0 gap-6'
-            }`}>
+            }`}
+          >
 
             {/* Profile Info Details Group */}
             <div className="flex flex-col gap-6 md:gap-7 w-full">
