@@ -145,24 +145,6 @@ export default function MaintenancePage() {
             object-fit: contain;
         }
 
-        .emblem-placeholder {
-            width: 55px;
-            height: 60px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: #fff;
-            border: 2px solid var(--gov-navy);
-            border-radius: 4px;
-            color: var(--gov-navy);
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-align: center;
-            padding: 2px;
-            letter-spacing: 0.5px;
-        }
-
         .brand-text h1 {
             font-family: var(--font-heading);
             font-size: 1.4rem;
@@ -307,39 +289,6 @@ export default function MaintenancePage() {
             color: var(--gov-navy);
             font-weight: 600;
             width: 32%;
-        }
-
-        /* Feature Pills */
-        .pill-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .pill {
-            background: #eef4ff;
-            border: 1px solid #cbd5e1;
-            padding: 8px 14px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--gov-navy);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .pill-free {
-            background: #ecfdf5;
-            border-color: #a7f3d0;
-            color: #065f46;
-        }
-
-        .pill-charge {
-            background: #fffbebfb;
-            border-color: #fde68a;
-            color: #92400e;
         }
 
         /* Speakers Grid Section */
@@ -548,7 +497,7 @@ export default function MaintenancePage() {
           <li><a href="#overview" className="active">Home / Overview</a></li>
           <li><a href="#speakers">Distinguished Speakers</a></li>
           <li><a href="#schedule">Schedule & Timings</a></li>
-          <li><a href="#facilities">Accommodation & Food</a></li>
+          <li><a href="#facilities">Accommodation Guidelines</a></li>
           <li><a href="#venue">Venue & Location Map</a></li>
           <li><a href="#contact">Helpdesk & Support</a></li>
         </ul>
@@ -559,7 +508,7 @@ export default function MaintenancePage() {
         {/* ANNOUNCEMENT BANNER */}
         <div className="govt-announcement">
           <span className="badge-notice">Official Announcement</span>
-          <p>Free enrollment is open for all university and college students upon verification of a valid Student ID card. Simple bedding mattress accommodation will be provided by government arrangements.</p>
+          <p>Free enrollment is open for all university and college students upon verification of a valid Student ID card. Keynote speaker sessions and intensive hands-on workshops on Blockchain & AI will run until 11:00 PM.</p>
         </div>
 
         <div className="grid-layout">
@@ -571,14 +520,9 @@ export default function MaintenancePage() {
                 <h2 className="card-title">Seminar Overview & Details</h2>
                 <span className="badge-status badge-verified">Official Event</span>
               </div>
-              <p>The <strong>Crevix Studio National Seminar 2026</strong> brings together academic scholars, technology enthusiasts, and industry practitioners for an intensive single-day summit dedicated to technology innovation and career advancement.</p>
-
-              <div className="pill-container">
-                <div className="pill pill-free">Free Enrollment</div>
-                <div className="pill pill-free">Free Accommodation for Students</div>
-                <div className="pill pill-charge">Food Tokens Charged</div>
-                <div className="pill">Student ID Required</div>
-              </div>
+              <p>
+                The <strong>Crevix Studio National Seminar 2026</strong> brings together academic scholars, technology enthusiasts, and industry practitioners for an intensive single-day summit. The morning session will feature insightful keynote addresses and speaker sessions led by esteemed international experts, followed by an intensive hands-on technical workshop on <strong>Blockchain & Artificial Intelligence (AI)</strong> starting from the evening and running until 11:00 PM.
+              </p>
 
               <table className="info-table" style={{ marginTop: '20px' }}>
                 <tbody>
@@ -665,23 +609,23 @@ export default function MaintenancePage() {
                   </tr>
                   <tr>
                     <th>10:00 AM - 01:00 PM</th>
-                    <td>Keynote Addresses & Crevix Studio Technology Sessions</td>
+                    <td>Keynote Addresses & Distinguished Speaker Sessions</td>
                   </tr>
                   <tr>
                     <th>01:00 PM - 02:30 PM</th>
-                    <td>Lunch Break (Food Tokens Redeemable at Dining Hall)</td>
+                    <td>Lunch Break</td>
                   </tr>
                   <tr>
-                    <th>02:30 PM - 06:00 PM</th>
-                    <td>Interactive Workshop & Technical Seminar Sessions</td>
+                    <th>02:30 PM - 05:30 PM</th>
+                    <td>Specialized Speaker Sessions & Industry Panel Discussions</td>
                   </tr>
                   <tr>
-                    <th>06:00 PM - 08:00 PM</th>
-                    <td>Evening Networking & Student Innovation Showcase</td>
+                    <th>05:30 PM - 08:30 PM</th>
+                    <td>Hands-on Technical Workshop: Blockchain Technology Development</td>
                   </tr>
                   <tr>
-                    <th>08:00 PM - 11:00 PM</th>
-                    <td>Closing Keynote, Student Accommodation Check-in & Wrap-up</td>
+                    <th>08:30 PM - 11:00 PM</th>
+                    <td>Hands-on Technical Workshop: Artificial Intelligence (AI) Applications, Wrap-up & Closing Keynote</td>
                   </tr>
                 </tbody>
               </table>
@@ -690,20 +634,14 @@ export default function MaintenancePage() {
             {/* FACILITIES SECTION */}
             <section id="facilities" className="card">
               <div className="card-header">
-                <h2 className="card-title">Accommodation & Dining Guidelines</h2>
+                <h2 className="card-title">Accommodation Guidelines</h2>
               </div>
 
-              <h3 style={{ fontSize: '1.05rem', color: 'var(--gov-navy)', marginBottom: '8px' }}>1. Free Student Accommodation</h3>
+              <h3 style={{ fontSize: '1.05rem', color: 'var(--gov-navy)', marginBottom: '8px' }}>Free Student Accommodation</h3>
               <p style={{ marginBottom: '12px', fontSize: '0.92rem' }}>Government supported free stay arrangements are provided for all eligible students based on Student ID verification.</p>
               <ul style={{ marginLeft: '20px', fontSize: '0.9rem', color: 'var(--gov-text-muted)', marginBottom: '18px' }}>
-                <li><strong>Beddings:</strong> Beddings of simple mattress will be provided in the campus facility.</li>
-                <li><strong>Verification Required:</strong> Free stay is provided freely based on valid Student ID.</li>
+                <li><strong>Verification Required:</strong> Free stay is provided freely based on valid Student ID card.</li>
               </ul>
-
-              <h3 style={{ fontSize: '1.05rem', color: 'var(--gov-navy)', marginBottom: '8px' }}>2. Food & Dining Tokens</h3>
-              <p style={{ fontSize: '0.92rem', color: 'var(--gov-text-muted)' }}>
-                While seminar enrollment and simple mattress accommodation are free, food tokens will be charged for meals during the event duration.
-              </p>
             </section>
 
             {/* VENUE & MAP SECTION */}
@@ -737,7 +675,7 @@ export default function MaintenancePage() {
               <div className="card-header">
                 <h2 className="card-title">Helpdesk & Contact Information</h2>
               </div>
-              <p style={{ fontSize: '0.92rem', marginBottom: '15px' }}>For queries regarding enrollment, accommodation, or food tokens, write to:</p>
+              <p style={{ fontSize: '0.92rem', marginBottom: '15px' }}>For queries regarding enrollment or accommodation, write to:</p>
 
               <div style={{ background: '#eef5ff', borderLeft: '4px solid var(--gov-blue)', padding: '14px', borderRadius: '2px' }}>
                 <p style={{ fontSize: '0.9rem' }}><strong>Contact Email:</strong> <a href="mailto:contact@crevix-studio.in" style={{ color: 'var(--gov-navy)', fontWeight: 700 }}>contact@crevix-studio.in</a></p>
@@ -756,8 +694,6 @@ export default function MaintenancePage() {
                 <li><strong>Timings:</strong> 9:00 AM to 11:00 PM</li>
                 <li><strong>Enrollment:</strong> Free</li>
                 <li><strong>Accommodation:</strong> Free (Student ID)</li>
-                <li><strong>Bedding:</strong> Simple Mattress</li>
-                <li><strong>Food:</strong> Tokens Charged</li>
               </ul>
             </div>
 
@@ -800,7 +736,7 @@ export default function MaintenancePage() {
             <p>Venue: DAVV Campus, Indore, MP 452001</p>
           </div>
         </div>
-        <div className="footer-bottom">
+        <div class="footer-bottom">
           <p>Copyright 2026 Crevix Studio. All rights reserved. Designed in accordance with official portal UI guidelines.</p>
         </div>
       </footer>
