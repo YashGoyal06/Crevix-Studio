@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { useLenisSmoothScroll } from './hooks/useLenisSmoothScroll';
 
+import MaintenancePage from './pages/MaintenancePage';
 import IntroLoader from './pages/IntroLoader';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
@@ -63,6 +64,22 @@ export default function App() {
   const [showIntro, setShowIntro] = useState(true);
   useLenisSmoothScroll();
 
+  // Check domain hostname
+  const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
+  const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
+  const hasPreviewParam = searchParams.get('preview') === 'true';
+
+  if (hasPreviewParam && typeof window !== 'undefined') {
+    localStorage.setItem('crevix_preview', 'true');
+  }
+
+  const isPreviewMode = (typeof window !== 'undefined' && localStorage.getItem('crevix_preview') === 'true') || hasPreviewParam;
+  const isCustomDomain = hostname.includes('crevix-studio.in') && !isPreviewMode;
+
+  if (isCustomDomain) {
+    return <MaintenancePage />;
+  }
+
   return (
     <AuthProvider>
       <CartProvider>
@@ -84,3 +101,4 @@ export default function App() {
     </AuthProvider>
   );
 }
+
