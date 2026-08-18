@@ -1,5 +1,18 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/((?!.*\\.(?:png|jpg|jpeg|svg|ico|css|js|woff|woff2|ttf|eot|webp)).*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "^(?:www\\.)?crevix-studio\\.in$"
+        }
+      ],
+      "destination": "/maintenance.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
